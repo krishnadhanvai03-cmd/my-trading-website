@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TradeBuddy - Login</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary: #00ffab;
+        --primary-dark: #00d68f;
+        --bg-dark: #0d1117;
+        --text-light: #fff;
+    }
+    * {
+        margin: 0; padding: 0; box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body {
+        height: 100vh; background: var(--bg-dark);
+        display: flex; align-items: center; justify-content: center;
+        overflow: hidden; padding: 15px;
+    }
+    #bgCanvas {
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%;
+        z-index: -1; background: var(--bg-dark);
+    }
+    .login-container {
+        background: rgba(255,255,255,0.08);
+        padding: clamp(25px, 5vw, 40px);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+        backdrop-filter: blur(15px);
+        width: 100%;
+        max-width: 360px;
+        animation: fadeIn 0.8s ease-in-out;
+    }
+    .login-container h2 {
+        text-align: center;
+        color: var(--text-light);
+        margin-bottom: clamp(15px, 3vw, 25px);
+        font-size: clamp(1.5rem, 4vw, 1.8rem);
+        letter-spacing: 1px;
+    }
+    .input-group {
+        position: relative;
+        margin-bottom: clamp(15px, 3vw, 25px);
+    }
+    .input-group input {
+        width: 100%;
+        padding: clamp(10px, 2.5vw, 12px) 10px;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid rgba(255,255,255,0.3);
+        color: var(--text-light);
+        font-size: 1rem;
+        outline: none;
+        transition: border-color 0.3s ease;
+    }
+    .input-group label {
+        position: absolute; top: 12px; left: 10px;
+        color: rgba(255,255,255,0.6); font-size: 1rem;
+        pointer-events: none; transition: all 0.3s ease;
+    }
+    .input-group input:focus,
+    .input-group input:not(:placeholder-shown) {
+        border-color: var(--primary);
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+        top: -10px; font-size: 0.8rem; color: var(--primary);
+    }
+    .btn {
+        width: 100%; padding: clamp(10px, 2.5vw, 12px);
+        border: none; border-radius: 8px; font-size: 1rem;
+        cursor: pointer; transition: all 0.3s ease;
+        margin-bottom: clamp(10px, 2vw, 15px);
+        display: flex; align-items: center; justify-content: center;
+        gap: 8px;
+    }
+    .btn-login {
+        background: var(--primary);
+        color: var(--bg-dark); font-weight: bold;
+    }
+    .btn-login:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .btn-google {
+        background: #fff; color: #000; font-weight: bold;
+    }
+    .btn-google img { width: 20px; height: 20px; }
+    .btn-google:hover { background: #ddd; transform: translateY(-2px); }
+    .links-corner {
+        margin-top: 8px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .links-corner a {
+        color: var(--primary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: color 0.3s ease;
+    }
+    .links-corner a:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+.fa-google {
+  background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+    /* Tablet adjustments */
+    @media (max-width: 1024px) {
+        .login-container { max-width: 400px; }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .login-container {
+            max-width: 90%;
+            padding: 20px;
+        }
+        .btn, .input-group input { font-size: 0.95rem; }
+        .links-corner a { font-size: 0.8rem; }
+    }
+
+    /* Small phone adjustments */
+    @media (max-width: 480px) {
+        .login-container {
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .btn { padding: 10px; font-size: 0.9rem; }
+        .btn-google img { width: 18px; height: 18px; }
+    }
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<div class="login-container">
+    <h2>Welcome To TradeBuddy</h2>
+    <form>
+        <div class="input-group">
+            <input type="email" id="email" placeholder=" " required>
+            <label for="email">Email</label>
+        </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder=" " required>
+            <label for="password">Password</label>
+        </div>
+        <button type="submit" class="btn btn-login">Login</button>
+        <button type="button" class="btn btn-google">
+<i class="fab fa-google fa-1x"  href="https://www.google.com/"></i>
+            Login with Google
+        </button>
+    </form>
+    <div class="links-corner">
+        <a href="signup.html">Sign Up</a>
+        <a href="forgot.html">Forgot Password?</a>
+    </div>
+</div>
+
+<script>
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let candles = [];
+let baseSpeed = 0.8;
+
+function createCandles() {
+    candles = [];
+    for (let i = 0; i < 60; i++) {
+        candles.push(generateCandle(Math.random() * canvas.height));
+    }
+}
+function generateCandle(y) {
+    const open = Math.random() * 40 + y;
+    const close = open + (Math.random() * 30 - 15);
+    const high = Math.min(open, close) - Math.random() * 10;
+    const low = Math.max(open, close) + Math.random() * 10;
+    const x = Math.random() * canvas.width;
+    const depth = Math.random();
+    const speed = baseSpeed + depth * 1.5;
+    const color = close > open ? "#00ffab" : "#ff4d4d";
+    return { x, y, open, close, high, low, depth, speed, color };
+}
+function drawCandlestick(c) {
+    const scale = 0.5 + c.depth * 0.7;
+    ctx.globalAlpha = 0.3 + c.depth * 0.7;
+    ctx.strokeStyle = c.color;
+    ctx.lineWidth = 1 + c.depth * 2;
+    ctx.beginPath();
+    ctx.moveTo(c.x, c.high);
+    ctx.lineTo(c.x, c.low);
+    ctx.stroke();
+    ctx.fillStyle = c.color;
+    ctx.fillRect(c.x - (4 * scale), Math.min(c.open, c.close),
+                 8 * scale, Math.abs(c.open - c.close));
+    ctx.globalAlpha = 1;
+}
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    candles.forEach(c => {
+        c.y += c.speed;
+        c.open += c.speed;
+        c.close += c.speed;
+        c.high += c.speed;
+        c.low += c.speed;
+        drawCandlestick(c);
+    });
+    for (let i = 0; i < candles.length; i++) {
+        if (candles[i].open > canvas.height + 20) {
+            candles[i] = generateCandle(-20);
+        }
+    }
+    requestAnimationFrame(animate);
+}
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    createCandles();
+});
+createCandles();
+animate();
+</script>
+
+</body>
+</html>
