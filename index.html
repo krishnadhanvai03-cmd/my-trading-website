@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TradeBuddy - Your Trading Journey Starts Here</title>
+    <meta
+      name="description"
+      content="Empower your trading decisions with TradeBuddy's state-of-the-art AI tools. Analyze, strategize, and execute with confidence on one platform."
+    />
+    <meta
+      name="keywords"
+      content="trading, AI, analytics, stock market, finance, investment, TradeBuddy"
+    />
+    <meta name="author" content="TradeBuddy Team" />
+
+    <!-- Preconnect to Google Fonts for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Material Icons CDN - Load with font-display: swap -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Poppins Font - Load with font-display: swap -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Critical CSS (inlined for faster FCP) -->
+    <style>
+      /* Minified and critical CSS goes here */
+      /* Reset & basics */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        /* Base font size for rem units, can be adjusted by media queries */
+        font-size: 16px; 
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: radial-gradient(circle at bottom, #2a004c, #140026);
+        color: #eee;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        /* Responsive font size for body text */
+        font-size: clamp(1rem, 0.9vw + 0.8rem, 1.125rem); /* Min 16px, Preferred 0.9vw+12.8px, Max 18px */
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+      .container {
+        max-width: 90rem;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+      header {
+        background: transparent;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        padding: 0;
+      }
+      .header-inner {
+        max-width: 81.25rem;
+        margin: 1.125rem auto 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(26, 0, 55, 0.95);
+        border-radius: 3rem;
+        box-shadow: 0 0.25rem 2rem 0 rgba(124, 58, 237, 0.1);
+        padding: 0 2rem;
+        min-height: 4.25rem;
+        position: relative;
+        transition: box-shadow 0.3s, background 0.3s, backdrop-filter 0.4s;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+      }
+      .header-inner.blur {
+        background: rgba(33, 40, 63, 0.85);
+        backdrop-filter: blur(1rem);
+        -webkit-backdrop-filter: blur(1rem);
+        box-shadow: 0 0.5rem 2.5rem 0 rgba(124, 58, 237, 0.18);
+      }
+      .logo {
+        font-weight: 700;
+        /* Responsive font size for logo */
+        font-size: clamp(1.25rem, 2vw, 1.5rem); 
+        color: #bb86fc;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        letter-spacing: 1px;
+        user-select: none;
+      }
+      .logo .material-icons {
+        /* Responsive icon size */
+        font-size: clamp(1.5rem, 2.5vw, 1.75rem); 
+        color: #9f70ff;
+      }
+      nav.desktop-nav {
+        display: flex;
+        gap: 1.75rem;
+        align-items: center;
+      }
+      nav.desktop-nav a {
+        font-weight: 500;
+        position: relative;
+        padding: 0.625rem 0.5rem;
+        color: #ddd;
+        /* Responsive font size for nav links */
+        font-size: clamp(0.95rem, 1.2vw, 1.08rem); 
+        border-radius: 1.125rem;
+        transition: color 0.3s, background 0.2s;
+      }
+      nav.desktop-nav a:hover {
+        color: #bb86fc;
+      }
+      nav.desktop-nav a.active {
+        color: #fff;
+        background: #bb86fc33;
+      }
+      nav.desktop-nav a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0.25rem;
+        width: 100%;
+        height: 0.125rem;
+        background: linear-gradient(90deg, #bb86fc 60%, #9f70ff 100%);
+        border-radius: 0.125rem;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s cubic-bezier(0.77, 0, 0.18, 1);
+        opacity: 1;
+        pointer-events: none;
+      }
+      nav.desktop-nav a:hover::after,
+      nav.desktop-nav a:focus::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+      nav.desktop-nav a:not(:hover):not(:focus)::after {
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.35s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      .dropdown {
+        position: relative;
+      }
+      .dropdown-content {
+        margin-top: 0.625rem;
+        display: none;
+        position: absolute;
+        background-color: rgba(26, 0, 55, 0.95);
+        min-width: 10rem;
+        box-shadow: 0px 0.5rem 1rem 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        opacity: 0;
+        padding: 0.9375rem;
+        transform: translateY(0.625rem);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+      }
+      .dropdown:hover .dropdown-content {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .dropdown-content a {
+        color: #ddd;
+        padding: 0.75rem 1rem;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+        /* Responsive font size for dropdown items */
+        font-size: clamp(0.9rem, 1vw, 1rem); 
+        transition: background-color 0.3s, color 0.3s;
+        border-radius: 0;
+      }
+      .dropdown-content a:hover {
+        color: #bb86fc;
+      }
+      .dropdown-content a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0.25rem;
+        width: 100%;
+        height: 0.125rem;
+        background: linear-gradient(90deg, #bb86fc 60%, #9f70ff 100%);
+        border-radius: 0.125rem;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s cubic-bezier(0.77, 0, 0.18, 1);
+        opacity: 1;
+        pointer-events: none;
+      }
+      .dropdown-content a:hover::after,
+      .dropdown-content a:focus::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+      .dropdown-content a:not(:hover):not(:focus)::after {
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.35s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      /* Improve vertical alignment of .btn-contact text */
+      .btn-contact {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #bb86fc;
+        color: #140026;
+        font-weight: 700;
+        padding: 0.625rem 1.375rem;
+        border-radius: 1.875rem;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+        font-size: clamp(0.9rem, 1.2vw, 1rem);
+        box-shadow: 0 0.125rem 0.5rem #bb86fc33;
+        height: 2.5rem; /* Fixed height for buttons */
+      }
+      .btn-contact:hover,
+      .btn-contact:focus {
+        background: #9d5cff;
+        color: #fff;
+        box-shadow: 0 0.25rem 1rem #bb86fc55;
+      }
+      .mobile-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: #bb86fc;
+        /* Responsive icon size for mobile toggle */
+        font-size: clamp(2rem, 5vw, 2.3rem); 
+        cursor: pointer;
+        margin-left: 0.625rem;
+        z-index: 1202;
+        transition: color 0.2s;
+      }
+      .mobile-toggle .material-icons {
+        /* Responsive icon size for mobile toggle */
+        font-size: clamp(2rem, 5vw, 2.3rem); 
+        transition: transform 0.3s;
+      }
+      .mobile-toggle.open .material-icons {
+        transform: rotate(90deg);
+      }
+      .mobile-nav-panel {
+        display: none;
+      }
+      .mobile-nav-panel.active {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 85vw;
+        max-width: 21.25rem;
+        height: 100vh;
+        background: rgba(24, 20, 40, 0.98);
+        box-shadow: -0.25rem 0 2rem 0 rgba(124, 58, 237, 0.1);
+        border-radius: 2rem 0 0 2rem;
+        padding: 2.375rem 1.75rem 1.5rem 1.75rem;
+        z-index: 1201;
+        gap: 1.125rem;
+        animation: slideInNav 0.3s;
+      }
+      .mobile-nav-panel a {
+        /* Responsive font size for mobile nav links */
+        font-size: clamp(1.1rem, 3vw, 1.2rem); 
+        padding: 0.75rem 0 0.75rem 0.375rem;
+        width: 100%;
+        border-radius: 0.5rem;
+        text-align: left;
+        color: #eee;
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+        margin-bottom: 0.125rem;
+      }
+      .mobile-nav-panel a:hover,
+      .mobile-nav-panel a.active {
+        background: rgba(255, 255, 255, 0.06);
+        color: #bb86fc;
+      }
+      .mobile-nav-panel .btn-contact {
+        width: 100%;
+        margin-top: 1.125rem;
+        /* Responsive font size for mobile buttons */
+        font-size: clamp(1rem, 3vw, 1.1rem); 
+        border-radius: 1.5rem;
+        padding: 0.875rem 0;
+      }
+      .mobile-nav-panel .close-btn {
+        position: absolute;
+        top: 1.125rem;
+        right: 1.125rem;
+        background: none;
+        border: none;
+        color: #bb86fc;
+        /* Responsive icon size for close button */
+        font-size: clamp(1.8rem, 5vw, 2.1rem); 
+        cursor: pointer;
+        z-index: 1203;
+      }
+      @keyframes slideInNav {
+        from {
+          right: -25rem;
+          opacity: 0;
+        }
+        to {
+          right: 0;
+          opacity: 1;
+        }
+      }
+      .mobile-nav-overlay {
+        display: none;
+      }
+      .mobile-nav-overlay.active {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(24, 20, 40, 0.55);
+        z-index: 1200;
+        backdrop-filter: blur(0.125rem);
+        -webkit-backdrop-filter: blur(0.125rem);
+        animation: fadeInOverlay 0.3s;
+      }
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      /* FIX: Corrected mobile dropdown display and transition properties */
+      .dropdown-mobile .dropdown-content-mobile {
+        flex-direction: column;
+        padding: 0 1.5rem; /* Start with 0 padding to allow transition */
+        background-color: rgba(255, 255, 255, 0.03);
+        border-radius: 0.5rem;
+        margin-top: 0.5rem;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0; /* Add opacity for fade effect */
+        visibility: hidden; /* Add visibility for smooth transition */
+        transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.4s ease-out, visibility 0.4s ease-out;
+      }
+      .dropdown-mobile .dropdown-content-mobile.active {
+        display: flex; /* Set display to flex when active */
+        max-height: 10rem; /* Ensure this is large enough for all content */
+        padding: 0.5rem 1.5rem 0.5rem; /* Adjust padding when active */
+        opacity: 1; /* Fade in */
+        visibility: visible; /* Make visible */
+      }
+      .dropdown-mobile .dropdown-content-mobile a {
+        padding: 0.5rem 0.375rem;
+        /* Responsive font size for mobile dropdown items */
+        font-size: clamp(1rem, 2.5vw, 1.1rem); 
+      }
+      .dropdown-toggle-mobile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      .dropdown-toggle-mobile .material-icons {
+        /* Responsive icon size for mobile dropdown toggle */
+        font-size: clamp(1.3rem, 3vw, 1.5rem); 
+        transition: transform 0.3s ease;
+      }
+      .dropdown-toggle-mobile.active .material-icons {
+        transform: rotate(180deg);
+      }
+      @media (max-width: 1200px) {
+        .header-inner {
+          max-width: 98vw;
+          padding: 0 1rem;
+        }
+      }
+      @media (max-width: 900px) {
+        .header-inner {
+          flex-direction: row;
+          gap: 0;
+          padding: 0 0.5rem;
+        }
+        nav.desktop-nav {
+          display: none;
+        }
+        .mobile-toggle {
+          display: block;
+        }
+        /* Hide Login/Sign Up button in header on small screens */
+        .header-actions {
+          display: none !important;
+        }
+        /* Ensure "More" (dropdown-toggle-mobile) width stays the same before/after click on mobile/tablet */
+        .dropdown-mobile .dropdown-toggle-mobile {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          min-width: 0;
+          padding-right: 0;
+          /* Prevent width change on arrow rotation */
+          transition: background 0.2s, color 0.2s;
+        }
+        .dropdown-mobile .dropdown-toggle-mobile .material-icons {
+          flex-shrink: 0;
+          margin-left: 8px;
+          transition: transform 0.3s;
+          /* Prevent arrow from pushing text */
+          min-width: 24px;
+          text-align: right;
+        }
+      }
+      @media (max-width: 600px) {
+        .logo {
+          font-size: 1rem;
+        }
+        .header-inner {
+          padding: 0 2vw;
+          border-radius: 1.75rem;
+        }
+        .mobile-nav-panel {
+          max-width: 98vw;
+          border-radius: 0;
+          padding: 1.75rem 0.625rem 1.125rem 1.125rem;
+        }
+      }
+      .hero {
+        text-align: center;
+        padding: 8rem 1rem 8rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-title {
+        /* Using clamp for responsive font size */
+        font-size: clamp(2.5rem, 6vw, 3.5rem); 
+        font-weight: 800;
+        line-height: 1.15;
+        max-width: 43.75rem;
+        margin: 0 auto 1rem auto;
+        color: #e9e8f9;
+        animation: fadeInUp 1.4s ease forwards;
+      }
+      .hero-desc {
+        color: #c9c7e9;
+        /* Using clamp for responsive font size */
+        font-size: clamp(1rem, 2.5vw, 1.1rem); 
+        max-width: 36.25rem;
+        margin: 0 auto 3rem;
+        font-weight: 500;
+        animation: fadeInUp 1.6s ease forwards;
+      }
+      .hero-button {
+        padding: 0.875rem 2.25rem;
+        background: #bb86fc;
+        border-radius: 2.5rem;
+        font-weight: 700;
+        /* Responsive font size for hero button */
+        font-size: clamp(1rem, 2.5vw, 1.1rem); 
+        color: #140026;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s;
+        box-shadow: 0 0 0.75rem #bb86fcaa;
+        animation: pulseGlow 2.8s ease infinite;
+      }
+      .hero-button:hover,
+      .hero-button:focus {
+        background: #985cff;
+        color: #fff;
+      }
+      .cards {
+        display: grid;
+        max-width: 75rem;
+        margin: 3.75rem auto 5rem;
+        gap: 2.5rem;
+        padding: 0 1rem;
+      }
+      @media (min-width: 769px) {
+        .cards {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .cards {
+          grid-template-columns: 1fr;
+          margin: 3rem auto 4rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .cards {
+          padding: 0 0.75rem;
+        }
+      }
+      .card {
+        background: #2e0e70;
+        border-radius: 1.25rem;
+        padding: 2rem 2.5rem;
+        box-shadow: 0 0.75rem 1.5rem rgb(90 50 142 / 0.5);
+        color: #e3dffd;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+      .card:hover,
+      .card:focus-within {
+        transform: translateY(-0.625rem) scale(1.03);
+        box-shadow: 0 1.25rem 2.75rem rgb(150 75 255 / 0.8);
+      }
+      .card-icon {
+        /* Responsive icon size */
+        font-size: clamp(2.5rem, 5vw, 3rem); 
+        color: #bb86fc;
+        background: radial-gradient(circle, #5e32cc 15%, transparent 70%);
+        border-radius: 50%;
+        padding: 1.125rem;
+        margin-bottom: 1.4rem;
+        animation: iconPulse 3s ease infinite;
+      }
+      .card-title {
+        /* Responsive font size for card titles */
+        font-size: clamp(1.3rem, 3vw, 1.5rem); 
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+        text-align: center;
+      }
+      .card-desc {
+        font-weight: 400;
+        color: #d7d3f5cc;
+        text-align: center;
+        line-height: 1.6;
+        /* Responsive font size for card descriptions */
+        font-size: clamp(0.9rem, 2vw, 1rem); 
+      }
+      .section-title {
+        /* Using clamp for responsive font size */
+        font-size: clamp(2rem, 5vw, 3rem); 
+        font-weight: 800;
+        text-align: center;
+        color: #e9e8f9;
+        margin-bottom: 1rem;
+        line-height: 1.2;
+      }
+      .section-subtitle {
+        /* Using clamp for responsive font size */
+        font-size: clamp(1rem, 2.5vw, 1.25rem); 
+        text-align: center;
+        color: #c9c7e9;
+        max-width: 45rem;
+        margin: 0 auto 3rem;
+        font-weight: 500;
+      }
+      .how-it-works {
+        padding: 5rem 1rem;
+      }
+      .steps-grid {
+        display: grid;
+        /* Adjust minmax for better responsiveness on smaller screens */
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); 
+        gap: 2.5rem;
+        margin-top: 4rem;
+      }
+      .step-card {
+        background: #2e0e70;
+        border-radius: 1.25rem;
+        padding: 2.5rem;
+        box-shadow: 0 0.75rem 1.5rem rgb(90 50 142 / 0.5);
+        color: #e3dffd;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .step-card:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 1.25rem 2.75rem rgb(150 75 255 / 0.8);
+      }
+      .step-number {
+        /* Responsive font size for step numbers */
+        font-size: clamp(3rem, 8vw, 3.5rem); 
+        font-weight: 900;
+        color: rgba(187, 134, 252, 0.2);
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        z-index: 0;
+        line-height: 1;
+      }
+      .step-content {
+        position: relative;
+        z-index: 1;
+      }
+      .step-icon {
+        /* Responsive icon size */
+        font-size: clamp(3rem, 7vw, 3.5rem); 
+        color: #bb86fc;
+        margin-bottom: 1rem;
+      }
+      .step-title {
+        /* Responsive font size for step titles */
+        font-size: clamp(1.5rem, 3.5vw, 1.75rem); 
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+      }
+      .step-desc {
+        /* Responsive font size for step descriptions */
+        font-size: clamp(0.9rem, 2vw, 1rem); 
+        color: #d7d3f5cc;
+        line-height: 1.6;
+      }
+      .testimonials {
+        padding: 5rem 1rem;
+      }
+      .testimonial-grid {
+        display: grid;
+        /* Adjust minmax for better responsiveness on smaller screens */
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); 
+        gap: 2rem;
+        margin-top: 4rem;
+      }
+      .testimonial-card {
+        background: #2e0e70;
+        border-radius: 1.25rem;
+        padding: 2rem;
+        box-shadow: 0 0.75rem 1.5rem rgb(90 50 142 / 0.5);
+        color: #e3dffd;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .testimonial-card:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 1.25rem 2.75rem rgb(150 75 255 / 0.8);
+      }
+      .testimonial-quote {
+        /* Responsive font size for testimonial quotes */
+        font-size: clamp(1rem, 2.2vw, 1.1rem); 
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+        color: #d7d3f5;
+      }
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: auto;
+      }
+      .author-avatar {
+        /* Responsive avatar size */
+        width: clamp(3rem, 6vw, 3.5rem); 
+        height: clamp(3rem, 6vw, 3.5rem); 
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #bb86fc;
+      }
+      .author-info strong {
+        display: block;
+        /* Responsive font size for author name */
+        font-size: clamp(1rem, 2.2vw, 1.1rem); 
+        color: #bb86fc;
+      }
+      .author-info span {
+        /* Responsive font size for author title */
+        font-size: clamp(0.8rem, 1.8vw, 0.9rem); 
+        color: #c9c7e9;
+      }
+      .cta-section,
+      .vision-section,
+      .why-choose-us-section {
+        padding: 5rem 1rem;
+        text-align: center;
+        border-radius: 1.5rem;
+        margin: 5rem auto;
+        max-width: 75rem;
+        box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        position: relative;
+      }
+      .cta-section::before,
+      .vision-section::before,
+      .why-choose-us-section::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(255, 255, 255, 0.05) 0%,
+          transparent 70%
+        );
+        animation: rotateLight 15s linear infinite;
+        opacity: 0.7;
+      }
+      @keyframes rotateLight {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .cta-content,
+      .vision-content,
+      .why-choose-us-content {
+        position: relative;
+        z-index: 1;
+      }
+      .cta-title,
+      .vision-title,
+      .why-choose-us-title {
+        /* Using clamp for responsive font size */
+        font-size: clamp(2.2rem, 5vw, 3.5rem); 
+        font-weight: 800;
+        color: #fff;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+      .cta-desc,
+      .vision-desc,
+      .why-choose-us-desc {
+        /* Using clamp for responsive font size */
+        font-size: clamp(1rem, 2.5vw, 1.25rem); 
+        color: #f0eaff;
+        max-width: 50rem;
+        margin: 0 auto 2.5rem;
+        line-height: 1.6;
+      }
+      .cta-button,
+      .vision-button,
+      .why-choose-us-button {
+        padding: 1rem 2.5rem;
+        background: #140026;
+        color: #bb86fc;
+        border-radius: 2.5rem;
+        font-weight: 700;
+        /* Responsive font size for CTA buttons */
+        font-size: clamp(1rem, 2.5vw, 1.1rem); 
+        border: 2px solid #bb86fc;
+        cursor: pointer;
+        transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.2);
+      }
+      .cta-button:hover,
+      .vision-button:hover,
+      .why-choose-us-button:hover {
+        background: #bb86fc;
+        color: #140026;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 0.5rem 1.5rem rgba(187, 134, 252, 0.4);
+      }
+      .why-choose-us-points {
+        display: grid;
+        /* Adjust minmax for better responsiveness on smaller screens */
+        grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); 
+        gap: 2rem;
+        margin-top: 3rem;
+        text-align: left;
+      }
+      .why-choose-us-point {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+      .why-choose-us-point:hover {
+        transform: translateY(-5px);
+        background: rgba(0, 0, 0, 0.3);
+      }
+      .why-choose-us-point .material-icons {
+        /* Responsive icon size */
+        font-size: clamp(2rem, 5vw, 2.5rem); 
+        color: #bb86fc;
+        margin-bottom: 0.75rem;
+      }
+      .why-choose-us-point h4 {
+        /* Responsive font size for point titles */
+        font-size: clamp(1.1rem, 2.5vw, 1.25rem); 
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+      .why-choose-us-point p {
+        /* Responsive font size for point descriptions */
+        font-size: clamp(0.85rem, 1.8vw, 0.95rem); 
+        color: #e0e0e0;
+        line-height: 1.5;
+      }
+      footer {
+        background: #140026;
+        color: #bbb8ddcc;
+        padding: 3rem 1rem;
+        /* Responsive font size for footer */
+        font-size: clamp(0.8rem, 1.5vw, 0.9rem); 
+        text-align: center;
+        border-top: 0.0625rem solid #3a1666;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes fadeInDown {
+        0% {
+          opacity: 0;
+          transform: translateY(-0.9375rem);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        0% {
+          opacity: 0;
+          transform: translateY(2.1875rem);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 0.75rem #bb86fcaa, 0 0 2rem #bb86fc55;
+          transform: scale(1);
+        }
+        50% {
+          box-shadow: 0 0 1.125rem #bb86fcff, 0 0 2.5rem #bb86fcaa;
+          transform: scale(1.05);
+        }
+      }
+      @keyframes iconPulse {
+        0%,
+        100% {
+          color: #bb86fc;
+          filter: drop-shadow(0 0 0.125rem #bb86fc88);
+        }
+        50% {
+          color: #d1b3ff;
+          filter: drop-shadow(0 0 0.375rem #d1b3ffdd);
+        }
+      }
+      .fade-in-section {
+        opacity: 0;
+        transform: translateY(1.25rem);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        will-change: opacity, transform;
+      }
+      .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(0.5rem);
+        -webkit-backdrop-filter: blur(0.5rem);
+        justify-content: center;
+        align-items: center;
+        animation: fadeInOverlay 0.3s ease-out;
+      }
+      .modal.active {
+        display: flex;
+      }
+      .modal-content {
+        background: radial-gradient(circle at top, #3c1164, #140026 90%);
+        margin: auto;
+        padding: 2.5rem;
+        border-radius: 1.25rem;
+        box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.5);
+        position: relative;
+        width: 90%;
+        max-width: 37.5rem;
+        text-align: center;
+        transform: scale(0.9);
+        opacity: 0;
+        animation: modalPopIn 0.4s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+      @keyframes modalPopIn {
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .close-modal-btn {
+        color: #aaa;
+        position: absolute;
+        top: 0.9375rem;
+        right: 1.5625rem;
+        /* Responsive font size for close button */
+        font-size: clamp(1.8rem, 5vw, 2.1875rem); 
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+        background-color: #280845;
+        border: none;
+      }
+      .close-modal-btn:hover,
+      .close-modal-btn:focus {
+        color: #bb86fc;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .modal-title {
+        /* Using clamp for responsive font size */
+        font-size: clamp(1.8rem, 4vw, 2.2rem); 
+        color: #bb86fc;
+        margin-bottom: 1.25rem;
+        font-weight: 700;
+      }
+      .modal-form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9375rem;
+        width: 100%;
+      }
+      .modal-form-container input[type="text"],
+      .modal-form-container input[type="email"],
+      .modal-form-container input[type="password"] {
+        width: calc(100% - 1.25rem);
+        padding: 0.75rem 0.625rem;
+        margin: 0.5rem 0;
+        display: inline-block;
+        border: 0.0625rem solid #5e32cc;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        background-color: rgba(255, 255, 255, 0.08);
+        color: #eee;
+        /* Responsive font size for input fields */
+        font-size: clamp(0.9rem, 2vw, 1rem); 
+        transition: border-color 0.3s, background-color 0.3s;
+      }
+      .modal-form-container input[type="text"]:focus,
+      .modal-form-container input[type="email"]:focus,
+      .modal-form-container input[type="password"]:focus {
+        border-color: #bb86fc;
+        background-color: rgba(255, 255, 255, 0.15);
+        outline: none;
+      }
+      .modal-form-container button {
+        background: #bb86fc;
+        color: #140026;
+        font-weight: 700;
+        padding: 0.75rem 1.25rem;
+        border: none;
+        border-radius: 1.875rem;
+        cursor: pointer;
+        /* Responsive font size for form buttons */
+        font-size: clamp(1rem, 2.5vw, 1.1rem); 
+        transition: background 0.3s, box-shadow 0.3s;
+        margin-top: 0.625rem;
+      }
+      .modal-form-container button:hover {
+        background: #9d5cff;
+        box-shadow: 0 0.25rem 1rem #bb86fc55;
+      }
+      .form-toggle-text {
+        color: #ccc;
+        /* Responsive font size for toggle text */
+        font-size: clamp(0.85rem, 1.8vw, 0.95rem); 
+        margin-top: 0.9375rem;
+      }
+      .form-toggle-text a {
+        color: #bb86fc;
+        font-weight: 600;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      .form-toggle-text a:hover {
+        color: #9d5cff;
+      }
+      
+      .form-wrapper {
+        position: relative;
+        overflow: hidden;
+        transition: height 0.5s ease-in-out;
+      }
+      .login-section,
+      .signup-section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out,
+          visibility 0.5s ease-in-out;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(100%);
+        padding-bottom: 0.0625rem;
+      }
+      .login-section.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+        z-index: 2;
+      }
+      .signup-section.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+        z-index: 2;
+      }
+      .login-section.slide-out-left {
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1;
+      }
+      .signup-section.slide-in-right {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+      }
+      .signup-section.slide-out-right {
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1;
+      }
+      .login-section.slide-in-left {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+      }
+      @media (max-width: 768px) {
+        .modal-content {
+          padding: 1.875rem;
+          width: 95%;
+        }
+        .modal-title {
+          font-size: 1.8rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .modal-content {
+          padding: 1.25rem;
+        }
+        .modal-title {
+          font-size: 1.5rem;
+        }
+        .modal-form-container input {
+          padding: 0.625rem;
+        }
+        .modal-form-container button {
+          padding: 0.625rem 0.9375rem;
+          font-size: 1rem;
+        }
+      }
+
+      /* For screen-reader only accessibility */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+
+      /* NEW: FAQ Section Styles */
+      .faq-section {
+        padding: 5rem 1rem;
+        text-align: center;
+      }
+
+      .faq-container {
+        max-width: 60rem;
+        margin: 3rem auto 0;
+        text-align: left;
+      }
+
+      .faq-item {
+        background: #2e0e70;
+        border-radius: 0.75rem;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+      }
+
+      .faq-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 1.5rem;
+        /* Responsive font size for FAQ questions */
+        font-size: clamp(1rem, 2.5vw, 1.15rem); 
+        font-weight: 600;
+        color: #e3dffd;
+        cursor: pointer;
+        background: #3a1666;
+        border: none;
+        width: 100%;
+        text-align: left;
+        transition: background 0.3s ease;
+      }
+
+      .faq-question:hover,
+      .faq-question:focus {
+        background: #4c1e80;
+      }
+
+      .faq-question .material-icons {
+        /* Responsive icon size for FAQ toggle */
+        font-size: clamp(1.5rem, 3vw, 1.8rem); 
+        transition: transform 0.3s ease;
+      }
+
+      .faq-question.active .material-icons {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        padding: 0 1.5rem;
+        /* Responsive font size for FAQ answers */
+        font-size: clamp(0.9rem, 2vw, 1rem); 
+        color: #d7d3f5;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+      }
+
+      .faq-answer.active {
+        max-height: 10rem; /* Adjust based on expected content height */
+        padding: 1rem 1.5rem 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner container" id="mainHeader">
+        <a href="#" class="logo" aria-label="TradeBuddy Logo">
+          <span class="material-icons" aria-hidden="true">show_chart</span>
+          TradeBuddy
+        </a>
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a href="#trade" tabindex="0">Trade</a>
+          <a href="#contact" tabindex="0">Contact</a>
+          <a href="#pricing" tabindex="0">Pricing</a>
+          <a href="#services" tabindex="0">Services</a>
+          <div class="dropdown">
+            <a href="#more" tabindex="0">More</a>
+            <div class="dropdown-content">
+              <a href="#search">Search</a>
+              <a href="#news">News</a>
+              <a href="#fno">F&O</a>
+            </div>
+          </div>
+        </nav>
+        <div class="header-actions">
+          <button
+            class="btn-contact"
+            id="loginSignupBtn"
+            aria-label="Login In or Sign Up"
+            
+          >
+            Login In/Sign Up
+          </button>
+        </div>
+        <button
+          class="mobile-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <span class="material-icons">menu</span>
+        </button>
+      </div>
+      <!-- Mobile Nav Panel -->
+      <div
+        class="mobile-nav-panel"
+        id="mobileNavPanel"
+        aria-label="Mobile navigation"
+      >
+        <button class="close-btn" aria-label="Close menu">
+          <span class="material-icons">close</span>
+        </button>
+        <a href="#trade">Trade</a>
+        <a href="#contact">Contact</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#services">Services</a>
+        <div class="dropdown-mobile">
+          <a href="#more" class="dropdown-toggle-mobile">
+            More
+            <span class="material-icons">expand_more</span>
+          </a>
+          <div class="dropdown-content-mobile">
+            <a href="#search">Search</a>
+            <a href="#news">News</a>
+            <a href="#fno">F&O</a>
+          </div>
+        </div>
+        <a
+          class="btn-contact"
+          style="margin-top: 24px"
+          href="login.html"
+        >
+          Login In/Sign Up
+        </a>
+      </div>
+      <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    </header>
+    <main>
+      <section
+        class="hero fade-in-section"
+        role="banner"
+        aria-labelledby="hero-title"
+      >
+        <h1 class="hero-title" id="hero-title">
+          Your Trading Journey Starts From Here
+        </h1>
+        <p class="hero-desc">
+          Empower your trading decisions with TradeBuddy's state-of-the-art AI
+          tools. Analyze, strategize, and execute with confidence on one
+          platform.
+        </p>
+        <button
+          class="hero-button"
+          id="startFreeTrialBtn"
+          aria-label="Start Free Trial"
+        >
+          Start Free Trial
+        </button>
+      </section>
+      <section
+        class="cards container fade-in-section"
+        aria-label="Trading platform key features"
+        id="features"
+      >
+        <article class="card" tabindex="0">
+          <span class="card-icon material-icons" aria-hidden="true"
+            >insights</span
+          >
+          <h3 class="card-title">Advanced Analytics</h3>
+          <p class="card-desc">
+            Gain deep insights with real-time market data and AI-powered
+            analytics tailored to boost your trading edge.
+          </p>
+        </article>
+
+        <article class="card" tabindex="0">
+          <span class="card-icon material-icons" aria-hidden="true"
+            >security</span
+          >
+          <h3 class="card-title">Secure Trading</h3>
+          <p class="card-desc">
+            Your transactions are protected with industry-leading encryption and
+            multi-factor authentication protocols.
+          </p>
+        </article>
+        <article class="card" tabindex="0">
+          <span class="card-icon material-icons" aria-hidden="true"
+            >support_agent</span
+          >
+          <h3 class="card-title">24/7 Support</h3>
+          <p class="card-desc">
+            Our expert team is always ready to assist you, ensuring your trading
+            journey is smooth and successful.
+          </p>
+        </article>
+      </section>
+
+      <section class="how-it-works fade-in-section" id="how-it-works">
+        <div class="container">
+          <h2 class="section-title">How TradeBuddy Works</h2>
+          <p class="section-subtitle">
+            Get started with TradeBuddy in three simple steps. From sign-up to
+            smart trading, we make it easy for you.
+          </p>
+          <div class="steps-grid">
+            <div class="step-card">
+              <span class="step-number">01</span>
+              <div class="step-content">
+                <span class="step-icon material-icons">person_add</span>
+                <h3 class="step-title">Create Your Account</h3>
+                <p class="step-desc">
+                  Sign up in minutes and set up your personalized trading
+                  profile. It's quick, secure, and free to start.
+                </p>
+              </div>
+            </div>
+            <div class="step-card">
+              <span class="step-number">02</span>
+              <div class="step-content">
+                <span class="step-icon material-icons">analytics</span>
+                <h3 class="step-title">Analyze & Strategize</h3>
+                <p class="step-desc">
+                  Utilize our AI-powered tools to analyze market trends and
+                  develop winning trading strategies.
+                </p>
+              </div>
+            </div>
+            <div class="step-card">
+              <span class="step-number">03</span>
+              <div class="step-content">
+                <span class="step-icon material-icons">trending_up</span>
+                <h3 class="step-title">Execute Trades</h3>
+                <p class="step-desc">
+                  Seamlessly execute your trades with confidence and monitor
+                  your portfolio in real-time.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="vision-section fade-in-section" id="our-vision">
+        <div class="container vision-content">
+          <h2 class="vision-title">Our Vision for Your Success</h2>
+          <p class="vision-desc">
+            We envision a world where every trader, regardless of experience,
+            has access to powerful tools and insights to achieve their financial
+            goals. TradeBuddy is built on this principle.
+          </p>
+          <button class="vision-button">Learn More About Our Mission</button>
+        </div>
+      </section>
+
+      <section class="why-choose-us-section fade-in-section" id="why-choose-us">
+        <div class="container why-choose-us-content">
+          <h2 class="why-choose-us-title">Why Choose TradeBuddy?</h2>
+          <p class="why-choose-us-desc">
+            Beyond advanced features, we offer a commitment to your growth and
+            security. Discover what sets us apart.
+          </p>
+          <div class="why-choose-us-points">
+            <div class="why-choose-us-point">
+              <span class="material-icons">auto_graph</span>
+              <h4>Cutting-Edge AI</h4>
+              <p>
+                Leverage predictive analytics and machine learning for smarter
+                trading decisions.
+              </p>
+            </div>
+            <div class="why-choose-us-point">
+              <span class="material-icons">verified_user</span>
+              <h4>Unwavering Security</h4>
+              <p>
+                Your data and assets are protected with military-grade
+                encryption and protocols.
+              </p>
+            </div>
+            <div class="why-choose-us-point">
+              <span class="material-icons">school</span>
+              <h4>Educational Resources</h4>
+              <p>
+                Access a wealth of tutorials, webinars, and market insights to
+                sharpen your skills.
+              </p>
+            </div>
+            <div class="why-choose-us-point">
+              <span class="material-icons">forum</span>
+              <h4>Vibrant Community</h4>
+              <p>
+                Connect with fellow traders, share strategies, and grow together
+                in a supportive environment.
+              </p>
+            </div>
+          </div>
+          <button class="why-choose-us-button" style="margin-top: 3rem">
+            Explore All Benefits
+          </button>
+        </div>
+      </section>
+
+      <section class="testimonials fade-in-section" id="testimonials">
+        <div class="container">
+          <h2 class="section-title">What Our Traders Say</h2>
+          <p class="section-subtitle">
+            Hear directly from our community about how TradeBuddy has
+            transformed their trading experience.
+          </p>
+          <div class="testimonial-grid">
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                "TradeBuddy's analytics are a game-changer! I've never felt this
+                confident in my trading decisions before. The insights are
+                unparalleled."
+              </p>
+              <div class="testimonial-author">
+                <img
+                  src="https://placehold.co/60/bb86fc/ffffff?text=JD"
+                  alt="John Doe"
+                  class="author-avatar"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                />
+                <div class="author-info">
+                  <strong>John Doe</strong>
+                  <span>Experienced Trader</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                "The 24/7 support is incredible. Whenever I had a question,
+                their team was there to help, making my journey so much
+                smoother. Highly recommend!"
+              </p>
+              <div class="testimonial-author">
+                <img
+                  src="https://placehold.co/60/bb86fc/ffffff?text=AS"
+                  alt="Alice Smith"
+                  class="author-avatar"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                />
+                <div class="author-info">
+                  <strong>Alice Smith</strong>
+                  <span>New Investor</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <p class="testimonial-quote">
+                "Security is my top priority, and TradeBuddy delivers. I feel
+                completely safe with my investments here. A truly reliable
+                platform."
+              </p>
+              <div class="testimonial-author">
+                <img
+                  src="https://placehold.co/60/bb86fc/ffffff?text=MB"
+                  alt="Michael Brown"
+                  class="author-avatar"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                />
+                <div class="author-info">
+                  <strong>Michael Brown</strong>
+                  <span>Portfolio Manager</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEW: FAQ Section -->
+      <section class="faq-section fade-in-section" id="faq">
+        <div class="container">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">
+            Find quick answers to the most common questions about TradeBuddy.
+          </p>
+          <div class="faq-container">
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                What is TradeBuddy?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  TradeBuddy is an AI-powered platform designed to empower your
+                  trading decisions with advanced analytics, secure trading, and
+                  24/7 support.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                How does the AI assist my trading?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Our AI leverages predictive analytics and machine learning to
+                  analyze market trends, provide insights, and help you develop
+                  smarter trading strategies.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                Is my data secure with TradeBuddy?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Absolutely. We prioritize your security with industry-leading
+                  encryption, multi-factor authentication, and robust protocols
+                  to protect your data and assets.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                What kind of support can I expect?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  We offer 24/7 support from our expert team, ready to assist
+                  you with any questions or issues to ensure a smooth trading
+                  experience.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section fade-in-section">
+        <div class="container cta-content">
+          <h2 class="cta-title">Ready to Elevate Your Trading?</h2>
+          <p class="cta-desc">
+            Join thousands of successful traders who trust TradeBuddy for their
+            market insights and secure transactions. Start your free trial
+            today!
+          </p>
+          <button class="cta-button" id="ctaFreeTrialBtn">
+            Start Your Free Trial Now
+          </button>
+        </div>
+      </section>
+    </main>
+    <footer class="fade-in-section">
+      &copy; 2024 TradeBuddy. All rights reserved. | Built with precision and
+      care.
+    </footer>
+
+    <!-- The Modal for Login/Signup -->
+    <div
+      id="authModal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-content">
+        <button class="close-modal-btn" aria-label="Close dialog">
+          &times;
+        </button>
+        <h2 class="modal-title" id="modal-title">Welcome to TradeBuddy</h2>
+       <div id="formMessage" class="form-message"></div>
+
+        <!-- Placeholder for 3D Animation -->
+        
+
+        <div class="form-wrapper">
+          <!-- Login Section -->
+          <div id="loginSection" class="modal-form-container login-section">
+            <h3>Login to your account</h3>
+            <form id="loginForm">
+              <label for="loginEmail" class="sr-only">Email</label>
+              <input
+                type="email"
+                id="loginEmail"
+                name="loginEmail"
+                placeholder="Email"
+                required
+                autocomplete="email"
+              />
+              <label for="loginPassword" class="sr-only">Password</label>
+              <input
+                type="password"
+                id="loginPassword"
+                name="loginPassword"
+                placeholder="Password"
+                required
+                autocomplete="current-password"
+              />
+              <div class="form-options">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+              </div>
+              <button type="submit">Login</button>
+            </form>
+            <p class="form-toggle-text">
+              Don't have an account?
+              <a id="showSignup" role="button" tabindex="0">Sign Up</a>
+            </p>
+          </div>
+
+          <!-- Signup Section -->
+          <div id="signupSection" class="modal-form-container signup-section">
+            <h3>Create a new account</h3>
+            <form id="signupForm">
+              <label for="signupUsername" class="sr-only">Username</label>
+              <input
+                type="text"
+                id="signupUsername"
+                name="signupUsername"
+                placeholder="Username"
+                required
+                autocomplete="username"
+              />
+              <label for="signupEmail" class="sr-only">Email</label>
+              <input
+                type="email"
+                id="signupEmail"
+                name="signupEmail"
+                placeholder="Email"
+                required
+                autocomplete="email"
+              />
+              <label for="signupPassword" class="sr-only">Password</label>
+              <input
+                type="password"
+                id="signupPassword"
+                name="signupPassword"
+                placeholder="Password"
+                required
+                autocomplete="new-password"
+              />
+              <label for="signupConfirmPassword" class="sr-only"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                id="signupConfirmPassword"
+                name="signupConfirmPassword"
+                placeholder="Confirm Password"
+                required
+                autocomplete="new-password"
+              />
+              <button type="submit">Sign Up</button>
+            </form>
+            <p class="form-toggle-text">
+              Already have an account?
+              <a id="showLogin" role="button" tabindex="0">Login</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Defer non-critical JavaScript -->
+    <script defer>
+      // Utility function to select elements
+      const select = (selector) => document.querySelector(selector);
+      const selectAll = (selector) => document.querySelectorAll(selector);
+
+      // --- Global Initializations ---
+      window.addEventListener("load", () => {
+        window.scrollTo(0, 0); // Scroll to top on page load
+        initializeHeaderBlur();
+        initializeMobileNav();
+        initializeFadeInSections();
+        initializeAuthModal();
+        initializeFaqAccordion(); // NEW: Initialize FAQ accordion
+      });
+
+      // --- Header Blur Effect ---
+      function initializeHeaderBlur() {
+        const headerInner = select("#mainHeader");
+        if (!headerInner) return;
+
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 1) {
+            headerInner.classList.add("blur");
+          } else {
+            headerInner.classList.remove("blur");
+          }
+        });
+      }
+
+      // --- Mobile Navigation Logic ---
+      function initializeMobileNav() {
+        const toggleBtn = select(".mobile-toggle");
+        const mobileNav = select("#mobileNavPanel");
+        const overlay = select("#mobileNavOverlay");
+        const closeBtn = select(".close-btn");
+        const mobileDropdownToggle = select(".dropdown-toggle-mobile");
+        const mobileDropdownContent = select(".dropdown-content-mobile");
+
+        if (!toggleBtn || !mobileNav || !overlay || !closeBtn) return;
+
+        const openMobileMenu = () => {
+          mobileNav.classList.add("active");
+          overlay.classList.add("active");
+          toggleBtn.setAttribute("aria-expanded", "true");
+          document.body.style.overflow = "hidden"; // Prevent scrolling behind modal
+        };
+
+        const closeMobileMenu = () => {
+          mobileNav.classList.remove("active");
+          overlay.classList.remove("active");
+          toggleBtn.setAttribute("aria-expanded", "false");
+          document.body.style.overflow = ""; // Restore scrolling
+          // Ensure mobile dropdown is closed when nav closes
+          if (mobileDropdownContent && mobileDropdownContent.classList.contains('active')) {
+            mobileDropdownContent.classList.remove('active');
+            mobileDropdownToggle.classList.remove('active');
+          }
+        };
+
+        toggleBtn.addEventListener("click", openMobileMenu);
+        closeBtn.addEventListener("click", closeMobileMenu);
+        overlay.addEventListener("click", closeMobileMenu);
+
+        // Close on ESC key
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && mobileNav.classList.contains("active")) {
+            closeMobileMenu();
+          }
+        });
+
+        // Mobile Dropdown Toggle
+        if (mobileDropdownToggle && mobileDropdownContent) {
+          mobileDropdownToggle.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            mobileDropdownContent.classList.toggle("active");
+            mobileDropdownToggle.classList.toggle("active"); // For arrow rotation
+          });
+        }
+
+        // Close mobile nav when a link inside it is clicked
+        selectAll('.mobile-nav-panel a').forEach(link => {
+            // Exclude the dropdown toggle itself from closing the menu immediately
+            if (link !== mobileDropdownToggle) {
+                link.addEventListener('click', closeMobileMenu);
+            }
+        });
+      }
+
+      // --- Scroll-in Animation ---
+      function initializeFadeInSections() {
+        const fadeInSections = selectAll(".fade-in-section");
+        if (fadeInSections.length === 0) return;
+
+        const observerOptions = {
+          root: null, // Use the viewport as the root
+          rootMargin: "0px 0px -10% 0px", // Trigger when 10% of the element is visible from the bottom
+          threshold: 0.1, // Trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target); // Stop observing once it's visible
+            }
+          });
+        }, observerOptions);
+
+        fadeInSections.forEach((section) => {
+          observer.observe(section);
+        });
+      }
+
+      // --- Modal Logic for Login/Signup ---
+      function initializeAuthModal() {
+        const authModal = select("#authModal");
+        const closeModalBtn = select(".close-modal-btn");
+        const startFreeTrialBtn = select("#startFreeTrialBtn");
+        const loginSignupBtn = select("#loginSignupBtn");
+        const mobileLoginSignupBtn = select("#mobileLoginSignupBtn");
+        const ctaFreeTrialBtn = select("#ctaFreeTrialBtn");
+
+        const loginSection = select("#loginSection");
+        const signupSection = select("#signupSection");
+        const showSignupLink = select("#showSignup");
+        const showLoginLink = select("#showLogin");
+        const formWrapper = select(".form-wrapper");
+        const formMessage = select("#formMessage");
+
+        let isTransitioning = false; // Flag to prevent rapid clicks
+
+        // Function to adjust form wrapper height dynamically
+        const adjustFormWrapperHeight = (targetForm) => {
+          // Temporarily make the target form visible and untransformed to get its true height
+          const originalStyles = {
+            transform: targetForm.style.transform,
+            opacity: targetForm.style.opacity,
+            visibility: targetForm.style.visibility,
+            position: targetForm.style.position,
+            zIndex: targetForm.style.zIndex,
+          };
+
+          targetForm.style.position = "relative"; // Temporarily make it relative for height calculation
+          targetForm.style.opacity = "1";
+          targetForm.style.transform = "translateX(0)";
+          targetForm.style.visibility = "visible";
+          targetForm.style.zIndex = "auto";
+
+          const height = targetForm.scrollHeight + "px";
+          formWrapper.style.height = height;
+
+          // Revert styles after getting height
+          Object.assign(targetForm.style, originalStyles);
+        };
+
+        // Function to show messages
+        const showFormMessage = (message, type = "error") => {
+          formMessage.textContent = message;
+          formMessage.className = `form-message ${type}`;
+        };
+
+        // Function to hide messages
+        const hideFormMessage = () => {
+          formMessage.style.display = "none";
+          formMessage.className = "form-message";
+        };
+
+        const openAuthModal = () => {
+          if (isTransitioning) return;
+
+          authModal.classList.add("active");
+          document.body.style.overflow = "hidden";
+
+          // Reset all animation classes for both forms
+          loginSection.classList.remove(
+            "slide-out-left",
+            "slide-in-left",
+            "slide-out-right"
+          );
+          signupSection.classList.remove(
+            "slide-out-right",
+            "slide-in-right",
+            "slide-out-left"
+          );
+
+          // Activate login section by default
+          loginSection.classList.add("active");
+          signupSection.classList.remove("active");
+
+          // Set initial height for the form wrapper based on the login form
+          adjustFormWrapperHeight(loginSection);
+          hideFormMessage(); // Hide any previous messages
+        };
+
+        const closeAuthModal = () => {
+          if (isTransitioning) return;
+
+          authModal.classList.remove("active");
+          document.body.style.overflow = "";
+          formWrapper.style.height = ""; // Reset form wrapper height
+
+          // Clean up all classes on both forms
+          loginSection.classList.remove(
+            "active",
+            "slide-out-left",
+            "slide-in-left",
+            "slide-out-right"
+          );
+          signupSection.classList.remove(
+            "active",
+            "slide-out-right",
+            "slide-in-right",
+            "slide-out-left"
+          );
+        };
+
+        // Event Listeners for opening modal
+        startFreeTrialBtn?.addEventListener("click", openAuthModal);
+        loginSignupBtn?.addEventListener("click", openAuthModal);
+        ctaFreeTrialBtn?.addEventListener("click", openAuthModal);
+        mobileLoginSignupBtn?.addEventListener("click", () => {
+          // Ensure closeMobileMenu is defined and accessible here
+          if (typeof closeMobileMenu === 'function') {
+            closeMobileMenu(); // Close mobile menu first if it's open
+          }
+          openAuthModal();
+        });
+
+        // Event Listeners for closing modal
+        closeModalBtn?.addEventListener("click", closeAuthModal);
+        authModal?.addEventListener("click", (e) => {
+          if (e.target === authModal) {
+            closeAuthModal();
+          }
+        });
+
+        // Function to handle form switching with transitions
+        const switchForm = (fromForm, toForm, slideOutClass, slideInClass) => {
+          if (isTransitioning) return;
+          isTransitioning = true;
+
+          // Adjust height for the incoming form immediately
+          adjustFormWrapperHeight(toForm);
+
+          // Prepare the outgoing form for transition
+          fromForm.classList.add(slideOutClass);
+          fromForm.classList.remove("active");
+
+          const handleOutgoingTransitionEnd = (e) => {
+            if (e.propertyName === "transform") {
+              fromForm.removeEventListener(
+                "transitionend",
+                handleOutgoingTransitionEnd
+              );
+              fromForm.classList.remove(slideOutClass);
+
+              requestAnimationFrame(() => {
+                toForm.classList.add("active", slideInClass);
+
+                const handleIncomingTransitionEnd = (e) => {
+                  if (e.propertyName === "transform") {
+                    toForm.removeEventListener(
+                      "transitionend",
+                      handleIncomingTransitionEnd
+                    );
+                    toForm.classList.remove(slideInClass);
+                    isTransitioning = false;
+                  }
+                };
+                toForm.addEventListener(
+                  "transitionend",
+                  handleIncomingTransitionEnd
+                );
+              });
+            }
+          };
+
+          fromForm.addEventListener("transitionend", handleOutgoingTransitionEnd);
+        };
+
+        showSignupLink?.addEventListener("click", (e) => {
+          e.preventDefault();
+          switchForm(
+            loginSection,
+            signupSection,
+            "slide-out-left",
+            "slide-in-right"
+          );
+        });
+
+        showLoginLink?.addEventListener("click", (e) => {
+          e.preventDefault();
+          switchForm(
+            signupSection,
+            loginSection,
+            "slide-out-right",
+            "slide-in-left"
+          );
+        });
+
+        // NEW: Basic form submission handling (client-side only)
+        const loginForm = select('#loginForm');
+        const signupForm = select('#signupForm');
+
+        loginForm?.addEventListener("submit", (e) => {
+          e.preventDefault();
+          // In a real app: send data to backend, handle response
+          showFormMessage("Login successful! Welcome back.", "success");
+          setTimeout(closeAuthModal, 1500); // Close modal after a short delay
+        });
+
+        signupForm?.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const password = select("#signupPassword").value;
+          const confirmPassword = select("#signupConfirmPassword").value;
+
+          if (password !== confirmPassword) {
+            showFormMessage("Passwords do not match!");
+            return;
+          }
+          // In a real app: send data to backend, handle response
+          showFormMessage("Signup successful! Please log in.", "success");
+          setTimeout(() => {
+            // Switch to login form after successful signup
+            showLoginLink.click();
+            hideFormMessage();
+          }, 1500);
+        });
+
+        // Handle "Forgot Password?" click
+        select(".forgot-password")?.addEventListener("click", (e) => {
+          e.preventDefault();
+          showFormMessage("Forgot Password functionality is not yet implemented.");
+        });
+      }
+
+      // --- NEW: FAQ Accordion Logic ---
+      function initializeFaqAccordion() {
+        const faqItems = selectAll(".faq-item");
+
+        faqItems.forEach((item) => {
+          const questionButton = item.querySelector(".faq-question");
+          const answerDiv = item.querySelector(".faq-answer");
+
+          if (questionButton && answerDiv) {
+            questionButton.addEventListener("click", () => {
+              const isActive = questionButton.classList.contains("active");
+
+              // Close all other open FAQ items
+              faqItems.forEach((otherItem) => {
+                const otherQuestion = otherItem.querySelector(".faq-question");
+                const otherAnswer = otherItem.querySelector(".faq-answer");
+                if (otherQuestion !== questionButton && otherQuestion.classList.contains("active")) {
+                  otherQuestion.classList.remove("active");
+                  otherQuestion.setAttribute("aria-expanded", "false");
+                  otherAnswer.classList.remove("active");
+                }
+              });
+
+              // Toggle the clicked FAQ item
+              questionButton.classList.toggle("active", !isActive);
+              questionButton.setAttribute("aria-expanded", String(!isActive));
+              answerDiv.classList.toggle("active", !isActive);
+            });
+          }
+        });
+      }
+
+     
+    </script>
+  </body>
+</html>
