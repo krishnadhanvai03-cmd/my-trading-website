@@ -68,7 +68,7 @@
         top: 0;
         z-index: 1000;
         padding: 0;
-        margin: 2%;
+        margin: auto 3%;
       }
       .header-inner {
         max-width: 81.25rem;
@@ -1198,14 +1198,11 @@
           </div>
         </nav>
         <div class="header-actions">
-          <button
-            class="btn-contact"
+          
+            <a class="btn-contact"
             id="loginSignupBtn"
-            aria-label="Login In or Sign Up"
-            
-          >
-            Login In/Sign Up
-          </button>
+            aria-label="Login or Sign Up" href="login.html">Login / Sign Up</a>
+          
         </div>
         <button
           class="mobile-toggle"
@@ -1241,7 +1238,7 @@
         </div>
         <a
           class="btn-contact"
-          style="margin-top: 24px"
+    
           href="login.html"
         >
           Login In/Sign Up
@@ -1263,13 +1260,14 @@
           tools. Analyze, strategize, and execute with confidence on one
           platform.
         </p>
-        <button
+        <a
           class="hero-button"
           id="startFreeTrialBtn"
           aria-label="Start Free Trial"
+          href="login.html"
         >
           Start Free Trial
-        </button>
+        </a>
       </section>
       <section
         class="cards container fade-in-section"
@@ -1574,110 +1572,7 @@
       care.
     </footer>
 
-    <!-- The Modal for Login/Signup -->
-    <div
-      id="authModal"
-      class="modal"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-    >
-      <div class="modal-content">
-        <button class="close-modal-btn" aria-label="Close dialog">
-          &times;
-        </button>
-        <h2 class="modal-title" id="modal-title">Welcome to TradeBuddy</h2>
-       <div id="formMessage" class="form-message"></div>
-
-        <!-- Placeholder for 3D Animation -->
-        
-
-        <div class="form-wrapper">
-          <!-- Login Section -->
-          <div id="loginSection" class="modal-form-container login-section">
-            <h3>Login to your account</h3>
-            <form id="loginForm">
-              <label for="loginEmail" class="sr-only">Email</label>
-              <input
-                type="email"
-                id="loginEmail"
-                name="loginEmail"
-                placeholder="Email"
-                required
-                autocomplete="email"
-              />
-              <label for="loginPassword" class="sr-only">Password</label>
-              <input
-                type="password"
-                id="loginPassword"
-                name="loginPassword"
-                placeholder="Password"
-                required
-                autocomplete="current-password"
-              />
-              <div class="form-options">
-                <a href="#" class="forgot-password">Forgot Password?</a>
-              </div>
-              <button type="submit">Login</button>
-            </form>
-            <p class="form-toggle-text">
-              Don't have an account?
-              <a id="showSignup" role="button" tabindex="0">Sign Up</a>
-            </p>
-          </div>
-
-          <!-- Signup Section -->
-          <div id="signupSection" class="modal-form-container signup-section">
-            <h3>Create a new account</h3>
-            <form id="signupForm">
-              <label for="signupUsername" class="sr-only">Username</label>
-              <input
-                type="text"
-                id="signupUsername"
-                name="signupUsername"
-                placeholder="Username"
-                required
-                autocomplete="username"
-              />
-              <label for="signupEmail" class="sr-only">Email</label>
-              <input
-                type="email"
-                id="signupEmail"
-                name="signupEmail"
-                placeholder="Email"
-                required
-                autocomplete="email"
-              />
-              <label for="signupPassword" class="sr-only">Password</label>
-              <input
-                type="password"
-                id="signupPassword"
-                name="signupPassword"
-                placeholder="Password"
-                required
-                autocomplete="new-password"
-              />
-              <label for="signupConfirmPassword" class="sr-only"
-                >Confirm Password</label
-              >
-              <input
-                type="password"
-                id="signupConfirmPassword"
-                name="signupConfirmPassword"
-                placeholder="Confirm Password"
-                required
-                autocomplete="new-password"
-              />
-              <button type="submit">Sign Up</button>
-            </form>
-            <p class="form-toggle-text">
-              Already have an account?
-              <a id="showLogin" role="button" tabindex="0">Login</a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+   
 
     <!-- Defer non-critical JavaScript -->
     <script defer>
