@@ -31,6 +31,31 @@
 
     <!-- Critical CSS (inlined for faster FCP) -->
     <style>
+      /* Back-to-top button */
+      .back-to-top {
+        position: fixed;
+        right: 1rem;
+        bottom: 1.25rem;
+        background: #bb86fc;
+        color: #140026;
+        border: none;
+        padding: 0.65rem 0.85rem;
+        border-radius: 999px;
+        box-shadow: 0 6px 18px rgba(155, 84, 255, 0.18);
+        cursor: pointer;
+        display: none;
+        z-index: 2000;
+        transition: transform 0.2s, opacity 0.2s;
+      }
+      .back-to-top.show {
+        display: block;
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .back-to-top:focus {
+        outline: 2px solid #fff;
+      }
+
       /* Minified and critical CSS goes here */
       /* Reset & basics */
       * {
@@ -1586,8 +1611,9 @@
         initializeHeaderBlur();
         initializeMobileNav();
         initializeFadeInSections();
-        initializeAuthModal();
-        initializeFaqAccordion(); // NEW: Initialize FAQ accordion
+        initializeFaqAccordion();
+        initializeScrollSpy();
+        initializeBackToTop();
       });
 
       // --- Header Blur Effect ---
@@ -1604,7 +1630,7 @@
         });
       }
 
-      // --- Mobile Navigation Logic ---
+      // --- Mobile Navigation Logic (cleaned) ---
       function initializeMobileNav() {
         const toggleBtn = select(".mobile-toggle");
         const mobileNav = select("#mobileNavPanel");
@@ -1619,13 +1645,15 @@
           mobileNav.classList.add("active");
           overlay.classList.add("active");
           toggleBtn.setAttribute("aria-expanded", "true");
-          document.body.style.overflow = "hidden"; // Prevent scrolling behind modal
+          toggleBtn.classList.add('open');
+          document.body.style.overflow = "hidden"; // Prevent scrolling behind panel
         };
 
         const closeMobileMenu = () => {
           mobileNav.classList.remove("active");
           overlay.classList.remove("active");
           toggleBtn.setAttribute("aria-expanded", "false");
+          toggleBtn.classList.remove('open');
           document.body.style.overflow = ""; // Restore scrolling
           // Ensure mobile dropdown is closed when nav closes
           if (mobileDropdownContent && mobileDropdownContent.classList.contains('active')) {
@@ -1634,7 +1662,12 @@
           }
         };
 
-        toggleBtn.addEventListener("click", openMobileMenu);
+        // Expose closeMobileMenu to global scope for other handlers
+        window.closeMobileMenu = closeMobileMenu;
+
+        toggleBtn.addEventListener("click", () => {
+          if (mobileNav.classList.contains('active')) closeMobileMenu(); else openMobileMenu();
+        });
         closeBtn.addEventListener("click", closeMobileMenu);
         overlay.addEventListener("click", closeMobileMenu);
 
@@ -1654,12 +1687,11 @@
           });
         }
 
-        // Close mobile nav when a link inside it is clicked
+        // Close mobile nav when a link inside it is clicked (except dropdown toggle)
         selectAll('.mobile-nav-panel a').forEach(link => {
-            // Exclude the dropdown toggle itself from closing the menu immediately
-            if (link !== mobileDropdownToggle) {
-                link.addEventListener('click', closeMobileMenu);
-            }
+          if (link !== mobileDropdownToggle) {
+            link.addEventListener('click', closeMobileMenu);
+          }
         });
       }
 
@@ -1669,249 +1701,73 @@
         if (fadeInSections.length === 0) return;
 
         const observerOptions = {
-          root: null, // Use the viewport as the root
-          rootMargin: "0px 0px -10% 0px", // Trigger when 10% of the element is visible from the bottom
-          threshold: 0.1, // Trigger when 10% of the element is visible
+          root: null,
+          rootMargin: "0px 0px -10% 0px",
+          threshold: 0.1,
         };
 
         const observer = new IntersectionObserver((entries, observer) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target); // Stop observing once it's visible
+              observer.unobserve(entry.target);
             }
           });
         }, observerOptions);
 
-        fadeInSections.forEach((section) => {
-          observer.observe(section);
-        });
+        fadeInSections.forEach((section) => observer.observe(section));
       }
 
-      // --- Modal Logic for Login/Signup ---
-      function initializeAuthModal() {
-        const authModal = select("#authModal");
-        const closeModalBtn = select(".close-modal-btn");
-        const startFreeTrialBtn = select("#startFreeTrialBtn");
-        const loginSignupBtn = select("#loginSignupBtn");
-        const mobileLoginSignupBtn = select("#mobileLoginSignupBtn");
-        const ctaFreeTrialBtn = select("#ctaFreeTrialBtn");
-
-        const loginSection = select("#loginSection");
-        const signupSection = select("#signupSection");
-        const showSignupLink = select("#showSignup");
-        const showLoginLink = select("#showLogin");
-        const formWrapper = select(".form-wrapper");
-        const formMessage = select("#formMessage");
-
-        let isTransitioning = false; // Flag to prevent rapid clicks
-
-        // Function to adjust form wrapper height dynamically
-        const adjustFormWrapperHeight = (targetForm) => {
-          // Temporarily make the target form visible and untransformed to get its true height
-          const originalStyles = {
-            transform: targetForm.style.transform,
-            opacity: targetForm.style.opacity,
-            visibility: targetForm.style.visibility,
-            position: targetForm.style.position,
-            zIndex: targetForm.style.zIndex,
-          };
-
-          targetForm.style.position = "relative"; // Temporarily make it relative for height calculation
-          targetForm.style.opacity = "1";
-          targetForm.style.transform = "translateX(0)";
-          targetForm.style.visibility = "visible";
-          targetForm.style.zIndex = "auto";
-
-          const height = targetForm.scrollHeight + "px";
-          formWrapper.style.height = height;
-
-          // Revert styles after getting height
-          Object.assign(targetForm.style, originalStyles);
-        };
-
-        // Function to show messages
-        const showFormMessage = (message, type = "error") => {
-          formMessage.textContent = message;
-          formMessage.className = `form-message ${type}`;
-        };
-
-        // Function to hide messages
-        const hideFormMessage = () => {
-          formMessage.style.display = "none";
-          formMessage.className = "form-message";
-        };
-
-        const openAuthModal = () => {
-          if (isTransitioning) return;
-
-          authModal.classList.add("active");
-          document.body.style.overflow = "hidden";
-
-          // Reset all animation classes for both forms
-          loginSection.classList.remove(
-            "slide-out-left",
-            "slide-in-left",
-            "slide-out-right"
-          );
-          signupSection.classList.remove(
-            "slide-out-right",
-            "slide-in-right",
-            "slide-out-left"
-          );
-
-          // Activate login section by default
-          loginSection.classList.add("active");
-          signupSection.classList.remove("active");
-
-          // Set initial height for the form wrapper based on the login form
-          adjustFormWrapperHeight(loginSection);
-          hideFormMessage(); // Hide any previous messages
-        };
-
-        const closeAuthModal = () => {
-          if (isTransitioning) return;
-
-          authModal.classList.remove("active");
-          document.body.style.overflow = "";
-          formWrapper.style.height = ""; // Reset form wrapper height
-
-          // Clean up all classes on both forms
-          loginSection.classList.remove(
-            "active",
-            "slide-out-left",
-            "slide-in-left",
-            "slide-out-right"
-          );
-          signupSection.classList.remove(
-            "active",
-            "slide-out-right",
-            "slide-in-right",
-            "slide-out-left"
-          );
-        };
-
-        // Event Listeners for opening modal
-        startFreeTrialBtn?.addEventListener("click", openAuthModal);
-        loginSignupBtn?.addEventListener("click", openAuthModal);
-        ctaFreeTrialBtn?.addEventListener("click", openAuthModal);
-        mobileLoginSignupBtn?.addEventListener("click", () => {
-          // Ensure closeMobileMenu is defined and accessible here
-          if (typeof closeMobileMenu === 'function') {
-            closeMobileMenu(); // Close mobile menu first if it's open
-          }
-          openAuthModal();
-        });
-
-        // Event Listeners for closing modal
-        closeModalBtn?.addEventListener("click", closeAuthModal);
-        authModal?.addEventListener("click", (e) => {
-          if (e.target === authModal) {
-            closeAuthModal();
+      // --- Smooth scroll and ScrollSpy ---
+      function initializeScrollSpy() {
+        const navLinks = selectAll('nav.desktop-nav a');
+        const sections = [];
+        navLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            const section = document.querySelector(href);
+            if (section) sections.push({link, section});
+            // Smooth scroll on click
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              document.querySelector(href).scrollIntoView({behavior: 'smooth', block: 'start'});
+            });
           }
         });
 
-        // Function to handle form switching with transitions
-        const switchForm = (fromForm, toForm, slideOutClass, slideInClass) => {
-          if (isTransitioning) return;
-          isTransitioning = true;
-
-          // Adjust height for the incoming form immediately
-          adjustFormWrapperHeight(toForm);
-
-          // Prepare the outgoing form for transition
-          fromForm.classList.add(slideOutClass);
-          fromForm.classList.remove("active");
-
-          const handleOutgoingTransitionEnd = (e) => {
-            if (e.propertyName === "transform") {
-              fromForm.removeEventListener(
-                "transitionend",
-                handleOutgoingTransitionEnd
-              );
-              fromForm.classList.remove(slideOutClass);
-
-              requestAnimationFrame(() => {
-                toForm.classList.add("active", slideInClass);
-
-                const handleIncomingTransitionEnd = (e) => {
-                  if (e.propertyName === "transform") {
-                    toForm.removeEventListener(
-                      "transitionend",
-                      handleIncomingTransitionEnd
-                    );
-                    toForm.classList.remove(slideInClass);
-                    isTransitioning = false;
-                  }
-                };
-                toForm.addEventListener(
-                  "transitionend",
-                  handleIncomingTransitionEnd
-                );
-              });
+        // Update active link on scroll
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const item = sections.find(s => s.section === entry.target);
+            if (!item) return;
+            if (entry.isIntersecting) {
+              navLinks.forEach(l => l.classList.remove('active'));
+              item.link.classList.add('active');
             }
-          };
+          });
+        }, {root: null, threshold: 0.45});
 
-          fromForm.addEventListener("transitionend", handleOutgoingTransitionEnd);
-        };
-
-        showSignupLink?.addEventListener("click", (e) => {
-          e.preventDefault();
-          switchForm(
-            loginSection,
-            signupSection,
-            "slide-out-left",
-            "slide-in-right"
-          );
-        });
-
-        showLoginLink?.addEventListener("click", (e) => {
-          e.preventDefault();
-          switchForm(
-            signupSection,
-            loginSection,
-            "slide-out-right",
-            "slide-in-left"
-          );
-        });
-
-        // NEW: Basic form submission handling (client-side only)
-        const loginForm = select('#loginForm');
-        const signupForm = select('#signupForm');
-
-        loginForm?.addEventListener("submit", (e) => {
-          e.preventDefault();
-          // In a real app: send data to backend, handle response
-          showFormMessage("Login successful! Welcome back.", "success");
-          setTimeout(closeAuthModal, 1500); // Close modal after a short delay
-        });
-
-        signupForm?.addEventListener("submit", (e) => {
-          e.preventDefault();
-          const password = select("#signupPassword").value;
-          const confirmPassword = select("#signupConfirmPassword").value;
-
-          if (password !== confirmPassword) {
-            showFormMessage("Passwords do not match!");
-            return;
-          }
-          // In a real app: send data to backend, handle response
-          showFormMessage("Signup successful! Please log in.", "success");
-          setTimeout(() => {
-            // Switch to login form after successful signup
-            showLoginLink.click();
-            hideFormMessage();
-          }, 1500);
-        });
-
-        // Handle "Forgot Password?" click
-        select(".forgot-password")?.addEventListener("click", (e) => {
-          e.preventDefault();
-          showFormMessage("Forgot Password functionality is not yet implemented.");
-        });
+        sections.forEach(s => observer.observe(s.section));
       }
 
-      // --- NEW: FAQ Accordion Logic ---
+      // --- Back to Top ---
+      function initializeBackToTop() {
+        const btn = document.createElement('button');
+        btn.className = 'back-to-top';
+        btn.setAttribute('aria-label', 'Back to top');
+        btn.innerHTML = '↑';
+        document.body.appendChild(btn);
+
+        const toggleVisibility = () => {
+          if (window.scrollY > 400) btn.classList.add('show'); else btn.classList.remove('show');
+        };
+
+        btn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+        window.addEventListener('scroll', toggleVisibility);
+        toggleVisibility();
+      }
+
+      // --- FAQ Accordion Logic ---
       function initializeFaqAccordion() {
         const faqItems = selectAll(".faq-item");
 
@@ -1942,9 +1798,6 @@
           }
         });
       }
-
-     
     </script>
   </body>
 </html>
-
