@@ -1199,6 +1199,94 @@
         max-height: 10rem; /* Adjust based on expected content height */
         padding: 1rem 1.5rem 1.25rem;
       }
+
+      /* Search modal specific styles */
+      .search-modal .modal-content {
+        max-width: 84rem;
+        padding: 1rem 1.25rem;
+        width: 95%;
+        align-items: stretch;
+      }
+      .search-header {
+        display:flex;
+        gap:0.5rem;
+        align-items:center;
+      }
+      .search-input {
+        flex:1;
+        padding:0.75rem 1rem;
+        border-radius:0.75rem;
+        border:0.0625rem solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.03);
+        color:#fff;
+        font-size:1rem;
+      }
+      .search-clear {
+        background:transparent;
+        border:none;
+        color:#ccc;
+        padding:0.5rem;
+        cursor:pointer;
+      }
+      .chips {
+        display:flex;
+        gap:0.5rem;
+        flex-wrap:wrap;
+        margin-top:0.75rem;
+        margin-bottom:0.75rem;
+      }
+      .chip {
+        padding:0.35rem 0.75rem;
+        border-radius:999px;
+        background: rgba(255,255,255,0.04);
+        color:#ddd;
+        font-weight:600;
+        cursor:pointer;
+        border: 0.0625rem solid rgba(255,255,255,0.03);
+      }
+      .chip.active {
+        background: linear-gradient(90deg,#bb86fc,#9f70ff);
+        color:#140026;
+      }
+      .results {
+        margin-top:0.75rem;
+        max-height:40vh;
+        overflow:auto;
+        padding-right:0.5rem;
+      }
+      .result-item {
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:0.75rem 0.5rem;
+        border-bottom:0.0625rem solid rgba(255,255,255,0.03);
+        color:#eee;
+      }
+      .result-meta {
+        color:#cfc7e8;
+        font-size:0.9rem;
+      }
+      .no-results {
+        color:#c9c7e9;
+        padding:1rem 0.5rem;
+        text-align:center;
+      }
+      .search-loading {
+        display:flex;
+        align-items:center;
+        gap:0.5rem;
+        color:#cfc7e8;
+        padding:0.75rem 0.5rem;
+      }
+      .spinner {
+        width:16px;
+        height:16px;
+        border-radius:50%;
+        border:2px solid rgba(255,255,255,0.12);
+        border-top-color:#bb86fc;
+        animation: spin 0.9s linear infinite;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
   <body>
@@ -1270,6 +1358,19 @@
         </a>
       </div>
       <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <!-- Search Modal (opens when href="#search" clicked) -->
+    <div class="modal" id="searchModal" aria-hidden="true" role="dialog" aria-label="Search">
+      <div class="modal-content search-modal" role="document">
+        <button class="close-modal-btn" id="closeSearchModal" aria-label="Close search">&times;</button>
+        <div class="search-header">
+          <input id="searchInput" class="search-input" type="search" placeholder="Symbol, name, ISIN or CUSIP" aria-label="Search symbols" />
+          <button id="clearSearch" class="search-clear" aria-label="Clear search">Clear</button>
+        </div>
+        <div class="chips" id="searchChips" role="tablist" aria-label="Search categories"></div>
+        <div id="searchStatus" aria-live="polite" style="min-height:1.5rem;"></div>
+        <div class="results" id="searchResults" role="list"></div>
+      </div>
+    </div>
     </header>
     <main>
       <section
@@ -1597,7 +1698,7 @@
       care.
     </footer>
 
-   
+
 
     <!-- Defer non-critical JavaScript -->
     <script defer>
@@ -1607,14 +1708,15 @@
 
       // --- Global Initializations ---
       window.addEventListener("load", () => {
-        window.scrollTo(0, 0); // Scroll to top on page load
-        initializeHeaderBlur();
-        initializeMobileNav();
-        initializeFadeInSections();
-        initializeFaqAccordion();
-        initializeScrollSpy();
-        initializeBackToTop();
-      });
+         window.scrollTo(0, 0); // Scroll to top on page load
+         initializeHeaderBlur();
+         initializeMobileNav();
+         initializeFadeInSections();
+         initializeFaqAccordion();
+         initializeScrollSpy();
+         initializeBackToTop();
+         initializeSearchModal(); // initialize search modal (async + debounced)
+       });
 
       // --- Header Blur Effect ---
       function initializeHeaderBlur() {
@@ -1770,7 +1872,7 @@
       // --- FAQ Accordion Logic ---
       function initializeFaqAccordion() {
         const faqItems = selectAll(".faq-item");
-
+ 
         faqItems.forEach((item) => {
           const questionButton = item.querySelector(".faq-question");
           const answerDiv = item.querySelector(".faq-answer");
@@ -1797,6 +1899,183 @@
             });
           }
         });
+      }
+
+      // --- Search Modal: async loading + debounced queries + abort previous ---
+      function initializeSearchModal() {
+        const modal = select('#searchModal');
+        const input = select('#searchInput');
+        const clearBtn = select('#clearSearch');
+        const closeBtn = select('#closeSearchModal');
+        const chipsContainer = select('#searchChips');
+        const resultsContainer = select('#searchResults');
+        const status = select('#searchStatus');
+
+        if (!modal || !input || !chipsContainer || !resultsContainer) return;
+
+        // Replace this with your real symbols endpoint. Expect JSON array of objects:
+        // [{ symbol:'RELIANCE', name:'Reliance Industries', type:'Stocks', exchange:'NSE', country:'IN' }, ...]
+        const SYMBOLS_API = 'https://api.example.com/symbols'; // <-- update to your real API
+        const CATEGORIES = ['All','Stocks','Funds','Futures','ETF','Indices','Options'];
+        let activeCategory = 'All';
+        let debounceTimer = null;
+        let currentController = null; // AbortController for in-flight request
+
+        function debounce(fn, wait=300) {
+          return (...args) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => fn(...args), wait);
+          };
+        }
+
+        function setStatus(text, loading=false) {
+          status.innerHTML = loading ? `<div class="search-loading"><div class="spinner" aria-hidden="true"></div>${text}</div>` : `<div style="color:#cfc7e8">${text}</div>`;
+        }
+
+        function renderChips() {
+          chipsContainer.innerHTML = '';
+          CATEGORIES.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'chip' + (cat === activeCategory ? ' active' : '');
+            btn.type = 'button';
+            btn.textContent = cat;
+            btn.addEventListener('click', () => {
+              activeCategory = cat;
+              renderChips();
+              triggerSearch();
+              input.focus();
+            });
+            chipsContainer.appendChild(btn);
+          });
+        }
+
+        function renderResults(items) {
+          resultsContainer.innerHTML = '';
+          if (!items || items.length === 0) {
+            resultsContainer.innerHTML = '<div class="no-results">No matching Indian results</div>';
+            return;
+          }
+          items.forEach(it => {
+            const row = document.createElement('div');
+            row.className = 'result-item';
+            row.setAttribute('role','listitem');
+            row.innerHTML = `<div>
+              <strong>${it.symbol}</strong><div style="font-size:0.95rem;color:#cfc7e8">${it.name}</div>
+            </div>
+            <div class="result-meta">${it.type} • ${it.exchange || ''}</div>`;
+            row.addEventListener('click', () => {
+              closeSearch();
+              // TODO: replace with your navigation / selection handler
+              console.log('Selected', it);
+            });
+            resultsContainer.appendChild(row);
+          });
+        }
+
+        async function fetchSymbols(query) {
+          // abort previous request
+          if (currentController) currentController.abort();
+          currentController = new AbortController();
+          const signal = currentController.signal;
+
+          // Build query params: q, limit etc. Adjust according to your API spec.
+          const params = new URLSearchParams();
+          if (query) params.set('q', query);
+          params.set('limit', '50'); // adjust as needed
+
+          try {
+            setStatus('Searching...', true);
+            const url = `${SYMBOLS_API}?${params.toString()}`;
+            const resp = await fetch(url, { signal, headers: { Accept: 'application/json' } });
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const data = await resp.json();
+            // Expect data to be array; normalize defensively
+            const arr = Array.isArray(data) ? data : (data.items || []);
+            return arr;
+          } catch (err) {
+            if (err.name === 'AbortError') {
+              // request was cancelled; ignore
+              return null;
+            }
+            console.error('Symbols fetch error', err);
+            setStatus('Search failed. Try again.', false);
+            return null;
+          } finally {
+            // leave status to results rendering for clarity
+          }
+        }
+
+        async function performSearch() {
+          const q = input.value.trim();
+          // Call API
+          const items = await fetchSymbols(q);
+          if (items === null) return; // aborted or error handled
+
+          // Filter to Indian results only (adjust field names if needed)
+          const indian = items.filter(it => {
+            const exchange = (it.exchange || '').toUpperCase();
+            const country = (it.country || '').toUpperCase();
+            const isIndian = exchange === 'NSE' || country === 'IN' || exchange === 'BSE' || false;
+            const matchesCategory = activeCategory === 'All' || (it.type && it.type.toLowerCase() === activeCategory.toLowerCase());
+            return isIndian && matchesCategory;
+          });
+
+          if (indian.length === 0) {
+            setStatus('No matching Indian results', false);
+          } else {
+            setStatus(`${indian.length} results`, false);
+          }
+          renderResults(indian);
+        }
+
+        const triggerSearch = debounce(() => performSearch(), 350);
+
+        function openSearch() {
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden','false');
+          document.body.style.overflow = 'hidden';
+          input.value = '';
+          activeCategory = 'All';
+          renderChips();
+          resultsContainer.innerHTML = '';
+          setStatus('Start typing to search Indian symbols', false);
+          setTimeout(() => input.focus(), 120);
+        }
+
+        function closeSearch() {
+          modal.classList.remove('active');
+          modal.setAttribute('aria-hidden','true');
+          document.body.style.overflow = '';
+          // cancel any inflight request
+          if (currentController) currentController.abort();
+        }
+
+        // wire desktop/mobile "Search" links (they use href="#search")
+        selectAll('a[href="#search"]').forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            openSearch();
+          });
+        });
+
+        // close handlers
+        closeBtn && closeBtn.addEventListener('click', closeSearch);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeSearch();
+        });
+        window.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) closeSearch();
+        });
+
+        // input & clear
+        input.addEventListener('input', () => {
+          setStatus('Typing...', true);
+          triggerSearch();
+        });
+        clearBtn.addEventListener('click', () => { input.value = ''; triggerSearch(); input.focus(); });
+
+        // initial chip render
+        renderChips();
       }
     </script>
   </body>
