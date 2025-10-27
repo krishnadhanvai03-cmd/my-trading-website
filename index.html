@@ -1206,6 +1206,13 @@
         padding: 1rem 1.25rem;
         width: 95%;
         align-items: stretch;
+        /* keep overall header centered but force search results left aligned below */
+      }
+      /* Force results and result items to be left-aligned (overrides modal center) */
+      .search-modal .results,
+      .search-modal .result-item,
+      .search-modal .no-results {
+        text-align: left;
       }
       .search-header {
         display:flex;
@@ -1253,7 +1260,29 @@
         max-height:40vh;
         overflow:auto;
         padding-right:0.5rem;
+        /* make scrollbar thin & translucent across browsers */
+        scrollbar-width: thin; /* Firefox */
+        scrollbar-color: rgba(255,255,255,0.08) transparent; /* Firefox */
       }
+
+      /* WebKit (Chrome, Edge, Safari) transparent/thin scrollbar for the search results */
+      .results::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .results::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .results::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.06);
+        border-radius: 8px;
+        border: 2px solid transparent; /* preserve space so thumb doesn't overlap content */
+        background-clip: padding-box;
+      }
+      .results::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.10);
+      }
+
       .result-item {
         display:flex;
         justify-content:space-between;
@@ -1261,127 +1290,17 @@
         padding:0.75rem 0.5rem;
         border-bottom:0.0625rem solid rgba(255,255,255,0.03);
         color:#eee;
-      }
-      .result-meta {
-        color:#cfc7e8;
-        font-size:0.9rem;
+        text-align: left; /* ensure left alignment for symbol rows */
       }
       .no-results {
         color:#c9c7e9;
         padding:1rem 0.5rem;
-        text-align:center;
+        text-align:left; /* single left-aligned message inside results area */
       }
-      .search-loading {
-        display:flex;
-        align-items:center;
-        gap:0.5rem;
-        color:#cfc7e8;
-        padding:0.75rem 0.5rem;
-      }
-      .spinner {
-        width:16px;
-        height:16px;
-        border-radius:50%;
-        border:2px solid rgba(255,255,255,0.12);
-        border-top-color:#bb86fc;
-        animation: spin 0.9s linear infinite;
-      }
-      @keyframes spin { to { transform: rotate(360deg); } }
+      /* --- END OF CRITICAL CSS --- */
 
-      /* Mobile-specific search modal layout (matches pasted mobile screenshot) */
-      @media (max-width: 600px) {
-        /* keep overlay but align modal to top */
-        .modal {
-          align-items: flex-start;
-          padding-top: 0.5rem;
-        }
-
-        /* make search modal full-width-ish and top-anchored */
-        .search-modal .modal-content {
-          position: fixed;
-          top: 0.5rem;
-          left: 0.5rem;
-          right: 0.5rem;
-          width: calc(100% - 1rem);
-          max-width: none;
-          border-radius: 0.75rem;
-          padding: 0.5rem;
-          box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.6);
-          max-height: calc(100vh - 1rem);
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-          z-index: 2500;
-          background: linear-gradient(180deg, rgba(20,0,38,0.95), rgba(28,6,55,0.95));
-        }
-
-        /* compact header row */
-        .search-header {
-          display: flex;
-          gap: 0.4rem;
-          align-items: center;
-        }
-        .search-input {
-          flex: 1;
-          padding: 0.56rem 0.75rem;
-          border-radius: 999px;
-          font-size: 1rem;
-          background: rgba(255,255,255,0.03);
-        }
-        .search-clear {
-          padding: 0.45rem 0.6rem;
-          font-size: 0.9rem;
-        }
-
-        /* move close button inside top-right but smaller */
-        .close-modal-btn {
-          position: absolute;
-          top: 0.45rem;
-          right: 0.6rem;
-          font-size: 1.25rem;
-          background: transparent;
-          color: #ddd;
-          border-radius: 6px;
-          padding: 0.15rem 0.35rem;
-        }
-
-        /* chips become horizontally scrollable pills under input */
-        .chips {
-          gap: 0.4rem;
-          overflow-x: auto;
-          padding-bottom: 0.25rem;
-          -webkit-overflow-scrolling: touch;
-        }
-        .chip {
-          flex: 0 0 auto;
-          white-space: nowrap;
-          padding: 0.35rem 0.75rem;
-          font-size: 0.92rem;
-        }
-
-        /* Results: take remaining height and be scrollable */
-        .results {
-          margin-top: 0.25rem;
-          max-height: calc(100vh - 6.5rem);
-          overflow: auto;
-          -webkit-overflow-scrolling: touch;
-          padding-right: 0.5rem;
-          border-radius: 0.5rem;
-          background: transparent;
-        }
-
-        .result-item {
-          padding: 0.6rem 0.5rem;
-        }
-
-        /* small status / loading message area */
-        #searchStatus { font-size: 0.95rem; color: #cfc7e8; padding-left: 0.25rem; }
-
-        /* ensure modal overlay clickable area remains but visually compact */
-        .modal.active {
-          align-items: flex-start;
-        }
-      }
+      /* General styles */
+      /* ...existing styles... */
     </style>
   </head>
   <body>
@@ -1998,7 +1917,7 @@
 
       // --- Search Modal: async loading + debounced queries + abort previous ---
       function initializeSearchModal() {
-        const modal = select('#searchModal');
+               const modal = select('#searchModal');
         const input = select('#searchInput');
         const clearBtn = select('#clearSearch');
         const closeBtn = select('#closeSearchModal');
@@ -2008,13 +1927,28 @@
 
         if (!modal || !input || !chipsContainer || !resultsContainer) return;
 
-        // Replace this with your real symbols endpoint. Expect JSON array of objects:
-        // [{ symbol:'RELIANCE', name:'Reliance Industries', type:'Stocks', exchange:'NSE', country:'IN' }, ...]
-        const SYMBOLS_API = 'https://api.example.com/symbols'; // <-- update to your real API
+        // Try backend search endpoint first (development): /api/search/search?q=...
+        const BACKEND_SEARCH = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+          ? 'http://localhost:5000/api/search/search'
+          : '/api/search/search';
+
+        // Legacy placeholder - kept for compatibility
+        const SYMBOLS_API_PLACEHOLDER = 'https://api.example.com/symbols';
+
         const CATEGORIES = ['All','Stocks','Funds','Futures','ETF','Indices','Options'];
         let activeCategory = 'All';
         let debounceTimer = null;
         let currentController = null; // AbortController for in-flight request
+
+        // Small demo dataset used as fallback (safe, no external API)
+        const demoSymbols = [
+          { symbol: 'RELIANCE', name: 'Reliance Industries Limited', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 2500 },
+          { symbol: 'TCS', name: 'Tata Consultancy Services', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 3200 },
+          { symbol: 'INFY', name: 'Infosys Limited', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 1500 },
+          { symbol: 'HDFCBANK', name: 'HDFC Bank Limited', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 1500 },
+          { symbol: 'NIFTY50', name: 'Nifty 50', type: 'Indices', exchange: 'NSE', country: 'IN' },
+          { symbol: 'SBIETF', name: 'SBI Nifty ETF', type: 'ETF', exchange: 'NSE', country: 'IN' }
+        ];
 
         function debounce(fn, wait=300) {
           return (...args) => {
@@ -2024,6 +1958,7 @@
         }
 
         function setStatus(text, loading=false) {
+          if (!status) return;
           status.innerHTML = loading ? `<div class="search-loading"><div class="spinner" aria-hidden="true"></div>${text}</div>` : `<div style="color:#cfc7e8">${text}</div>`;
         }
 
@@ -2033,7 +1968,7 @@
             const btn = document.createElement('button');
             btn.className = 'chip' + (cat === activeCategory ? ' active' : '');
             btn.type = 'button';
-            btn.textContent = cat;
+                       btn.textContent = cat;
             btn.addEventListener('click', () => {
               activeCategory = cat;
               renderChips();
@@ -2047,17 +1982,19 @@
         function renderResults(items) {
           resultsContainer.innerHTML = '';
           if (!items || items.length === 0) {
-            resultsContainer.innerHTML = '<div class="no-results">No matching Indian results</div>';
+            resultsContainer.innerHTML = '<div class="no-results">No matching results</div>';
             return;
           }
           items.forEach(it => {
             const row = document.createElement('div');
             row.className = 'result-item';
             row.setAttribute('role','listitem');
+
             row.innerHTML = `<div>
               <strong>${it.symbol}</strong><div style="font-size:0.95rem;color:#cfc7e8">${it.name}</div>
             </div>
-            <div class="result-meta">${it.type} • ${it.exchange || ''}</div>`;
+            <div class="result-meta">${it.type || ''} • ${it.exchange || ''}</div>`;
+
             row.addEventListener('click', () => {
               closeSearch();
               // TODO: replace with your navigation / selection handler
@@ -2067,42 +2004,54 @@
           });
         }
 
+        // Core fetch function: tries backend first; falls back to demoSymbols if network/API is unavailable.
         async function fetchSymbols(query) {
           // abort previous request
           if (currentController) currentController.abort();
           currentController = new AbortController();
           const signal = currentController.signal;
 
-          // Build query params: q, limit etc. Adjust according to your API spec.
-          const params = new URLSearchParams();
-          if (query) params.set('q', query);
-          params.set('limit', '50'); // adjust as needed
+          const q = (query || '').trim();
 
+          // Build backend URL
+          const params = new URLSearchParams();
+          if (q) params.set('q', q);
+          params.set('limit', '50');
+
+          // Try backend endpoint
           try {
             setStatus('Searching...', true);
-            const url = `${SYMBOLS_API}?${params.toString()}`;
-            const resp = await fetch(url, { signal, headers: { Accept: 'application/json' } });
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const data = await resp.json();
-            // Expect data to be array; normalize defensively
-            const arr = Array.isArray(data) ? data : (data.items || []);
-            return arr;
-          } catch (err) {
-            if (err.name === 'AbortError') {
-              // request was cancelled; ignore
-              return null;
+            const backendUrl = `${BACKEND_SEARCH}?${params.toString()}`;
+            const resp = await fetch(backendUrl, { signal, headers: { Accept: 'application/json' } });
+            if (resp.ok) {
+              const data = await resp.json();
+              const arr = Array.isArray(data) ? data : (data.items || []);
+              // If backend returns something, use it
+              if (arr && arr.length > 0) return arr;
+              // if empty result from backend, still return empty array (will render "No matching")
+              return arr;
+            } else {
+              console.warn('Backend search returned non-OK status', resp.status);
+              // fallthrough to use demo below
             }
-            console.error('Symbols fetch error', err);
-            setStatus('Search failed. Try again.', false);
-            return null;
-          } finally {
-            // leave status to results rendering for clarity
+          } catch (err) {
+            if (err.name === 'AbortError') return null;
+            console.warn('Backend search failed, falling back to demo dataset', err);
+            // fallthrough to demo
           }
+
+          // Fallback: filter demoSymbols locally (fast, works offline)
+          if (!q) return demoSymbols;
+          const qLower = q.toLowerCase();
+          const matches = demoSymbols.filter(it => {
+            return (it.symbol && it.symbol.toLowerCase().includes(qLower))
+              || (it.name && it.name.toLowerCase().includes(qLower));
+          });
+          return matches;
         }
 
         async function performSearch() {
           const q = input.value.trim();
-          // Call API
           const items = await fetchSymbols(q);
           if (items === null) return; // aborted or error handled
 
@@ -2112,11 +2061,12 @@
             const country = (it.country || '').toUpperCase();
             const isIndian = exchange === 'NSE' || country === 'IN' || exchange === 'BSE' || false;
             const matchesCategory = activeCategory === 'All' || (it.type && it.type.toLowerCase() === activeCategory.toLowerCase());
-            return isIndian && matchesCategory;
+            // If backend returned items without country/exchange fields, allow them through
+            return ((it.country || it.exchange) ? (isIndian && matchesCategory) : matchesCategory);
           });
 
           if (indian.length === 0) {
-            setStatus('No matching Indian results', false);
+            setStatus('', false);
           } else {
             setStatus(`${indian.length} results`, false);
           }
