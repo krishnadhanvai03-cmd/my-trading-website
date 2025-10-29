@@ -1264,7 +1264,20 @@
         scrollbar-width: thin; /* Firefox */
         scrollbar-color: rgba(255,255,255,0.08) transparent; /* Firefox */
       }
-
+      /* live price badge */
+      .price {
+        min-width:96px;
+        text-align:right;
+        font-weight:700;
+        font-size:0.95rem;
+        color:#cfc7e8;
+      }
+      .price .value { display:block; }
+      .price .delta { font-size:0.78rem; opacity:0.9; }
+      .price.up { color:#9ef0b5; }
+      .price.down { color:#ff9b9b; }
+      /* ensure price column doesn't wrap badly on very small screens */
+      @media (max-width:420px){ .price{ min-width:72px; font-size:0.85rem } }
       /* WebKit (Chrome, Edge, Safari) transparent/thin scrollbar for the search results */
       .results::-webkit-scrollbar {
         width: 8px;
@@ -1917,7 +1930,7 @@
 
       // --- Search Modal: async loading + debounced queries + abort previous ---
       function initializeSearchModal() {
-               const modal = select('#searchModal');
+        const modal = select('#searchModal');
         const input = select('#searchInput');
         const clearBtn = select('#clearSearch');
         const closeBtn = select('#closeSearchModal');
@@ -1925,201 +1938,285 @@
         const resultsContainer = select('#searchResults');
         const status = select('#searchStatus');
 
-        if (!modal || !input || !chipsContainer || !resultsContainer) return;
+        if (!modal || !input || !chipsContainer || !resultsContainer || !status) return;
 
-        // Try backend search endpoint first (development): /api/search/search?q=...
-        const BACKEND_SEARCH = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-          ? 'http://localhost:5000/api/search/search'
-          : '/api/search/search';
-
-        // Legacy placeholder - kept for compatibility
-        const SYMBOLS_API_PLACEHOLDER = 'https://api.example.com/symbols';
-
-        const CATEGORIES = ['All','Stocks','Funds','Futures','ETF','Indices','Options'];
-        let activeCategory = 'All';
-        let debounceTimer = null;
-        let currentController = null; // AbortController for in-flight request
-
-        // Small demo dataset used as fallback (safe, no external API)
+        // Small demo dataset used as fallback / seed for simulated realtime feed
         const demoSymbols = [
-          { symbol: 'RELIANCE', name: 'Reliance Industries Limited', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 2500 },
-          { symbol: 'TCS', name: 'Tata Consultancy Services', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 3200 },
-          { symbol: 'INFY', name: 'Infosys Limited', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 1500 },
-          { symbol: 'HDFCBANK', name: 'HDFC Bank Limited', type: 'Stocks', exchange: 'NSE', country: 'IN', price: 1500 },
-          { symbol: 'NIFTY50', name: 'Nifty 50', type: 'Indices', exchange: 'NSE', country: 'IN' },
-          { symbol: 'SBIETF', name: 'SBI Nifty ETF', type: 'ETF', exchange: 'NSE', country: 'IN' }
+          { symbol:'RELIANCE', name:'Reliance Industries Ltd', type:'Stocks', exchange:'NSE', country:'IN', price:2500 },
+          { symbol:'TCS', name:'Tata Consultancy Services', type:'Stocks', exchange:'NSE', country:'IN', price:3200 },
+          { symbol:'INFY', name:'Infosys Ltd', type:'Stocks', exchange:'NSE', country:'IN', price:1500 },
+          { symbol:'HDFCBANK', name:'HDFC Bank Ltd', type:'Stocks', exchange:'NSE', country:'IN', price:1500 },
+          { symbol:'NIFTY', name:'Nifty 50 Index', type:'Indices', exchange:'NSE', country:'IN', price:22000 },
+          { symbol:'SBIETF', name:'SBI ETF Nifty 50', type:'ETF', exchange:'NSE', country:'IN', price:2000 },
+          { symbol:'MUTFUND1', name:'Sample Mutual Fund', type:'Funds', exchange:'NSE', country:'IN', price:120 },
+          { symbol:'NSEFUT', name:'NSE Futures Sample', type:'Futures', exchange:'NSE', country:'IN', price:100 },
+          { symbol:'OPTION1', name:'Sample Option', type:'Options', exchange:'NSE', country:'IN', price:5 },
+          { symbol:'BTCUSD', name:'Bitcoin / U.S. Dollar', type:'Crypto', exchange:'COINBASE', country:'', price:60000 }
         ];
 
-        function debounce(fn, wait=300) {
-          return (...args) => {
+        // categories
+        const CATEGORIES = ['All','Stocks','Funds','Futures','ETF','Indices','Options'];
+        let activeCategory = 'All';
+
+        // Abort controller placeholder for future remote fetches
+        let currentController = null;
+
+        // STATUS helper
+        function setStatus(text, loading=false){
+          status.textContent = '';
+          if (!text) return;
+          if (loading) status.innerHTML = `<span style="opacity:.9">${text}</span>`;
+          else status.textContent = text;
+        }
+
+        // basic debounce
+        let debounceTimer = null;
+        function debounce(fn, wait=250){
+          return (...args)=>{
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => fn(...args), wait);
+            debounceTimer = setTimeout(()=>fn(...args), wait);
           };
         }
 
-        function setStatus(text, loading=false) {
-          if (!status) return;
-          status.innerHTML = loading ? `<div class="search-loading"><div class="spinner" aria-hidden="true"></div>${text}</div>` : `<div style="color:#cfc7e8">${text}</div>`;
-        }
-
-        function renderChips() {
+        // render category chips
+        function renderChips(){
           chipsContainer.innerHTML = '';
-          CATEGORIES.forEach(cat => {
-            const btn = document.createElement('button');
-            btn.className = 'chip' + (cat === activeCategory ? ' active' : '');
-            btn.type = 'button';
-                       btn.textContent = cat;
-            btn.addEventListener('click', () => {
+          CATEGORIES.forEach(cat=>{
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'chip' + (cat===activeCategory ? ' active' : '');
+            b.textContent = cat;
+            b.addEventListener('click', ()=>{
               activeCategory = cat;
               renderChips();
               triggerSearch();
               input.focus();
             });
-            chipsContainer.appendChild(btn);
+            chipsContainer.appendChild(b);
           });
         }
 
-        function renderResults(items) {
+        // helper to escape selector characters for data-symbol selectors
+        function escapeSelector(s){ return String(s).replace(/(["\\.\\[\\]:,#>+~*^$|=!@])/g,'\\\\$1'); }
+
+        // render results into DOM (core renderer)
+        function renderResultsInner(items, q){
           resultsContainer.innerHTML = '';
           if (!items || items.length === 0) {
-            resultsContainer.innerHTML = '<div class="no-results">No matching results</div>';
+            resultsContainer.innerHTML = '<div class="no-results"> </div>';
             return;
           }
-          items.forEach(it => {
+          items.forEach(it=>{
             const row = document.createElement('div');
             row.className = 'result-item';
+            row.setAttribute('data-symbol', (it.symbol||'').toUpperCase());
             row.setAttribute('role','listitem');
 
-            row.innerHTML = `<div>
-              <strong>${it.symbol}</strong><div style="font-size:0.95rem;color:#cfc7e8">${it.name}</div>
+            row.innerHTML = `<div style="text-align:left">
+              <strong style="display:block">${it.symbol}</strong>
+              <div style="font-size:0.95rem;color:#cfc7e8">${it.name}</div>
             </div>
-            <div class="result-meta">${it.type || ''} • ${it.exchange || ''}</div>`;
+            <div class="result-meta" style="min-width:130px;text-align:right">${it.type || ''} • ${it.exchange || ''}</div>`;
 
-            row.addEventListener('click', () => {
+            // price placeholder (updated by realtime)
+            const priceWrap = document.createElement('div');
+            priceWrap.className = 'price';
+            priceWrap.innerHTML = `<span class="value">${(it.price?Number(it.price).toFixed(2):'--')}</span><span class="delta">${it.price?'+0.00':''}</span>`;
+            row.appendChild(priceWrap);
+
+            row.addEventListener('click', ()=>{
+              // selection behavior: fill input and close modal
+              input.value = it.symbol;
+              setStatus(`Selected: ${it.symbol}`);
               closeSearch();
-              // TODO: replace with your navigation / selection handler
-              console.log('Selected', it);
             });
+
             resultsContainer.appendChild(row);
           });
         }
 
-        // Core fetch function: tries backend first; falls back to demoSymbols if network/API is unavailable.
-        async function fetchSymbols(query) {
-          // abort previous request
-          if (currentController) currentController.abort();
-          currentController = new AbortController();
-          const signal = currentController.signal;
+        // wrap renderer to unsubscribe visible symbols before rendering new list
+        function unsubscribeAllVisible(){
+          const rows = resultsContainer.querySelectorAll('.result-item[data-symbol]');
+          rows.forEach(r=>{
+            const s = r.getAttribute('data-symbol');
+            if (s && realtime) realtime.unsubscribe(s);
+          });
+        }
+        // replace renderResults reference used elsewhere
+        let renderResults = (items, q) => {
+          renderResultsInner(items, q);
+        };
 
-          const q = (query || '').trim();
+        // local filtering (demo-only). Replace with remote fetch when backend exists.
+        function filterLocal(q){
+          const qq = (q||'').trim().toLowerCase();
+          return demoSymbols.filter(it=>{
+            // category filter
+            if (activeCategory !== 'All' && it.type && it.type.toLowerCase() !== activeCategory.toLowerCase()) return false;
+            if (!qq) return true;
+            return (it.symbol||'').toLowerCase().includes(qq) || (it.name||'').toLowerCase().includes(qq);
+          }).slice(0,100);
+        }
 
-          // Build backend URL
-          const params = new URLSearchParams();
-          if (q) params.set('q', q);
-          params.set('limit', '50');
+        // main search: for now local only; can later call backend and set currentController
+        async function performSearch(){
+          const q = input.value || '';
+          setStatus('', false);
+          // use local filter
+          const items = filterLocal(q);
+          if (!items.length) setStatus('', false);
+          else setStatus(`${items.length} results`, false);
+          // unsubscribe prior visible
+          unsubscribeAllVisible();
+          renderResults(items, q);
+          // subscribe visible to realtime
+          const rows = resultsContainer.querySelectorAll('.result-item[data-symbol]');
+          rows.forEach(r=>{
+            const s = r.getAttribute('data-symbol');
+            if (s && realtime) realtime.subscribe(s);
+          });
+        }
 
-          // Try backend endpoint
-          try {
-            setStatus('Searching...', true);
-            const backendUrl = `${BACKEND_SEARCH}?${params.toString()}`;
-            const resp = await fetch(backendUrl, { signal, headers: { Accept: 'application/json' } });
-            if (resp.ok) {
-              const data = await resp.json();
-              const arr = Array.isArray(data) ? data : (data.items || []);
-              // If backend returns something, use it
-              if (arr && arr.length > 0) return arr;
-              // if empty result from backend, still return empty array (will render "No matching")
-              return arr;
-            } else {
-              console.warn('Backend search returned non-OK status', resp.status);
-              // fallthrough to use demo below
+        const triggerSearch = debounce(performSearch, 220);
+
+        // --- Realtime client (simulation when no BACKEND_WS) ---
+        const BACKEND_WS = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'ws://localhost:8080' : '';
+        class RealtimeClient {
+          constructor(url, opts = {}){
+            this.url = url;
+            this.simulate = !url;
+            this.onMessage = opts.onMessage || function(){};
+            this.interval = null;
+            this.ws = null;
+            this.subscribers = new Set();
+            this.prices = {};
+            if (this.simulate) this._startSimulation(opts.seed || []);
+            else this._connect();
+          }
+          _connect(){
+            try{
+              this.ws = new WebSocket(this.url);
+              this.ws.addEventListener('open', ()=>console.info('WS open'));
+              this.ws.addEventListener('message', (ev)=> {
+                try{ this.onMessage(JSON.parse(ev.data)); } catch(e){ console.warn(e); }
+              });
+              this.ws.addEventListener('close', ()=> setTimeout(()=>this._connect(), 2000));
+            } catch(e){ console.warn('WS failed', e); }
+          }
+          _startSimulation(seed){
+            seed.forEach(s => this.prices[s.symbol] = (s.price || (Math.random()*1000+100)).toFixed(2));
+            this.interval = setInterval(()=>{
+              if (this.subscribers.size === 0) return;
+              const subs = Array.from(this.subscribers);
+              const count = Math.max(1, Math.min(subs.length, Math.ceil(subs.length * 0.35)));
+              for (let i=0;i<count;i++){
+                const sym = subs[Math.floor(Math.random()*subs.length)];
+                const prev = parseFloat(this.prices[sym] || (Math.random()*1000+100).toFixed(2));
+                const delta = (prev * (Math.random()*0.008 - 0.004));
+                const next = Math.max(0.01, prev + delta);
+                this.prices[sym] = next.toFixed(2);
+                const msg = { symbol: sym, price: next, change: +(next - prev).toFixed(2), pct: +(((next - prev)/prev)*100).toFixed(2), time: Date.now() };
+                this.onMessage(msg);
+              }
+            }, 900);
+          }
+          subscribe(symbol){
+            if(!symbol) return;
+            this.subscribers.add(symbol);
+            if (this.simulate && !this.prices[symbol]) this.prices[symbol] = (Math.random()*2000+50).toFixed(2);
+            if (!this.simulate && this.ws && this.ws.readyState === WebSocket.OPEN){
+              try{ this.ws.send(JSON.stringify({ action:'subscribe', symbol })); }catch(e){}
             }
-          } catch (err) {
-            if (err.name === 'AbortError') return null;
-            console.warn('Backend search failed, falling back to demo dataset', err);
-            // fallthrough to demo
           }
-
-          // Fallback: filter demoSymbols locally (fast, works offline)
-          if (!q) return demoSymbols;
-          const qLower = q.toLowerCase();
-          const matches = demoSymbols.filter(it => {
-            return (it.symbol && it.symbol.toLowerCase().includes(qLower))
-              || (it.name && it.name.toLowerCase().includes(qLower));
-          });
-          return matches;
+          unsubscribe(symbol){
+            if(!symbol) return;
+            this.subscribers.delete(symbol);
+            if (!this.simulate && this.ws && this.ws.readyState === WebSocket.OPEN){
+              try{ this.ws.send(JSON.stringify({ action:'unsubscribe', symbol })); }catch(e){}
+            }
+          }
+          close(){
+            if (this.interval) clearInterval(this.interval);
+            if (this.ws) this.ws.close();
+          }
         }
 
-        async function performSearch() {
-          const q = input.value.trim();
-          const items = await fetchSymbols(q);
-          if (items === null) return; // aborted or error handled
+        // realtime instance
+        const realtime = new RealtimeClient(BACKEND_WS || '', { onMessage: handleRealtimeMessage, seed: demoSymbols });
 
-          // Filter to Indian results only (adjust field names if needed)
-          const indian = items.filter(it => {
-            const exchange = (it.exchange || '').toUpperCase();
-            const country = (it.country || '').toUpperCase();
-            const isIndian = exchange === 'NSE' || country === 'IN' || exchange === 'BSE' || false;
-            const matchesCategory = activeCategory === 'All' || (it.type && it.type.toLowerCase() === activeCategory.toLowerCase());
-            // If backend returned items without country/exchange fields, allow them through
-            return ((it.country || it.exchange) ? (isIndian && matchesCategory) : matchesCategory);
-          });
-
-          if (indian.length === 0) {
-            setStatus('', false);
-          } else {
-            setStatus(`${indian.length} results`, false);
+        // handle incoming realtime messages: update DOM row price
+        function handleRealtimeMessage(msg){
+          if (!msg || !msg.symbol) return;
+          const sym = String(msg.symbol).toUpperCase();
+          const row = resultsContainer.querySelector(`.result-item[data-symbol="${escapeSelector(sym)}"]`);
+          if (!row) return;
+          let priceEl = row.querySelector('.price .value');
+          let deltaEl = row.querySelector('.price .delta');
+          if (!priceEl){
+            const priceWrap = document.createElement('div');
+            priceWrap.className = 'price';
+            priceWrap.innerHTML = `<span class="value"></span><span class="delta"></span>`;
+            row.appendChild(priceWrap);
+            priceEl = priceWrap.querySelector('.value');
+            deltaEl = priceWrap.querySelector('.delta');
           }
-          renderResults(indian);
+          const price = (typeof msg.price === 'number') ? msg.price.toFixed(2) : msg.price;
+          const change = (typeof msg.change === 'number') ? (msg.change > 0 ? '+' + msg.change.toFixed(2) : msg.change.toFixed(2)) : (msg.change||'');
+          const pct = (typeof msg.pct === 'number') ? ` (${msg.pct>0?'+':''}${msg.pct.toFixed(2)}%)` : '';
+          priceEl.textContent = price;
+          deltaEl.textContent = change + pct;
+          const priceWrap = row.querySelector('.price');
+          if (msg.change > 0) { priceWrap.classList.add('up'); priceWrap.classList.remove('down'); }
+          else if (msg.change < 0) { priceWrap.classList.add('down'); priceWrap.classList.remove('up'); }
+          else { priceWrap.classList.remove('down','up'); }
         }
 
-        const triggerSearch = debounce(() => performSearch(), 350);
-
-        function openSearch() {
+        // wire UI actions
+        function openSearch(){
           modal.classList.add('active');
           modal.setAttribute('aria-hidden','false');
           document.body.style.overflow = 'hidden';
           input.value = '';
           activeCategory = 'All';
           renderChips();
-          resultsContainer.innerHTML = '';
+          unsubscribeAllVisible();
+          renderResults([], '');
           setStatus('Start typing to search symbols', false);
-          setTimeout(() => input.focus(), 120);
+          setTimeout(()=>input.focus(), 120);
         }
-
-        function closeSearch() {
+        function closeSearch(){
           modal.classList.remove('active');
           modal.setAttribute('aria-hidden','true');
           document.body.style.overflow = '';
-          // cancel any inflight request
-          if (currentController) currentController.abort();
+          if (currentController) {
+            try { currentController.abort(); } catch(e) {}
+            currentController = null;
+          }
+          unsubscribeAllVisible();
+          // keep realtime running for faster re-open; call realtime.close() if you want to stop it
         }
 
-        // wire desktop/mobile "Search" links (they use href="#search")
-        selectAll('a[href="#search"]').forEach(link => {
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            openSearch();
-          });
+        // event bindings
+        // open modal when any link to #search clicked
+        selectAll('a[href="#search"]').forEach(link=>{
+          link.addEventListener('click', (e)=>{ e.preventDefault(); openSearch(); });
         });
-
-        // close handlers
         closeBtn && closeBtn.addEventListener('click', closeSearch);
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) closeSearch();
-        });
-        window.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && modal.classList.contains('active')) closeSearch();
-        });
+        modal.addEventListener('click', (e)=>{ if (e.target === modal) closeSearch(); });
+        window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && modal.classList.contains('active')) closeSearch(); });
 
-        // input & clear
-        input.addEventListener('input', () => {
+        input.addEventListener('input', ()=>{
           setStatus('Typing...', true);
           triggerSearch();
         });
-        clearBtn.addEventListener('click', () => { input.value = ''; triggerSearch(); input.focus(); });
+        clearBtn.addEventListener('click', ()=>{
+          input.value = '';
+          triggerSearch();
+          input.focus();
+        });
 
-        // initial chip render
+        // expose initial chips & results
         renderChips();
       }
     </script>
