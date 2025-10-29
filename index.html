@@ -2177,12 +2177,14 @@
           modal.classList.add('active');
           modal.setAttribute('aria-hidden','false');
           document.body.style.overflow = 'hidden';
+          // show full list when opening search (default = All)
           input.value = '';
           activeCategory = 'All';
           renderChips();
+          // perform search immediately (shows all items in "All" category)
+          // unsubscribe any previous subscriptions then render & subscribe new rows
           unsubscribeAllVisible();
-          renderResults([], '');
-          setStatus('Start typing to search symbols', false);
+          performSearch(); // immediate, not debounced — shows all results for "All"
           setTimeout(()=>input.focus(), 120);
         }
         function closeSearch(){
