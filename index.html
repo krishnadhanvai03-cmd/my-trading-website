@@ -1017,6 +1017,69 @@
         transform-origin: center;
       }
       .fade-in-section.is-visible .section-title::after { transform: translateX(-50%) scaleX(1); }
+
+      /* Disable hover effects on touch-only devices (and provide a JS toggle via .using-touch) */
+      @media (hover: none) and (pointer: coarse) {
+        .card:hover,
+        .card:focus-within,
+        .card:hover .card-icon,
+        .step-card:hover,
+        .testimonial-card:hover,
+        .why-choose-us-point:hover,
+        .btn-contact:hover,
+        .hero-button:hover,
+        nav.desktop-nav a:hover,
+        .dropdown:hover .dropdown-content,
+        .dropdown-content a:hover,
+        .mobile-nav-panel a:hover,
+        .cta-button:hover,
+        .vision-button:hover,
+        .why-choose-us-button:hover,
+        .close-modal-btn:hover,
+        .modal-form-container button:hover,
+        .form-toggle-text a:hover,
+        .faq-question:hover {
+          transform: none !important;
+          box-shadow: none !important;
+          background: none !important;
+          color: inherit !important;
+          filter: none !important;
+        }
+        /* Prevent underline/pseudo-element hover animations */
+        nav.desktop-nav a::after,
+        .dropdown-content a::after,
+        .section-title::after {
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+
+      /* When JS detects touch interaction, add .using-touch to disable hover even if device reports hover support */
+      .using-touch .card:hover,
+      .using-touch .card:focus-within,
+      .using-touch .card:hover .card-icon,
+      .using-touch .step-card:hover,
+      .using-touch .testimonial-card:hover,
+      .using-touch .why-choose-us-point:hover,
+      .using-touch .btn-contact:hover,
+      .using-touch .hero-button:hover,
+      .using-touch nav.desktop-nav a:hover,
+      .using-touch .dropdown:hover .dropdown-content,
+      .using-touch .dropdown-content a:hover,
+      .using-touch .mobile-nav-panel a:hover,
+      .using-touch .cta-button:hover,
+      .using-touch .vision-button:hover,
+      .using-touch .why-choose-us-button:hover,
+      .using-touch .close-modal-btn:hover,
+      .using-touch .modal-form-container button:hover,
+      .using-touch .form-toggle-text a:hover,
+      .using-touch .faq-question:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        background: none !important;
+        color: inherit !important;
+        filter: none !important;
+      }
       .modal {
         display: none;
         position: fixed;
@@ -1849,6 +1912,7 @@
          initializeScrollSpy();
          initializeBackToTop();
          initializeSearchModal(); // initialize search modal (async + debounced)
+        initializeTouchHoverToggle();
        });
 
       // --- Header Blur Effect ---
@@ -1863,6 +1927,41 @@
             headerInner.classList.remove("blur");
           }
         });
+      }
+
+      // --- Touch hover toggle: detect touch pointer and suppress hover styles when using finger ---
+      function initializeTouchHoverToggle() {
+        // Use pointer events to reliably detect touch vs mouse interaction
+        function onPointerDown(e) {
+          try {
+            if (e.pointerType === 'touch') {
+              document.documentElement.classList.add('using-touch');
+            } else if (e.pointerType === 'mouse') {
+              document.documentElement.classList.remove('using-touch');
+            }
+          } catch (err) {
+            // ignore
+          }
+        }
+
+        // When mouse moves, remove using-touch (handles hybrid devices switching to mouse)
+        function onPointerMove(e) {
+          try {
+            if (e.pointerType === 'mouse') document.documentElement.classList.remove('using-touch');
+          } catch (err) {}
+        }
+
+        // Fallback: on touchstart also add using-touch for browsers without pointer events
+        function onTouchStart() { document.documentElement.classList.add('using-touch'); }
+
+        window.addEventListener('pointerdown', onPointerDown, { passive: true });
+        window.addEventListener('pointermove', onPointerMove, { passive: true });
+        window.addEventListener('touchstart', onTouchStart, { passive: true });
+        // Keep initial state based on navigator.maxTouchPoints
+        if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && !navigator.userAgent.match(/Windows NT/)) {
+          // many laptops have touch but also mouse; keep neutral until pointer events tell otherwise
+          document.documentElement.classList.add('using-touch');
+        }
       }
 
       // --- Mobile Navigation Logic (cleaned) ---
