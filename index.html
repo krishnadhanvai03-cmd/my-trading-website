@@ -600,46 +600,75 @@
           padding: 0 0.75rem;
         }
       }
-      .card {
-        background: var(--card);
-        border-radius: 1.25rem;
-        padding: 2rem 2.5rem;
-        box-shadow: 0 0.75rem 1.5rem rgb(90 50 142 / 0.5);
-        color: #e3dffd;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        transition: transform 0.3s, box-shadow 0.3s;
+      /* Unified card surface style matching the provided visual */
+      .card,
+      .step-card,
+      .testimonial-card,
+      .why-choose-us-point {
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.14));
+        border-radius: 1.125rem;
+        padding: 2rem 2.25rem;
+        color: var(--text);
+        box-shadow: 0 18px 40px rgba(6,2,20,0.55), inset 0 1px 0 rgba(255,255,255,0.02);
+        transition: transform 0.36s cubic-bezier(0.2,0.9,0.2,1), box-shadow 0.36s;
+        position: relative;
+        overflow: visible;
       }
+
       .card:hover,
-      .card:focus-within {
-        transform: translateY(-0.625rem) scale(1.03);
-        box-shadow: 0 1.25rem 2.75rem rgb(150 75 255 / 0.8);
+      .card:focus-within,
+      .step-card:hover,
+      .testimonial-card:hover,
+      .why-choose-us-point:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 28px 60px rgba(12,6,40,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
       }
+
+      /* soft bottom glow to match the attached design */
+      .card::after,
+      .step-card::after,
+      .testimonial-card::after,
+      .why-choose-us-point::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -18px;
+        width: 75%;
+        height: 22px;
+        background: radial-gradient(closest-side, rgba(123,77,255,0.14), transparent 60%);
+        filter: blur(12px);
+        pointer-events: none;
+        z-index: -1;
+      }
+
       .card-icon {
-        /* Responsive icon size */
-        font-size: clamp(2.5rem, 5vw, 3rem); 
+        font-size: clamp(2rem, 5vw, 2.6rem);
         color: var(--accent);
-        background: radial-gradient(circle, #5e32cc 15%, transparent 70%);
-        border-radius: 50%;
-        padding: 1.125rem;
-        margin-bottom: 1.4rem;
-        animation: iconPulse 3s ease infinite;
+        width: 3.25rem;
+        height: 3.25rem;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 12rem;
+        margin-bottom: 1.25rem;
+        background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent) 60%, transparent 40%), transparent 45%);
+        box-shadow: 0 8px 20px rgba(123,77,255,0.08), 0 0 18px rgba(123,77,255,0.06) inset;
       }
+
       .card-title {
-        /* Responsive font size for card titles */
-        font-size: clamp(1.3rem, 3vw, 1.5rem); 
-        font-weight: 700;
+        font-size: clamp(1.15rem, 2.6vw, 1.35rem);
+        font-weight: 800;
         margin-bottom: 0.6rem;
-        text-align: center;
+        text-align: left;
+        color: var(--text);
       }
+
       .card-desc {
         font-weight: 400;
-        color: #d7d3f5cc;
-        text-align: center;
+        color: var(--muted);
+        text-align: left;
         line-height: 1.6;
-        /* Responsive font size for card descriptions */
-        font-size: clamp(0.9rem, 2vw, 1rem); 
+        font-size: clamp(0.95rem, 1.9vw, 1rem);
       }
       .section-title {
         /* Using clamp for responsive font size */
@@ -670,20 +699,16 @@
         margin-top: 4rem;
       }
       .step-card {
-        background: #2e0e70;
-        border-radius: 1.25rem;
-        padding: 2.5rem;
-        box-shadow: 0 0.75rem 1.5rem rgb(90 50 142 / 0.5);
-        color: #e3dffd;
-        text-align: center;
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.14));
+        border-radius: 1.125rem;
+        padding: 2.25rem;
+        color: var(--text);
+        text-align: left;
         position: relative;
-        overflow: hidden;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: visible;
+        transition: transform 0.36s cubic-bezier(0.2,0.9,0.2,1), box-shadow 0.36s;
       }
-      .step-card:hover {
-        transform: translateY(-0.5rem);
-        box-shadow: 0 1.25rem 2.75rem rgb(150 75 255 / 0.8);
-      }
+      .step-card:hover { transform: translateY(-6px); }
       .step-number {
         /* Responsive font size for step numbers */
         font-size: clamp(3rem, 8vw, 3.5rem); 
@@ -700,21 +725,26 @@
         z-index: 1;
       }
       .step-icon {
-        /* Responsive icon size */
-        font-size: clamp(3rem, 7vw, 3.5rem); 
-        color: #bb86fc;
+        font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+        color: var(--accent);
+        display: inline-grid;
+        place-items: center;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 999px;
+        background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--accent) 60%, transparent 40%), transparent 45%);
+        box-shadow: 0 8px 18px rgba(123,77,255,0.06);
         margin-bottom: 1rem;
       }
       .step-title {
-        /* Responsive font size for step titles */
-        font-size: clamp(1.5rem, 3.5vw, 1.75rem); 
-        font-weight: 700;
-        margin-bottom: 0.75rem;
+        font-size: clamp(1.25rem, 3vw, 1.5rem);
+        font-weight: 800;
+        margin-bottom: 0.45rem;
+        color: var(--text);
       }
       .step-desc {
-        /* Responsive font size for step descriptions */
-        font-size: clamp(0.9rem, 2vw, 1rem); 
-        color: #d7d3f5cc;
+        font-size: clamp(0.95rem, 1.8vw, 1rem);
+        color: var(--muted);
         line-height: 1.6;
       }
       .testimonials {
@@ -728,27 +758,22 @@
         margin-top: 4rem;
       }
       .testimonial-card {
-        background: #2e0e70;
-        border-radius: 1.25rem;
-        padding: 2rem;
-        box-shadow: 0 0.75rem 1.5rem rgb(90 50 142 / 0.5);
-        color: #e3dffd;
+        background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.14));
+        border-radius: 1.125rem;
+        padding: 1.75rem 1.875rem;
+        color: var(--text);
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition: transform 0.36s cubic-bezier(0.2,0.9,0.2,1), box-shadow 0.36s;
+        position: relative;
       }
-      .testimonial-card:hover {
-        transform: translateY(-0.5rem);
-        box-shadow: 0 1.25rem 2.75rem rgb(150 75 255 / 0.8);
-      }
+      .testimonial-card:hover { transform: translateY(-6px); }
       .testimonial-quote {
-        /* Responsive font size for testimonial quotes */
-        font-size: clamp(1rem, 2.2vw, 1.1rem); 
+        font-size: clamp(0.98rem, 2.1vw, 1.05rem);
         line-height: 1.7;
-        margin-bottom: 1.5rem;
-        font-style: italic;
-        color: #d7d3f5;
+        margin-bottom: 1.2rem;
+        color: var(--muted);
       }
       .testimonial-author {
         display: flex;
@@ -1017,69 +1042,6 @@
         transform-origin: center;
       }
       .fade-in-section.is-visible .section-title::after { transform: translateX(-50%) scaleX(1); }
-
-      /* Disable hover effects on touch-only devices (and provide a JS toggle via .using-touch) */
-      @media (hover: none) and (pointer: coarse) {
-        .card:hover,
-        .card:focus-within,
-        .card:hover .card-icon,
-        .step-card:hover,
-        .testimonial-card:hover,
-        .why-choose-us-point:hover,
-        .btn-contact:hover,
-        .hero-button:hover,
-        nav.desktop-nav a:hover,
-        .dropdown:hover .dropdown-content,
-        .dropdown-content a:hover,
-        .mobile-nav-panel a:hover,
-        .cta-button:hover,
-        .vision-button:hover,
-        .why-choose-us-button:hover,
-        .close-modal-btn:hover,
-        .modal-form-container button:hover,
-        .form-toggle-text a:hover,
-        .faq-question:hover {
-          transform: none !important;
-          box-shadow: none !important;
-          background: none !important;
-          color: inherit !important;
-          filter: none !important;
-        }
-        /* Prevent underline/pseudo-element hover animations */
-        nav.desktop-nav a::after,
-        .dropdown-content a::after,
-        .section-title::after {
-          transform: none !important;
-          opacity: 1 !important;
-        }
-      }
-
-      /* When JS detects touch interaction, add .using-touch to disable hover even if device reports hover support */
-      .using-touch .card:hover,
-      .using-touch .card:focus-within,
-      .using-touch .card:hover .card-icon,
-      .using-touch .step-card:hover,
-      .using-touch .testimonial-card:hover,
-      .using-touch .why-choose-us-point:hover,
-      .using-touch .btn-contact:hover,
-      .using-touch .hero-button:hover,
-      .using-touch nav.desktop-nav a:hover,
-      .using-touch .dropdown:hover .dropdown-content,
-      .using-touch .dropdown-content a:hover,
-      .using-touch .mobile-nav-panel a:hover,
-      .using-touch .cta-button:hover,
-      .using-touch .vision-button:hover,
-      .using-touch .why-choose-us-button:hover,
-      .using-touch .close-modal-btn:hover,
-      .using-touch .modal-form-container button:hover,
-      .using-touch .form-toggle-text a:hover,
-      .using-touch .faq-question:hover {
-        transform: none !important;
-        box-shadow: none !important;
-        background: none !important;
-        color: inherit !important;
-        filter: none !important;
-      }
       .modal {
         display: none;
         position: fixed;
@@ -1912,7 +1874,6 @@
          initializeScrollSpy();
          initializeBackToTop();
          initializeSearchModal(); // initialize search modal (async + debounced)
-        initializeTouchHoverToggle();
        });
 
       // --- Header Blur Effect ---
@@ -1927,41 +1888,6 @@
             headerInner.classList.remove("blur");
           }
         });
-      }
-
-      // --- Touch hover toggle: detect touch pointer and suppress hover styles when using finger ---
-      function initializeTouchHoverToggle() {
-        // Use pointer events to reliably detect touch vs mouse interaction
-        function onPointerDown(e) {
-          try {
-            if (e.pointerType === 'touch') {
-              document.documentElement.classList.add('using-touch');
-            } else if (e.pointerType === 'mouse') {
-              document.documentElement.classList.remove('using-touch');
-            }
-          } catch (err) {
-            // ignore
-          }
-        }
-
-        // When mouse moves, remove using-touch (handles hybrid devices switching to mouse)
-        function onPointerMove(e) {
-          try {
-            if (e.pointerType === 'mouse') document.documentElement.classList.remove('using-touch');
-          } catch (err) {}
-        }
-
-        // Fallback: on touchstart also add using-touch for browsers without pointer events
-        function onTouchStart() { document.documentElement.classList.add('using-touch'); }
-
-        window.addEventListener('pointerdown', onPointerDown, { passive: true });
-        window.addEventListener('pointermove', onPointerMove, { passive: true });
-        window.addEventListener('touchstart', onTouchStart, { passive: true });
-        // Keep initial state based on navigator.maxTouchPoints
-        if (navigator.maxTouchPoints && navigator.maxTouchPoints > 0 && !navigator.userAgent.match(/Windows NT/)) {
-          // many laptops have touch but also mouse; keep neutral until pointer events tell otherwise
-          document.documentElement.classList.add('using-touch');
-        }
       }
 
       // --- Mobile Navigation Logic (cleaned) ---
