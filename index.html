@@ -113,62 +113,6 @@
         padding: 0 1.5rem;
         box-sizing: border-box; /* ensure padding doesn't cause overflow */
       }
-
-      /* Responsive horizontal padding and header side margin
-         - keeps animations and all existing styles untouched
-         - ensures header has comfortable left/right spacing on short screens */
-      :root {
-        --page-h-padding: clamp(16px, 3.2vw, 48px);
-        --content-max-width: 81.25rem; /* align with .header-inner earlier */
-      }
-
-      /* Apply safe horizontal padding so content doesn't touch viewport edges */
-      body {
-        padding-left: var(--page-h-padding);
-        padding-right: var(--page-h-padding);
-        box-sizing: border-box;
-      }
-
-      /* Keep the centered container consistent across header and content */
-      .header-inner {
-        max-width: var(--content-max-width);
-        margin-left: auto;
-        margin-right: auto;
-        padding-left: 1rem; /* small internal padding to keep content away from rounded corners */
-        padding-right: 1rem;
-      }
-
-      .container {
-        max-width: var(--content-max-width);
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      /* Make sure main sections stay full width of the centered container */
-      main, .hero, .cards, .how-it-works, .vision-section, .why-choose-us-section, .testimonials, .faq-section, .cta-section {
-        width: 100%;
-      }
-
-      /* Smaller screens: reduce padding so header elements still fit comfortably */
-      @media (max-width: 900px) {
-        :root { --page-h-padding: 12px; }
-        .header-inner { padding-left: 0.75rem; padding-right: 0.75rem; }
-      }
-      @media (max-width: 420px) {
-        :root { --page-h-padding: 12px; }
-        body { padding-left: 12px; padding-right: 12px; }
-        .header-inner { margin: 0.6rem auto; }
-      }
-
-      /* Mobile: give header a 5% left/right margin for short screens (mobile) */
-      @media (max-width: 600px) {
-        .header-inner {
-          margin-left: 5%;
-          margin-right: 5%;
-          width: calc(100% - 10%);
-          max-width: none; /* allow header to size relative to viewport */
-        }
-      }
       /* Ensure media and embedded elements never overflow horizontally */
       img, svg, iframe, video {
         max-width: 100%;
