@@ -113,6 +113,62 @@
         padding: 0 1.5rem;
         box-sizing: border-box; /* ensure padding doesn't cause overflow */
       }
+
+      /* Responsive horizontal padding and header side margin
+         - keeps animations and all existing styles untouched
+         - ensures header has comfortable left/right spacing on short screens */
+      :root {
+        --page-h-padding: clamp(16px, 3.2vw, 48px);
+        --content-max-width: 81.25rem; /* align with .header-inner earlier */
+      }
+
+      /* Apply safe horizontal padding so content doesn't touch viewport edges */
+      body {
+        padding-left: var(--page-h-padding);
+        padding-right: var(--page-h-padding);
+        box-sizing: border-box;
+      }
+
+      /* Keep the centered container consistent across header and content */
+      .header-inner {
+        max-width: var(--content-max-width);
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem; /* small internal padding to keep content away from rounded corners */
+        padding-right: 1rem;
+      }
+
+      .container {
+        max-width: var(--content-max-width);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Make sure main sections stay full width of the centered container */
+      main, .hero, .cards, .how-it-works, .vision-section, .why-choose-us-section, .testimonials, .faq-section, .cta-section {
+        width: 100%;
+      }
+
+      /* Smaller screens: reduce padding so header elements still fit comfortably */
+      @media (max-width: 900px) {
+        :root { --page-h-padding: 12px; }
+        .header-inner { padding-left: 0.75rem; padding-right: 0.75rem; }
+      }
+      @media (max-width: 420px) {
+        :root { --page-h-padding: 12px; }
+        body { padding-left: 12px; padding-right: 12px; }
+        .header-inner { margin: 0.6rem auto; }
+      }
+
+      /* Mobile: give header a 5% left/right margin for short screens (mobile) */
+      @media (max-width: 600px) {
+        .header-inner {
+          margin-left: 5%;
+          margin-right: 5%;
+          width: calc(100% - 10%);
+          max-width: none; /* allow header to size relative to viewport */
+        }
+      }
       /* Ensure media and embedded elements never overflow horizontally */
       img, svg, iframe, video {
         max-width: 100%;
@@ -121,15 +177,18 @@
       }
       header {
         background: transparent;
-        position: sticky;
+        position: fixed; /* use fixed so header reliably stays on top across browsers */
         top: 0;
-        z-index: 1000;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 1200; /* ensure it sits above content and overlays */
         padding: 0;
-        margin: auto 3%;
+        margin: 0; /* header should span full width so inner container centers content */
       }
       .header-inner {
         max-width: 81.25rem;
-        margin: 1.125rem auto 0 auto;
+        margin: 0.75rem auto; /* small vertical padding when fixed */
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -139,15 +198,30 @@
         padding: 0 2rem;
         min-height: 4.25rem;
         position: relative;
-        transition: box-shadow 0.3s, background 0.3s, backdrop-filter 0.4s;
+        transition: box-shadow 0.28s ease, background 0.28s ease, backdrop-filter 0.4s ease, transform 0.28s ease;
         backdrop-filter: blur(0px);
         -webkit-backdrop-filter: blur(0px);
       }
-      .header-inner.blur {
-        background: var(--surface-blur);
-        backdrop-filter: blur(1rem);
-        -webkit-backdrop-filter: blur(1rem);
-        box-shadow: 0 0.5rem 2.5rem 0 rgba(123, 77, 255, 0.12);
+      /* stronger visual when scrolled / sticky */
+      .header-inner.blur,
+      header.is-sticky .header-inner {
+        background: rgba(24,18,44,0.78); /* semi-transparent to allow backdrop blur */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        box-shadow: 0 0.6rem 2.5rem 0 rgba(17,10,40,0.55);
+        transform: translateY(-2px);
+      }
+
+      /* subtle raised style once sticky to improve contrast */
+      header.is-sticky .header-inner {
+        border-radius: 0.9rem; /* slightly smaller radius when pinned */
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      /* Ensure main content isn't hidden under the fixed header */
+      main {
+        padding-top: calc(4.25rem + 1.25rem); /* header min-height + margin */
       }
       .logo {
         font-weight: 700;
@@ -1881,11 +1955,15 @@
         const headerInner = select("#mainHeader");
         if (!headerInner) return;
 
+        const headerEl = headerInner.closest('header');
+
         window.addEventListener("scroll", () => {
           if (window.scrollY > 1) {
             headerInner.classList.add("blur");
+            if (headerEl) headerEl.classList.add('is-sticky');
           } else {
             headerInner.classList.remove("blur");
+            if (headerEl) headerEl.classList.remove('is-sticky');
           }
         });
       }
