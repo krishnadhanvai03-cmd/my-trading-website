@@ -29,13 +29,20 @@
     }
     .login-container {
         background: rgba(255,255,255,0.08);
-        padding: clamp(25px, 5vw, 40px);
-        border-radius: 20px;
+        padding: clamp(14px, 3.2vw, 28px);
+        border-radius: 16px;
         box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-        backdrop-filter: blur(15px);
+        backdrop-filter: blur(12px);
         width: 100%;
         max-width: 360px;
-        animation: fadeIn 0.8s ease-in-out;
+        margin-block: clamp(12px, 4vh, 28px); /* space above and below */
+        animation: fadeIn 0.6s ease-in-out;
+        /* ensure container fits in viewport without causing page scroll */
+        max-height: calc(100vh - 48px);
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     .login-container h2 {
         text-align: center;
@@ -44,10 +51,33 @@
         font-size: clamp(1.5rem, 4vw, 1.8rem);
         letter-spacing: 1px;
     }
+
+    /* When showing signup, slightly reduce heading size and spacing to fit vertically */
+    .signup-mode .login-container h2 {
+        font-size: clamp(1.3rem, 3.8vw, 1.6rem);
+        margin-bottom: clamp(12px, 2.4vw, 18px);
+    }
     .input-group {
         position: relative;
-        margin-bottom: clamp(15px, 3vw, 25px);
+        margin-bottom: clamp(10px, 2.4vw, 18px);
     }
+    /* password visibility toggle button inside input-group */
+    .password-toggle {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        padding: 6px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    .password-toggle:focus { outline: 2px solid rgba(255,255,255,0.08); border-radius: 4px; }
     .input-group input {
         width: 100%;
         padding: clamp(10px, 2.5vw, 12px) 10px;
@@ -58,6 +88,17 @@
         font-size: 1rem;
         outline: none;
         transition: border-color 0.3s ease;
+    }
+    /* Prevent browser autofill from applying a white/yellow background */
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+        box-shadow: 0 0 0px 1000px transparent inset !important;
+        background-color: transparent !important;
+        -webkit-text-fill-color: var(--text-light) !important;
+        transition: background-color 5000s ease-in-out 0s !important;
     }
     .input-group label {
         position: absolute; top: 12px; left: 10px;
@@ -124,8 +165,9 @@
     /* Mobile adjustments */
     @media (max-width: 768px) {
         .login-container {
-            max-width: 90%;
-            padding: 20px;
+            max-width: 94%;
+            padding: 12px;
+            margin-block: 10px;
         }
         .btn, .input-group input { font-size: 0.95rem; }
         .links-corner a { font-size: 0.8rem; }
@@ -135,8 +177,11 @@
     @media (max-width: 480px) {
         .login-container {
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
+            margin-block: 8px;
+            max-width: 98%;
         }
+        .login-container h2 { font-size: 1.25rem; margin-bottom: 12px; }
         .btn { padding: 10px; font-size: 0.9rem; }
         .btn-google img { width: 18px; height: 18px; }
     }
@@ -147,25 +192,33 @@
 <canvas id="bgCanvas"></canvas>
 
 <div class="login-container">
-    <h2>Welcome To TradeBuddy</h2>
-    <form>
+    <h2 id="formTitle">Welcome To TradeBuddy</h2>
+        <!-- Removed top toggle buttons: page should show Login form first. Use 'Or create an account' link to open Sign Up. -->
+    <form id="authForm">
+        <div class="input-group" id="nameGroup" style="display:none;">
+            <input type="text" id="name" placeholder=" " autocomplete="name">
+            <label for="name">Full name</label>
+        </div>
         <div class="input-group">
-            <input type="email" id="email" placeholder=" " required>
+            <input type="email" id="email" placeholder=" " required autocomplete="email">
             <label for="email">Email</label>
         </div>
         <div class="input-group">
-            <input type="password" id="password" placeholder=" " required>
+            <input type="password" id="password" placeholder=" " required autocomplete="current-password">
             <label for="password">Password</label>
+            <button type="button" class="password-toggle" id="togglePassword" aria-pressed="false" aria-label="Show password">
+                <i class="fas fa-eye-slash" aria-hidden="true"></i>
+            </button>
         </div>
-        <button type="submit" class="btn btn-login">Login</button>
-        <button type="button" class="btn btn-google">
-<i class="fab fa-google fa-1x"  href="https://www.google.com/"></i>
+        <button type="submit" id="submitBtn" class="btn btn-login">Login</button>
+        <button type="button" id="googleBtn" class="btn btn-google">
+          <i class="fab fa-google fa-1x"></i>
             Login with Google
         </button>
     </form>
     <div class="links-corner">
-        <a href="signup.html">Sign Up</a>
-        <a href="forgot.html">Forgot Password?</a>
+        <a href="#" id="forgotLink">Forgot Password?</a>
+        <a href="#" id="toSignup">Or create an account</a>
     </div>
 </div>
 
@@ -233,6 +286,139 @@ window.addEventListener("resize", () => {
 });
 createCandles();
 animate();
+</script>
+
+<script>
+// Simple client-side auth using Web Crypto for hashing and localStorage for persistence.
+// Not a replacement for a real server-side auth but suitable for demo/local use.
+    const authForm = document.getElementById('authForm');
+const nameGroup = document.getElementById('nameGroup');
+const submitBtn = document.getElementById('submitBtn');
+const formTitle = document.getElementById('formTitle');
+const linksCorner = document.querySelector('.links-corner');
+
+let mode = 'login'; // or 'signup'
+
+function setMode(m){
+    mode = m;
+    if (m === 'signup'){
+        nameGroup.style.display = 'block';
+        submitBtn.textContent = 'Create account';
+        formTitle.textContent = 'Create your TradeBuddy account';
+        // reduce visual footprint on signup
+        document.body.classList.add('signup-mode');
+        // replace links area with back-to-login only
+        if (linksCorner) linksCorner.innerHTML = '<a href="#" id="backToLogin">Back to login</a>';
+    } else {
+        nameGroup.style.display = 'none';
+        submitBtn.textContent = 'Login';
+        formTitle.textContent = 'Welcome To TradeBuddy';
+        document.body.classList.remove('signup-mode');
+        if (linksCorner) linksCorner.innerHTML = '<a href="#" id="forgotLink">Forgot Password?</a>\n        <a href="#" id="toSignup">Create an Account</a>';
+    }
+}
+
+// Helpers for Web Crypto SHA-256 hashing
+async function hashPassword(password){
+    const enc = new TextEncoder();
+    const data = enc.encode(password);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    // convert to hex
+    const hashArray = Array.from(new Uint8Array(hash));
+    return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function getUsers(){
+    try { return JSON.parse(localStorage.getItem('tradebuddy_users') || '[]'); } catch(e){ return []; }
+}
+function saveUsers(users){ localStorage.setItem('tradebuddy_users', JSON.stringify(users)); }
+
+function setAuth(user){
+    const tokenBytes = crypto.getRandomValues(new Uint8Array(16));
+    const token = Array.from(tokenBytes).map(b=>b.toString(16).padStart(2,'0')).join('');
+    const auth = { email: user.email, name: user.name || '', token, timestamp: Date.now() };
+    localStorage.setItem('tradebuddy_auth', JSON.stringify(auth));
+}
+
+authForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+    const name = document.getElementById('name').value.trim();
+    if (!email || !password) return alert('Please enter email and password');
+    if (mode === 'signup'){
+        if (password.length < 6) return alert('Password must be at least 6 characters');
+        const users = getUsers();
+        if (users.find(u=>u.email === email)) return alert('An account with that email already exists');
+        const hashed = await hashPassword(password);
+        const newUser = { email, name, passwordHash: hashed, created: Date.now() };
+        users.push(newUser);
+        saveUsers(users);
+        setAuth(newUser);
+        alert('Account created and signed in');
+        window.location.href = 'index.html';
+    } else {
+        const users = getUsers();
+        const found = users.find(u=>u.email === email);
+        if (!found) return alert('No account found with that email');
+        const hashed = await hashPassword(password);
+        if (hashed !== found.passwordHash) return alert('Incorrect password');
+        setAuth(found);
+        alert('Signed in successfully');
+        window.location.href = 'index.html';
+    }
+});
+
+// Forgot password handler as a reusable function (will be called via delegated click)
+function handleForgot(){
+    const email = prompt('Enter your account email for password reset:');
+    if (!email) return;
+    const users = getUsers();
+    const u = users.find(x=>x.email === email.toLowerCase().trim());
+    if (!u) return alert('No account with that email');
+    const newPass = prompt('Enter your new password (min 6 chars):');
+    if (!newPass || newPass.length < 6) return alert('Invalid password');
+    hashPassword(newPass).then(h => { u.passwordHash = h; saveUsers(users); alert('Password reset successful. Please login.'); setMode('login'); });
+}
+
+// Event delegation for links so replaced link elements still work
+document.addEventListener('click', (e)=>{
+    const el = e.target;
+    if (!el) return;
+    if (el.id === 'toSignup'){
+        e.preventDefault();
+        setMode('signup');
+    }
+    if (el.id === 'backToLogin'){
+        e.preventDefault();
+        setMode('login');
+    }
+    if (el.id === 'forgotLink'){
+        e.preventDefault();
+        handleForgot();
+    }
+});
+
+// Password visibility toggle
+(function(){
+    const pwd = document.getElementById('password');
+    const toggle = document.getElementById('togglePassword');
+    if (!pwd || !toggle) return;
+    toggle.addEventListener('click', ()=>{
+        const isHidden = pwd.type === 'password';
+        pwd.type = isHidden ? 'text' : 'password';
+        toggle.setAttribute('aria-pressed', String(isHidden));
+        toggle.setAttribute('aria-label', isHidden ? 'Hide password' : 'Show password');
+        const icon = toggle.querySelector('i');
+        if (icon) {
+            icon.classList.remove(isHidden ? 'fa-eye-slash' : 'fa-eye');
+            icon.classList.add(isHidden ? 'fa-eye' : 'fa-eye-slash');
+        }
+    });
+})();
+
+// Initialize UI mode
+setMode('login');
 </script>
 
 </body>
