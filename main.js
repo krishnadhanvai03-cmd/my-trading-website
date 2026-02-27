@@ -59,6 +59,10 @@ document.addEventListener('DOMContentLoaded', function () {
           toggleBtn.setAttribute("aria-expanded", "true");
           toggleBtn.classList.add('open');
           document.body.style.overflow = "hidden"; // Prevent scrolling behind panel
+          // Re-attach search modal listeners in case nav is dynamic
+          if (typeof initializeSearchModal === 'function') {
+            initializeSearchModal();
+          }
         };
 
         const closeMobileMenu = () => {
