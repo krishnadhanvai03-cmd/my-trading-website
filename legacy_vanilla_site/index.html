@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TradeBuddy - Your Trading Journey Starts Here</title>
+    <meta
+      name="description"
+      content="Empower your trading decisions with TradeBuddy's state-of-the-art AI tools. Analyze, strategize, and execute with confidence on one platform."
+    />
+    <meta
+      name="keywords"
+      content="trading, AI, analytics, stock market, finance, investment, TradeBuddy"
+    />
+    <meta name="author" content="TradeBuddy Team" />
+
+    <!-- Preconnect to Google Fonts for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Material Icons CDN - Load with font-display: swap -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Google Fonts - Outfit for UI, Space Grotesk for Headings -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Critical CSS (inlined for faster FCP) -->
+    <link rel="stylesheet" href="style.css" />
+    
+  </head>
+  <body>
+    <header>
+      <div class="header-inner container" id="mainHeader">
+        <a href="#" class="logo" aria-label="TradeBuddy Logo">
+          <span class="material-icons" aria-hidden="true">show_chart</span>
+          TradeBuddy
+        </a>
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a href="#trade" tabindex="0">Trade</a>
+          <a href="#contact" tabindex="0">Contact</a>
+          <a href="pricing.html" tabindex="0">Pricing</a>
+          <a href="#services" tabindex="0">Services</a>
+          <div class="dropdown">
+            <a href="#more" tabindex="0">More</a>
+            <div class="dropdown-content">
+              <a href="#search">Search</a>
+              <a href="#news">News</a>
+              <a href="#fno">F&O</a>
+            </div>
+          </div>
+        </nav>
+        <div class="header-actions">
+          
+            <a class="btn-contact"
+            id="loginSignupBtn"
+            aria-label="Login or Sign Up" href="login.html">Login / Sign Up</a>
+          
+        </div>
+        <button
+          class="mobile-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <span class="material-icons">menu</span>
+        </button>
+      </div>
+      <!-- Mobile Nav Panel -->
+      <div
+        class="mobile-nav-panel"
+        id="mobileNavPanel"
+        aria-label="Mobile navigation"
+      >
+        <button class="close-btn" aria-label="Close menu">
+          <span class="material-icons">close</span>
+        </button>
+        <div id="mobileUserMenuHolder"></div>
+        <!-- User dropdown will be added here below -->
+        <a href="#trade">Trade</a>
+        <a href="#contact">Contact</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="#services">Services</a>
+        <div class="dropdown-mobile">
+          <a href="#more" class="dropdown-toggle-mobile">
+            More
+            <span class="material-icons">expand_more</span>
+          </a>
+          <div class="dropdown-content-mobile">
+            <a href="#search">Search</a>
+            <a href="#news">News</a>
+            <a href="#fno">F&O</a>
+          </div>
+        </div>
+        <a
+          class="btn-contact"
+    
+          href="login.html"
+        >
+          Login In/Sign Up
+        </a>
+      </div>
+      <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <!-- Search Modal (opens when href="#search" clicked) -->
+    <div class="modal" id="searchModal" aria-hidden="true" role="dialog" aria-label="Search">
+      <div class="modal-content search-modal" role="document">
+        <button class="close-modal-btn" id="closeSearchModal" aria-label="Close search">&times;</button>
+        <div class="search-header">
+          <input id="searchInput" class="search-input" type="search" placeholder="Symbol, name, ISIN or CUSIP" aria-label="Search symbols" />
+          <button id="clearSearch" class="search-clear" aria-label="Clear search">Clear</button>
+        </div>
+        <div class="chips" id="searchChips" role="tablist" aria-label="Search categories"></div>
+        <div id="searchStatus" aria-live="polite" style="min-height:1.5rem;"></div>
+        <div class="results" id="searchResults" role="list"></div>
+      </div>
+    </div>
+    </header>
+    <main>
+      <section
+        class="hero fade-in-section"
+        role="banner"
+        aria-labelledby="hero-title"
+      >
+        <div class="mesh-gradient"></div>
+        <div class="container">
+          <div class="eyebrow-tag">AI-POWERED TRADING TERMINAL</div>
+          <h1 class="hero-title" id="hero-title">
+            The Future of <span class="text-accent">Algorithmic</span> Trading
+          </h1>
+          <p class="hero-desc">
+            Leverage institutional-grade AI analytics and real-time execution. Designed for the modern trader who demands precision, speed, and deep market insights.
+          </p>
+          <div class="hero-actions">
+            <a
+              class="hero-button"
+              id="startFreeTrialBtn"
+              aria-label="Start Free Trial"
+              href="login.html"
+            >
+              Initialize Account
+              <span class="material-icons">north_east</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="bento-features container fade-in-section"
+        aria-label="Trading platform key features"
+        id="features"
+      >
+        <div class="section-header">
+          <div class="eyebrow-tag">CAPABILITIES</div>
+          <h2 class="section-title">Institutional Tools for Every Trader</h2>
+        </div>
+        
+        <div class="bento-grid">
+          <article class="card bento-1" tabindex="0">
+            <div class="card-inner">
+              <span class="card-icon material-icons" aria-hidden="true">insights</span>
+              <h3 class="card-title">Real-time AI Analytics</h3>
+              <p class="card-desc">
+                Our proprietary neural networks process millions of data points per second to identify high-probability setups before they hit the mainstream.
+              </p>
+            </div>
+          </article>
+
+          <article class="card bento-2" tabindex="0">
+            <div class="card-inner">
+              <span class="card-icon material-icons" aria-hidden="true">security</span>
+              <h3 class="card-title">Secured Protocol</h3>
+              <p class="card-desc">
+                Multi-signature authentication and cold-storage integrations ensure your assets remain impenetrable.
+              </p>
+            </div>
+          </article>
+
+          <article class="card bento-3" tabindex="0">
+            <div class="card-inner">
+              <span class="card-icon material-icons" aria-hidden="true">support_agent</span>
+              <h3 class="card-title">Priority Support</h3>
+              <p class="card-desc">
+                Direct access to our quantitative analysts and technical support team, 24/7.
+              </p>
+            </div>
+          </article>
+
+          <article class="card bento-4" tabindex="0">
+            <div class="card-inner">
+              <span class="card-icon material-icons" aria-hidden="true">auto_graph</span>
+              <h3 class="card-title">Automated Execution</h3>
+              <p class="card-desc">
+                Deploy complex algorithmic strategies with sub-millisecond latency. Execute with the same speed as the big firms.
+              </p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-it-works fade-in-section" id="how-it-works">
+        <div class="container">
+          <h2 class="section-title">How TradeBuddy Works</h2>
+          <p class="section-subtitle">
+            Get started with TradeBuddy in three simple steps. From sign-up to
+            smart trading, we make it easy for you.
+          </p>
+          <div class="steps-grid">
+            <div class="step-card">
+              <span class="step-number">01</span>
+              <div class="step-content">
+                <span class="step-icon material-icons">person_add</span>
+                <h3 class="step-title">Create Your Account</h3>
+                <p class="step-desc">
+                  Sign up in minutes and set up your personalized trading
+                  profile. It's quick, secure, and free to start.
+                </p>
+              </div>
+            </div>
+            <div class="step-card">
+              <span class="step-number">02</span>
+              <div class="step-content">
+                <span class="step-icon material-icons">analytics</span>
+                <h3 class="step-title">Analyze & Strategize</h3>
+                <p class="step-desc">
+                  Utilize our AI-powered tools to analyze market trends and
+                  develop winning trading strategies.
+                </p>
+              </div>
+            </div>
+            <div class="step-card">
+              <span class="step-number">03</span>
+              <div class="step-content">
+                <span class="step-icon material-icons">trending_up</span>
+                <h3 class="step-title">Execute Trades</h3>
+                <p class="step-desc">
+                  Seamlessly execute your trades with confidence and monitor
+                  your portfolio in real-time.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="vision-section fade-in-section" id="our-vision">
+        <div class="container vision-content">
+          <h2 class="vision-title">Our Vision for Your Success</h2>
+          <p class="vision-desc">
+            We envision a world where every trader, regardless of experience,
+            has access to powerful tools and insights to achieve their financial
+            goals. TradeBuddy is built on this principle.
+          </p>
+          <button class="vision-button">Learn More About Our Mission</button>
+        </div>
+      </section>
+
+      <section class="why-choose-us-section fade-in-section" id="why-choose-us">
+        <div class="container why-choose-us-content">
+          <h2 class="why-choose-us-title">Why Choose TradeBuddy?</h2>
+          <p class="why-choose-us-desc">
+            Beyond advanced features, we offer a commitment to your growth and
+            security. Discover what sets us apart.
+          </p>
+          <div class="why-choose-us-points">
+            <div class="why-choose-us-point">
+              <span class="material-icons">auto_graph</span>
+              <h4>Cutting-Edge AI</h4>
+              <p>
+                Leverage predictive analytics and machine learning for smarter
+                trading decisions.
+              </p>
+            </div>
+            <div class="why-choose-us-point">
+              <span class="material-icons">verified_user</span>
+              <h4>Unwavering Security</h4>
+              <p>
+                Your data and assets are protected with military-grade
+                encryption and protocols.
+              </p>
+            </div>
+            <div class="why-choose-us-point">
+              <span class="material-icons">school</span>
+              <h4>Educational Resources</h4>
+              <p>
+                Access a wealth of tutorials, webinars, and market insights to
+                sharpen your skills.
+              </p>
+            </div>
+            <div class="why-choose-us-point">
+              <span class="material-icons">forum</span>
+              <h4>Vibrant Community</h4>
+              <p>
+                Connect with fellow traders, share strategies, and grow together
+                in a supportive environment.
+              </p>
+            </div>
+          </div>
+          <button class="why-choose-us-button" style="margin-top: 3rem">
+            Explore All Benefits
+          </button>
+        </div>
+      </section>
+
+      <section class="testimonials fade-in-section" id="testimonials">
+        <div class="container">
+          <div class="section-header">
+            <div class="eyebrow-tag">VALIDATION</div>
+            <h2 class="section-title">Trusted by Quantitative Experts</h2>
+          </div>
+          
+          <div class="z-axis-cascade">
+            <div class="testimonial-card cascade-1 stagger-child">
+              <p class="testimonial-quote">
+                "The sub-millisecond execution and latency architecture are unmatched. TradeBuddy's infrastructure is what gives us our edge."
+              </p>
+              <div class="testimonial-author">
+                <img
+                  src="https://placehold.co/60/10b981/050505?text=JD"
+                  alt="John Doe"
+                  class="author-avatar"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                />
+                <div class="author-info">
+                  <strong>John Doe</strong>
+                  <span>Head of Algorithmic Trading</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card cascade-2 stagger-child">
+              <p class="testimonial-quote">
+                "Finally, an interface that doesn't compromise power for aesthetics. The dark tech aesthetic reduces eye strain during heavy sessions."
+              </p>
+              <div class="testimonial-author">
+                <img
+                  src="https://placehold.co/60/8b5cf6/ffffff?text=AS"
+                  alt="Alice Smith"
+                  class="author-avatar"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                />
+                <div class="author-info">
+                  <strong>Alice Smith</strong>
+                  <span>Quantitative Analyst</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card cascade-3 stagger-child">
+              <p class="testimonial-quote">
+                "Security is non-negotiable. The multi-signature protocols and deep encryption give us complete peace of mind when moving volume."
+              </p>
+              <div class="testimonial-author">
+                <img
+                  src="https://placehold.co/60/3b82f6/ffffff?text=MB"
+                  alt="Michael Brown"
+                  class="author-avatar"
+                  width="60"
+                  height="60"
+                  loading="lazy"
+                />
+                <div class="author-info">
+                  <strong>Michael Brown</strong>
+                  <span>Risk Management Director</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NEW: FAQ Section -->
+      <section class="faq-section fade-in-section" id="faq">
+        <div class="container">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">
+            Find quick answers to the most common questions about TradeBuddy.
+          </p>
+          <div class="faq-container">
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                What is TradeBuddy?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  TradeBuddy is an AI-powered platform designed to empower your
+                  trading decisions with advanced analytics, secure trading, and
+                  24/7 support.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                How does the AI assist my trading?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Our AI leverages predictive analytics and machine learning to
+                  analyze market trends, provide insights, and help you develop
+                  smarter trading strategies.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                Is my data secure with TradeBuddy?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  Absolutely. We prioritize your security with industry-leading
+                  encryption, multi-factor authentication, and robust protocols
+                  to protect your data and assets.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <button class="faq-question" aria-expanded="false">
+                What kind of support can I expect?
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  We offer 24/7 support from our expert team, ready to assist
+                  you with any questions or issues to ensure a smooth trading
+                  experience.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section fade-in-section">
+        <div class="container cta-content">
+          <h2 class="cta-title">Ready to Elevate Your Trading?</h2>
+          <p class="cta-desc">
+            Join thousands of successful traders who trust TradeBuddy for their
+            market insights and secure transactions. Start your free trial
+            today!
+          </p>
+          <button class="cta-button" id="ctaFreeTrialBtn">
+            Start Your Free Trial Now
+          </button>
+        </div>
+      </section>
+    </main>
+    <footer class="fade-in-section">
+
+      &copy; 2024 TradeBuddy. All rights reserved. | Built with precision and
+      care.
+    </footer>
+
+    <!-- From Uiverse.io by vinodjangid07 -->
+    <button class="button" id="backToTopBtn" aria-label="Back to Top">
+      <svg class="svgIcon" viewBox="0 0 384 512">
+        <path
+          d="M214.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 141.2V448c0 17.7 14.3 32 32 32s32-14.3 32-32V141.2L329.4 246.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"
+        ></path>
+      </svg>
+    </button>
+
+
+
+    <!-- Defer non-critical JavaScript -->
+   <script src="main.js" defer></script>
+  </body>
+
+</html>
+>
+
+</html>
