@@ -34,26 +34,32 @@ export default function Login() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          className="double-bezel w-full max-w-[360px] p-8 flex flex-col justify-center relative overflow-hidden"
+          className="double-bezel w-full max-w-[360px] p-8 flex flex-col justify-center relative overflow-hidden border-white/5"
         >
-          <h2 className="text-2xl font-display text-center mb-8 font-bold">Terminal Access</h2>
+          <div className="flex justify-center mb-8">
+            <Link href="/" className="flex items-center gap-2 text-foreground font-display font-black uppercase tracking-tighter text-xl">
+              <span className="text-accent drop-shadow-[0_0_12px_var(--accent-glow)]">◊</span>
+              <span>TradeBuddy</span>
+            </Link>
+          </div>
+          <h2 className="text-lg font-black font-display text-center mb-10 uppercase tracking-tighter">TERMINAL ACCESS</h2>
           
-          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
             <div className="relative group">
               <input 
                 type="email" 
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent border-b-2 border-surface-border py-2 text-foreground focus:outline-none focus:border-accent transition-colors peer placeholder-transparent"
+                className="w-full bg-transparent border-b-2 border-white/5 py-2 text-foreground focus:outline-none focus:border-accent transition-colors peer placeholder-transparent font-medium"
                 placeholder="Email"
                 required
               />
               <label 
                 htmlFor="email" 
-                className="absolute left-0 top-2 text-text-muted pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-accent peer-valid:-top-4 peer-valid:text-xs peer-valid:text-accent"
+                className="absolute left-0 top-2 text-text-muted pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-black peer-focus:uppercase peer-focus:tracking-widest peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px] peer-valid:font-black peer-valid:uppercase peer-valid:tracking-widest peer-valid:text-accent"
               >
-                Email
+                Access ID
               </label>
             </div>
 
@@ -63,31 +69,31 @@ export default function Login() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-transparent border-b-2 border-surface-border py-2 pr-10 text-foreground focus:outline-none focus:border-accent transition-colors peer placeholder-transparent"
+                className="w-full bg-transparent border-b-2 border-white/5 py-2 pr-10 text-foreground focus:outline-none focus:border-accent transition-colors peer placeholder-transparent font-medium"
                 placeholder="Password"
                 required
               />
               <label 
                 htmlFor="password" 
-                className="absolute left-0 top-2 text-text-muted pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-xs peer-focus:text-accent peer-valid:-top-4 peer-valid:text-xs peer-valid:text-accent"
+                className="absolute left-0 top-2 text-text-muted pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-[10px] peer-focus:font-black peer-focus:uppercase peer-focus:tracking-widest peer-focus:text-accent peer-valid:-top-4 peer-valid:text-[10px] peer-valid:font-black peer-valid:uppercase peer-valid:tracking-widest peer-valid:text-accent"
               >
-                Password
+                Security Key
               </label>
               <button 
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-0 top-2 text-text-muted hover:text-foreground transition-colors"
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
 
             <motion.button 
               whileTap={{ scale: 0.97 }}
               type="submit" 
-              className="mt-4 w-full bg-accent text-background font-bold py-3 rounded-full hover:brightness-110 transition-all uppercase tracking-widest text-sm"
+              className="mt-4 w-full bg-accent text-black font-black py-4 rounded-full hover:brightness-110 transition-all uppercase tracking-tighter text-sm shadow-[0_0_30px_rgba(204,255,0,0.1)]"
             >
-              Authenticate
+              Initialize Session
             </motion.button>
             
             <motion.button 

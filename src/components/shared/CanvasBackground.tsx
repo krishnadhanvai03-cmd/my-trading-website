@@ -2,6 +2,18 @@
 
 import React, { useEffect, useRef } from "react";
 
+interface Candle {
+  x: number;
+  y: number;
+  open: number;
+  close: number;
+  high: number;
+  low: number;
+  depth: number;
+  speed: number;
+  color: string;
+}
+
 export function CanvasBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -13,7 +25,7 @@ export function CanvasBackground() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let candles: any[] = [];
+    let candles: Candle[] = [];
     const baseSpeed = 0.8;
 
     const resize = () => {
@@ -21,7 +33,7 @@ export function CanvasBackground() {
       canvas.height = window.innerHeight;
     };
 
-    const generateCandle = (y: number) => {
+    const generateCandle = (y: number): Candle => {
       const open = Math.random() * 40 + y;
       const close = open + (Math.random() * 30 - 15);
       const high = Math.min(open, close) - Math.random() * 10;
@@ -29,7 +41,7 @@ export function CanvasBackground() {
       const x = Math.random() * canvas.width;
       const depth = Math.random();
       const speed = baseSpeed + depth * 1.5;
-      const color = close > open ? "#00ffab" : "#ff4d4d";
+      const color = close > open ? "#ccff00" : "#ffffff";
       return { x, y, open, close, high, low, depth, speed, color };
     };
 
@@ -40,9 +52,9 @@ export function CanvasBackground() {
       }
     };
 
-    const drawCandlestick = (c: any) => {
+    const drawCandlestick = (c: Candle) => {
       const scale = 0.5 + c.depth * 0.7;
-      ctx.globalAlpha = 0.3 + c.depth * 0.7;
+      ctx.globalAlpha = 0.1 + c.depth * 0.2;
       ctx.strokeStyle = c.color;
       ctx.lineWidth = 1 + c.depth * 2;
       ctx.beginPath();
@@ -88,5 +100,5 @@ export function CanvasBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10 bg-[#0d1117]" />;
+  return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10 bg-[#020202]" />;
 }

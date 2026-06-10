@@ -93,15 +93,15 @@ export default function Pricing() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-[clamp(3rem,8vw,4.5rem)] font-display font-bold leading-none mb-6"
+            className="text-[clamp(3rem,8vw,5rem)] font-display font-black leading-none mb-6 uppercase tracking-tighter"
           >
-            Plans & Pricing
+            PLANS & <span className="text-accent">PRICING</span>.
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-text-muted text-lg"
+            className="text-text-muted text-lg font-medium"
           >
             Simple and transparent pricing built for modern traders and investors.
           </motion.p>
@@ -109,13 +109,13 @@ export default function Pricing() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
           {/* Starter */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="double-bezel p-10 flex flex-col group hover:-translate-y-2 hover:border-accent/30 transition-all duration-500">
-            <div className="text-accent font-display font-bold text-xl uppercase tracking-wider mb-4">Starter</div>
-            <div className="text-5xl font-bold mb-8">₹0</div>
-            <motion.button whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-2 w-full bg-foreground text-background py-3 rounded-full font-bold uppercase tracking-widest text-sm mb-8 hover:brightness-110 transition-all">
-              <UserPlus size={18} /> Open Account
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="double-bezel p-10 flex flex-col group hover:-translate-y-2 hover:border-accent/30 transition-all duration-500 border-white/5">
+            <div className="text-accent font-display font-black text-xl uppercase tracking-tighter mb-4">Starter</div>
+            <div className="text-6xl font-black mb-8 tracking-tighter text-white">₹0</div>
+            <motion.button whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-2 w-full bg-accent text-black py-4 rounded-full font-black uppercase tracking-tighter text-sm mb-8 hover:brightness-110 transition-all shadow-[0_0_30px_rgba(0,229,255,0.15)]">
+              <UserPlus size={18} strokeWidth={3} /> Open Account
             </motion.button>
-            <ul className="space-y-4 text-sm text-text-muted mt-auto">
+            <ul className="space-y-4 text-sm text-text-muted mt-auto font-medium">
               {['₹0 Equity delivery', 'Basic charts', 'Watchlist & alerts', 'Mobile & web trading'].map(item => (
                 <li key={item} className="flex items-center gap-3"><Check size={16} className="text-accent flex-shrink-0" /> {item}</li>
               ))}
@@ -123,28 +123,28 @@ export default function Pricing() {
           </motion.div>
 
           {/* Active Trader */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="double-bezel p-10 flex flex-col group hover:-translate-y-2 hover:border-accent/30 transition-all duration-500 relative">
-            <div className="absolute top-0 right-10 transform -translate-y-1/2 bg-accent text-background text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Popular</div>
-            <div className="text-accent font-display font-bold text-xl uppercase tracking-wider mb-4">Active Trader</div>
-            <div className="text-5xl font-bold mb-8">₹20<span className="text-lg text-text-muted font-medium ml-2">/order</span></div>
-            <motion.button whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-2 w-full bg-foreground text-background py-3 rounded-full font-bold uppercase tracking-widest text-sm mb-8 hover:brightness-110 transition-all">
-              <TrendingUp size={18} /> Start Trading
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="double-bezel p-10 flex flex-col group hover:-translate-y-2 hover:border-action/30 transition-all duration-500 relative border-white/5">
+            <div className="absolute top-0 right-10 transform -translate-y-1/2 bg-action text-black text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Popular</div>
+            <div className="text-action font-display font-black text-xl uppercase tracking-tighter mb-4">Active Trader</div>
+            <div className="text-6xl font-black mb-8 tracking-tighter text-white">₹20<span className="text-lg text-text-muted font-medium ml-2">/order</span></div>
+            <motion.button whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-2 w-full bg-action text-black py-4 rounded-full font-black uppercase tracking-tighter text-sm mb-8 hover:brightness-110 transition-all shadow-[0_0_40px_rgba(174,234,0,0.15)]">
+              <TrendingUp size={18} strokeWidth={3} /> Start Trading
             </motion.button>
-            <ul className="space-y-4 text-sm text-text-muted mt-auto">
+            <ul className="space-y-4 text-sm text-text-muted mt-auto font-medium">
               {['₹20 Intraday', '₹20 F&O', 'Advanced charts', 'Market depth', 'Trading API'].map(item => (
-                <li key={item} className="flex items-center gap-3"><Check size={16} className="text-accent flex-shrink-0" /> {item}</li>
+                <li key={item} className="flex items-center gap-3"><Check size={16} className="text-action flex-shrink-0" /> {item}</li>
               ))}
             </ul>
           </motion.div>
 
           {/* Enterprise */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="double-bezel p-10 flex flex-col group hover:-translate-y-2 hover:border-accent/30 transition-all duration-500">
-            <div className="text-accent font-display font-bold text-xl uppercase tracking-wider mb-4">Enterprise</div>
-            <div className="text-5xl font-bold mb-8 text-accent">Custom</div>
-            <motion.button whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-2 w-full bg-foreground text-background py-3 rounded-full font-bold uppercase tracking-widest text-sm mb-8 hover:brightness-110 transition-all">
-              <Briefcase size={18} /> Contact Sales
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="double-bezel p-10 flex flex-col group hover:-translate-y-2 hover:border-accent/30 transition-all duration-500 border-white/5">
+            <div className="text-accent font-display font-black text-xl uppercase tracking-tighter mb-4">Enterprise</div>
+            <div className="text-6xl font-black mb-8 text-accent tracking-tighter text-white">Custom</div>
+            <motion.button whileTap={{ scale: 0.97 }} className="flex items-center justify-center gap-2 w-full bg-accent text-black py-4 rounded-full font-black uppercase tracking-tighter text-sm mb-8 hover:brightness-110 transition-all shadow-[0_0_30px_rgba(0,229,255,0.15)]">
+              <Briefcase size={18} strokeWidth={3} /> Contact Sales
             </motion.button>
-            <ul className="space-y-4 text-sm text-text-muted mt-auto">
+            <ul className="space-y-4 text-sm text-text-muted mt-auto font-medium">
               {['Custom brokerage', 'Dedicated manager', 'High frequency trading', 'Institutional tools', 'Advanced analytics'].map(item => (
                 <li key={item} className="flex items-center gap-3"><Check size={16} className="text-accent flex-shrink-0" /> {item}</li>
               ))}
@@ -152,8 +152,8 @@ export default function Pricing() {
           </motion.div>
         </div>
 
-        <section className="double-bezel p-8 md:p-12">
-          <h2 className="text-3xl font-display font-bold text-center mb-10 text-accent">Brokerage Charges</h2>
+        <section className="double-bezel p-8 md:p-12 border-white/5">
+          <h2 className="text-3xl font-display font-black text-center mb-10 text-accent uppercase tracking-tighter">BROKERAGE <span className="text-white">CHARGES</span>.</h2>
           
           <div className="flex flex-wrap justify-center gap-4 mb-10">
             {[
@@ -164,10 +164,10 @@ export default function Pricing() {
               <button 
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-6 py-2 rounded-full font-medium transition-all ${
+                className={`px-8 py-2.5 rounded-full font-black uppercase tracking-tighter text-xs transition-all ${
                   activeTab === tab.id 
-                    ? 'bg-accent/10 text-accent border border-accent/30' 
-                    : 'bg-surface border border-surface-border text-text-muted hover:text-foreground hover:border-surface-border/50'
+                    ? 'bg-accent text-black shadow-[0_0_20px_rgba(0,229,255,0.2)]' 
+                    : 'bg-white/5 border border-white/10 text-text-muted hover:text-foreground hover:bg-white/10'
                 }`}
               >
                 {tab.label}

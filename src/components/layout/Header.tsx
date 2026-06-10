@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { LineChart, Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,17 +26,17 @@ export function Header() {
             isScrolled ? "scale-[0.98] border-accent/30 py-1.5" : "scale-100"
           }`}
         >
-          <Link href="/" className="flex items-center gap-2 text-foreground font-display font-bold uppercase tracking-wider">
-            <LineChart className="text-accent drop-shadow-[0_0_8px_var(--accent-glow)]" size={24} strokeWidth={1.5} />
-            <span className="inline-block text-sm sm:text-base">TradeBuddy</span>
+          <Link href="/" className="flex items-center gap-2 text-foreground font-display font-black uppercase tracking-tighter text-xl">
+            <span className="text-accent drop-shadow-[0_0_12px_var(--accent-glow)]">◊</span>
+            <span>TradeBuddy</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-2">
-            {["Trade", "Services", "Pricing"].map((item) => (
+          <nav className="hidden md:flex items-center gap-1">
+            {["Trade", "Contact", "Pricing", "Services"].map((item) => (
               <Link 
                 key={item} 
-                href={item === 'Pricing' ? '/pricing' : `/#${item.toLowerCase()}`}
-                className="px-4 py-2 text-sm font-medium text-text-muted hover:text-foreground hover:bg-white/5 rounded-full transition-colors"
+                href={item === "Pricing" ? "/pricing" : `/#${item.toLowerCase()}`}
+                className="px-4 py-2 text-xs font-bold uppercase tracking-tighter text-text-muted hover:text-foreground hover:bg-white/5 rounded-full transition-colors"
               >
                 {item}
               </Link>
@@ -46,10 +46,10 @@ export function Header() {
           <div className="flex items-center gap-3">
             <Link 
               href="/login"
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-foreground text-background font-semibold text-xs uppercase tracking-wider rounded-full hover:-translate-y-0.5 hover:brightness-110 active:scale-95 transition-all duration-200"
+              className="hidden sm:flex items-center gap-2 px-6 py-2.5 bg-accent text-black font-black text-xs uppercase tracking-tighter rounded-full hover:-translate-y-0.5 hover:brightness-110 active:scale-95 transition-all duration-200 shadow-[0_0_20px_rgba(0,229,255,0.15)]"
             >
               Login
-              <ArrowUpRight size={16} strokeWidth={1.5} />
+              <ArrowUpRight size={14} strokeWidth={3} />
             </Link>
             <button 
               className="md:hidden p-2 text-foreground"

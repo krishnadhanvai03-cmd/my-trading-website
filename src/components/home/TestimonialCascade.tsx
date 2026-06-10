@@ -41,48 +41,48 @@ export function TestimonialCascade() {
       >
         <motion.div 
           variants={cascadeVariants}
-          className="double-bezel w-full lg:w-96 p-8 flex-shrink-0 z-10 lg:translate-x-16 lg:-translate-z-[100px] lg:rotate-y-[10deg] lg:brightness-75 lg:blur-[2px] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] lg:group-hover:translate-x-0 lg:group-hover:translate-z-0 lg:group-hover:rotate-y-0 lg:group-hover:brightness-100 lg:group-hover:blur-0 lg:group-hover:-mx-4"
+          className="double-bezel w-full lg:w-96 p-8 flex-shrink-0 z-10 lg:translate-x-16 lg:-translate-z-[100px] lg:rotate-y-[10deg] lg:brightness-75 lg:blur-[2px] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] lg:group-hover:translate-x-0 lg:group-hover:translate-z-0 lg:group-hover:rotate-y-0 lg:group-hover:brightness-100 lg:group-hover:blur-0 lg:group-hover:-mx-4 border-white/5"
         >
-          <p className="text-lg leading-relaxed text-foreground font-light mb-8">
-            "The sub-millisecond execution and latency architecture are unmatched. TradeBuddy's infrastructure is what gives us our edge."
+          <p className="text-lg leading-tight text-foreground font-medium mb-8">
+            &ldquo;The sub-millisecond execution and latency architecture are unmatched. TradeBuddy&apos;s infrastructure is what gives us our edge.&rdquo;
           </p>
           <div className="flex items-center gap-4 mt-auto">
-            <img src="https://placehold.co/60/10b981/050505?text=JD" alt="John Doe" className="w-12 h-12 rounded-full border-2 border-surface-border" />
+            <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-black text-xs border border-accent/20">JD</div>
             <div>
-              <strong className="block text-accent font-display">John Doe</strong>
-              <span className="text-xs uppercase tracking-wider text-text-muted">Head of Algo Trading</span>
+              <strong className="block text-accent font-display font-black tracking-tighter">John Doe</strong>
+              <span className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Head of Algo Trading</span>
             </div>
           </div>
         </motion.div>
 
         <motion.div 
           variants={cascadeVariants}
-          className="double-bezel w-full lg:w-[28rem] p-6 md:p-10 flex-shrink-0 z-30 shadow-[0_40px_80px_rgba(0,0,0,0.8),0_0_40px_var(--purple-glow)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]"
+          className="double-bezel w-full lg:w-[28rem] p-6 md:p-10 flex-shrink-0 z-30 shadow-[0_40px_80px_rgba(0,0,0,0.8),0_0_40px_rgba(0,229,255,0.1)] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] border-accent/20 bg-accent/5"
         >
-          <p className="text-xl leading-relaxed text-foreground font-light mb-8">
-            "Finally, an interface that doesn't compromise power for aesthetics. The dark tech aesthetic reduces eye strain during heavy sessions."
+          <p className="text-xl leading-tight text-foreground font-medium mb-8">
+            &ldquo;Finally, an interface that doesn&apos;t compromise power for aesthetics. The dark tech aesthetic reduces eye strain during heavy sessions.&rdquo;
           </p>
           <div className="flex items-center gap-4 mt-auto">
-            <img src="https://placehold.co/60/8b5cf6/ffffff?text=AS" alt="Alice Smith" className="w-14 h-14 rounded-full border-2 border-surface-border" />
+            <div className="w-14 h-14 rounded-full bg-accent/20 flex items-center justify-center text-accent font-black text-sm border border-accent/30">AS</div>
             <div>
-              <strong className="block text-purple-400 font-display text-lg">Alice Smith</strong>
-              <span className="text-xs uppercase tracking-wider text-text-muted">Quantitative Analyst</span>
+              <strong className="block text-white font-display text-lg font-black tracking-tighter">Alice Smith</strong>
+              <span className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Quantitative Analyst</span>
             </div>
           </div>
         </motion.div>
 
         <motion.div 
           variants={cascadeVariants}
-          className="double-bezel w-full lg:w-96 p-6 md:p-8 flex-shrink-0 z-20 lg:-translate-x-16 lg:-translate-z-[100px] lg:-rotate-y-[10deg] lg:brightness-75 lg:blur-[2px] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] lg:group-hover:translate-x-0 lg:group-hover:translate-z-0 lg:group-hover:rotate-y-0 lg:group-hover:brightness-100 lg:group-hover:blur-0 lg:group-hover:-mx-4"
+          className="double-bezel w-full lg:w-96 p-6 md:p-8 flex-shrink-0 z-20 lg:-translate-x-16 lg:-translate-z-[100px] lg:-rotate-y-[10deg] lg:brightness-75 lg:blur-[2px] transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)] lg:group-hover:translate-x-0 lg:group-hover:translate-z-0 lg:group-hover:rotate-y-0 lg:group-hover:brightness-100 lg:group-hover:blur-0 lg:group-hover:-mx-4 border-white/5"
         >
-          <p className="text-lg leading-relaxed text-foreground font-light mb-8">
-            "Security is non-negotiable. The multi-signature protocols and deep encryption give us complete peace of mind when moving volume."
+          <p className="text-lg leading-tight text-foreground font-medium mb-8">
+            &ldquo;Security is non-negotiable. The multi-signature protocols and deep encryption give us complete peace of mind when moving volume.&rdquo;
           </p>
           <div className="flex items-center gap-4 mt-auto">
-            <img src="https://placehold.co/60/3b82f6/ffffff?text=MB" alt="Michael Brown" className="w-12 h-12 rounded-full border-2 border-surface-border" />
+            <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white/50 font-black text-xs border border-white/10">MB</div>
             <div>
-              <strong className="block text-blue-400 font-display">Michael Brown</strong>
-              <span className="text-xs uppercase tracking-wider text-text-muted">Risk Director</span>
+              <strong className="block text-white/80 font-display font-black tracking-tighter">Michael Brown</strong>
+              <span className="text-[10px] uppercase tracking-widest text-text-muted font-bold">Risk Management Director</span>
             </div>
           </div>
         </motion.div>

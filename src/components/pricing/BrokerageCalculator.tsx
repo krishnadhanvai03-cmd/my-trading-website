@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function BrokerageCalculator() {
   const [type, setType] = useState("equity");
@@ -48,86 +48,105 @@ export function BrokerageCalculator() {
   };
 
   return (
-    <div className="double-bezel max-w-2xl mx-auto p-6 md:p-8 mt-16 flex flex-col items-center">
-      <h2 className="text-2xl font-display font-bold text-accent mb-8">Brokerage Calculator</h2>
-      
-      <div className="flex flex-wrap gap-4 mb-8 justify-center w-full">
-        <label className="flex flex-col gap-2 min-w-[140px] flex-1 text-sm font-semibold text-text-muted">
-          Trade Type
-          <select 
-            value={type} 
-            onChange={(e) => { setType(e.target.value); setResult(null); }}
-            className="bg-background border border-surface-border text-foreground rounded-lg p-2.5 focus:outline-none focus:border-accent transition-colors"
-          >
-            <option value="equity">Equity Delivery</option>
-            <option value="intraday">Equity Intraday</option>
-            <option value="futures">Futures</option>
-            <option value="options">Options</option>
-            <option value="commodity">Commodity</option>
-          </select>
-        </label>
+    <div className="p-1 rounded-[2.5rem] bg-white/5 border border-white/10 max-w-2xl mx-auto mt-16">
+      <div className="double-bezel p-8 md:p-12 flex flex-col items-center">
+        <h2 className="text-3xl font-display font-black text-white mb-10 uppercase tracking-tighter italic">BROKERAGE <span className="text-accent text-normal not-italic">CALCULATOR</span>.</h2>
         
-        <label className="flex flex-col gap-2 min-w-[140px] flex-1 text-sm font-semibold text-text-muted">
-          Quantity
-          <input 
-            type="number" 
-            min="1" 
-            value={qty} 
-            onChange={(e) => { setQty(Number(e.target.value)); setResult(null); }}
-            className="bg-background border border-surface-border text-foreground rounded-lg p-2.5 focus:outline-none focus:border-accent transition-colors"
-          />
-        </label>
-
-        <label className="flex flex-col gap-2 min-w-[140px] flex-1 text-sm font-semibold text-text-muted">
-          Price
-          <input 
-            type="number" 
-            min="1" 
-            value={price} 
-            onChange={(e) => { setPrice(Number(e.target.value)); setResult(null); }}
-            className="bg-background border border-surface-border text-foreground rounded-lg p-2.5 focus:outline-none focus:border-accent transition-colors"
-          />
-        </label>
-
-        {type === 'options' && (
-          <label className="flex flex-col gap-2 min-w-[140px] flex-1 text-sm font-semibold text-text-muted">
-            Premium
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 w-full">
+          <label className="flex flex-col gap-3 text-xs font-black uppercase tracking-widest text-text-muted">
+            Trade Type
+            <select 
+              value={type} 
+              onChange={(e) => { setType(e.target.value); setResult(null); }}
+              className="bg-surface/60 border border-white/10 text-white rounded-xl p-4 focus:outline-none focus:border-accent transition-all cursor-pointer appearance-none"
+            >
+              <option value="equity">Equity Delivery</option>
+              <option value="intraday">Equity Intraday</option>
+              <option value="futures">Futures</option>
+              <option value="options">Options</option>
+              <option value="commodity">Commodity</option>
+            </select>
+          </label>
+          
+          <label className="flex flex-col gap-3 text-xs font-black uppercase tracking-widest text-text-muted">
+            Quantity
             <input 
               type="number" 
               min="1" 
-              value={premium} 
-              onChange={(e) => { setPremium(Number(e.target.value)); setResult(null); }}
-              className="bg-background border border-surface-border text-foreground rounded-lg p-2.5 focus:outline-none focus:border-accent transition-colors"
+              value={qty} 
+              onChange={(e) => { setQty(Number(e.target.value)); setResult(null); }}
+              className="bg-surface/60 border border-white/10 text-white rounded-xl p-4 focus:outline-none focus:border-accent transition-all font-mono"
             />
           </label>
-        )}
-      </div>
 
-      <motion.button 
-        whileTap={{ scale: 0.97 }}
-        onClick={calculate}
-        className="bg-foreground text-background px-8 py-3 rounded-full font-bold uppercase tracking-widest text-sm hover:brightness-110 transition-all mb-8"
-      >
-        Calculate
-      </motion.button>
+          <label className="flex flex-col gap-3 text-xs font-black uppercase tracking-widest text-text-muted">
+            Price
+            <input 
+              type="number" 
+              min="1" 
+              value={price} 
+              onChange={(e) => { setPrice(Number(e.target.value)); setResult(null); }}
+              className="bg-surface/60 border border-white/10 text-white rounded-xl p-4 focus:outline-none focus:border-accent transition-all font-mono"
+            />
+          </label>
 
-      {result && (
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full bg-background rounded-xl p-6 border border-surface-border shadow-inner"
+          {type === 'options' && (
+            <label className="flex flex-col gap-3 text-xs font-black uppercase tracking-widest text-text-muted">
+              Premium
+              <input 
+                type="number" 
+                min="1" 
+                value={premium} 
+                onChange={(e) => { setPremium(Number(e.target.value)); setResult(null); }}
+                className="bg-surface/60 border border-white/10 text-white rounded-xl p-4 focus:outline-none focus:border-accent transition-all font-mono"
+              />
+            </label>
+          )}
+        </div>
+
+        <motion.button 
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={calculate}
+          className="w-full bg-action text-black py-4 rounded-full font-black uppercase tracking-tighter text-sm hover:brightness-110 transition-all shadow-[0_0_30px_rgba(174,234,0,0.15)] mb-10"
         >
-          <div className="flex flex-wrap justify-between gap-4 mb-6 text-center">
-            <div><span className="text-text-muted text-xs uppercase block mb-1">Brokerage</span>₹{result.brokerage.toFixed(2)}</div>
-            <div><span className="text-text-muted text-xs uppercase block mb-1">STT</span>₹{result.stt.toFixed(2)}</div>
-            <div><span className="text-text-muted text-xs uppercase block mb-1">Exchange</span>₹{result.exchange.toFixed(2)}</div>
-            <div><span className="text-text-muted text-xs uppercase block mb-1">GST</span>₹{result.gst.toFixed(2)}</div>
-          </div>
-          <div className="text-center text-xl font-bold text-accent pt-4 border-t border-surface-border">
-            Total Charges: ₹{result.total.toFixed(2)}
-          </div>
-        </motion.div>
-      )}
+          Execute Analysis
+        </motion.button>
+
+        <AnimatePresence mode="wait">
+          {result && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="w-full bg-surface/40 rounded-2xl p-8 border border-white/5 overflow-hidden"
+            >
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                  <span className="text-text-muted text-[10px] font-black uppercase tracking-[0.2em] block mb-2">Brokerage</span>
+                  <span className="text-xl font-mono font-bold">₹{result.brokerage.toFixed(2)}</span>
+                </div>
+                <div>
+                  <span className="text-text-muted text-[10px] font-black uppercase tracking-[0.2em] block mb-2">STT</span>
+                  <span className="text-xl font-mono font-bold">₹{result.stt.toFixed(2)}</span>
+                </div>
+                <div>
+                  <span className="text-text-muted text-[10px] font-black uppercase tracking-[0.2em] block mb-2">Exchange</span>
+                  <span className="text-xl font-mono font-bold">₹{result.exchange.toFixed(2)}</span>
+                </div>
+                <div>
+                  <span className="text-text-muted text-[10px] font-black uppercase tracking-[0.2em] block mb-2">GST</span>
+                  <span className="text-xl font-mono font-bold">₹{result.gst.toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="flex justify-between items-center pt-6 border-t border-white/10">
+                <span className="text-xs font-black uppercase tracking-widest text-text-muted">Total Charges</span>
+                <span className="text-3xl font-mono font-black text-action italic">₹{result.total.toFixed(2)}</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
