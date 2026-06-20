@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Send, Bot, User, Check, Sparkles } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Send, Bot, User } from "lucide-react";
 
 interface Message {
   sender: "user" | "copilot";
@@ -11,57 +11,64 @@ interface Message {
 }
 
 export function AICopilot() {
+  const reduce = useReducedMotion();
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "copilot",
       text: "System initialized. Standing by for market analytics, news summarization, or trade execution queries.",
-      timestamp: "10:00:00"
-    }
+      timestamp: "10:00:00",
+    },
   ]);
-
   const [inputVal, setInputVal] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const scenarioResponses = [
     {
       trigger: "news",
-      response: "Ingested 184 financial filings. Highlight: Large-cap IT sector shows heavy institutional accumulation (+4.2% block trades). Risk alert: Inflation indices release at 17:30, expected volatility spike."
+      response:
+        "Ingested 184 financial filings. Highlight: Large-cap IT sector shows heavy institutional accumulation (+4.2% block trades). Risk alert: Inflation indices release at 17:30, expected volatility spike.",
     },
     {
       trigger: "portfolio",
-      response: "Portfolio Health checked: 88/100. Diversification is optimal. Risk exposure to crypto exceeds target by 2.4%; recommend hedging with gold derivative or trimming BTC holdings."
+      response:
+        "Portfolio Health checked: 88/100. Diversification is optimal. Risk exposure to crypto exceeds target by 2.4%; recommend hedging with gold derivative or trimming BTC holdings.",
     },
     {
       trigger: "trade",
-      response: "Detected momentum breakout on INFY. Bullish crossover on 15m chart confirmed. Entry target: 1,420, stop loss: 1,405, take profit: 1,460. Confidence interval: 92%."
-    }
+      response:
+        "Detected momentum breakout on INFY. Bullish crossover on 15m chart confirmed. Entry target: 1,420, stop loss: 1,405, take profit: 1,460. Confidence interval: 92%.",
+    },
   ];
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
-    
+
     const userMsg: Message = {
       sender: "user",
       text: text,
-      timestamp: new Date().toLocaleTimeString()
+      timestamp: new Date().toLocaleTimeString(),
     };
-    
+
     setMessages((prev) => [...prev, userMsg]);
     setInputVal("");
     setIsTyping(true);
 
     setTimeout(() => {
-      let matched = scenarioResponses.find((r) =>
+      const matched = scenarioResponses.find((r) =>
         text.toLowerCase().includes(r.trigger)
       );
-      
-      const defaultResp = "Analyzing queries across NSE/BSE networks. Identified bullish indicators in IT equities. Command executions ready.";
+      const defaultResp =
+        "Analyzing queries across NSE/BSE networks. Identified bullish indicators in IT equities. Command executions ready.";
       const copilotMsg: Message = {
         sender: "copilot",
         text: matched ? matched.response : defaultResp,
-        timestamp: new Date().toLocaleTimeString()
+        timestamp: new Date().toLocaleTimeString(),
       };
-      
       setMessages((prev) => [...prev, copilotMsg]);
       setIsTyping(false);
     }, 1500);
@@ -70,70 +77,79 @@ export function AICopilot() {
   return (
     <section className="py-24 md:py-32 px-6 max-w-7xl mx-auto relative z-10" id="ai-copilot">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Left Side: Editorial Content */}
+        {/* Left: Content */}
         <div>
-          <div className="text-[10px] uppercase tracking-[0.2em] font-black text-emerald-500 mb-6 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 inline-block">
-            Advanced NLP Engine
-          </div>
-          <h2 className="text-[clamp(2.2rem,5vw,3.8rem)] leading-[0.95] font-bold font-display tracking-tighter uppercase mb-6 text-white">
-            Your Personal Market <span className="text-emerald-500">Intelligence.</span>
+          <h2 className="text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.05] font-bold tracking-tight mb-5 text-white">
+            Your personal market{" "}
+            <span className="text-accent">intelligence.</span>
           </h2>
-          <p className="text-text-muted text-base md:text-lg mb-8 font-medium leading-relaxed max-w-[45ch]">
-            Query financial filings, summarize earnings, analyze portfolio vulnerabilities, or draft trade ideas in plain language.
+          <p className="text-text-secondary text-sm md:text-base mb-8 leading-relaxed max-w-[45ch]">
+            Query financial filings, summarize earnings, analyze portfolio vulnerabilities, 
+            or draft trade ideas in plain language.
           </p>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {[
               { label: "Summarize tech earnings news", query: "Summarize today's tech news" },
               { label: "Analyze my portfolio exposure", query: "Analyze my portfolio risks" },
-              { label: "Suggest trade ideas for INFY", query: "Suggest trade ideas based on momentum" }
+              { label: "Suggest trade ideas for INFY", query: "Suggest trade ideas based on momentum" },
             ].map((q, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSend(q.query)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg border border-white/5 bg-[#080E1A]/40 hover:bg-[#080E1A]/80 hover:border-emerald-500/20 text-xs font-bold text-white uppercase tracking-tighter w-full text-left transition-all duration-200"
+                className="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/5 bg-surface/40 hover:bg-surface-elevated/60 hover:border-accent/15 text-xs font-medium text-white w-full text-left transition-all duration-200 group"
               >
-                <Sparkles size={12} className="text-emerald-500" />
+                <span className="w-6 h-6 rounded-md bg-accent/8 text-accent flex items-center justify-center text-[10px] group-hover:bg-accent/15 transition-colors">
+                  ✦
+                </span>
                 <span>{q.label}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Right Side: Chat terminal mockup */}
+        {/* Right: Chat Demo */}
         <div>
-          <div className="double-bezel border-white/5 bg-[#080E1A]/40 backdrop-blur-xl flex flex-col h-[480px] shadow-[0_30px_70px_rgba(0,0,0,0.9)] relative overflow-hidden">
-            {/* Terminal Top Bar */}
-            <div className="h-10 border-b border-white/5 bg-white/5 flex items-center px-6 gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-              <span className="text-[8px] font-black text-white/40 tracking-widest uppercase font-mono">copilot.session.active</span>
+          <div className="glass-card flex flex-col h-[480px] relative overflow-hidden">
+            {/* Terminal bar */}
+            <div className="h-10 border-b border-white/5 bg-white/2 flex items-center px-5 gap-2">
+              <div className="w-2 h-2 rounded-full bg-accent" />
+              <span className="text-[10px] text-text-muted font-semibold font-mono ml-1">
+                copilot.session.active
+              </span>
             </div>
 
-            {/* Message Area */}
-            <div className="flex-1 p-6 overflow-y-auto space-y-4 font-mono text-xs text-white">
+            {/* Messages */}
+            <div className="flex-1 p-5 overflow-y-auto space-y-3 font-mono text-xs">
               <AnimatePresence initial={false}>
                 {messages.map((m, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={reduce ? false : { opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className={`flex items-start gap-3 max-w-[85%] ${
+                    className={`flex items-start gap-2.5 max-w-[85%] ${
                       m.sender === "user" ? "ml-auto flex-row-reverse" : ""
                     }`}
                   >
-                    <div className={`p-2 rounded-lg flex-shrink-0 ${
-                      m.sender === "user" ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                    }`}>
-                      {m.sender === "user" ? <User size={14} /> : <Bot size={14} />}
+                    <div
+                      className={`p-1.5 rounded-lg flex-shrink-0 ${
+                        m.sender === "user"
+                          ? "bg-info/10 text-info border border-info/15"
+                          : "bg-accent/10 text-accent border border-accent/15"
+                      }`}
+                    >
+                      {m.sender === "user" ? <User size={12} /> : <Bot size={12} />}
                     </div>
-                    
-                    <div className={`p-3 rounded-xl border ${
-                      m.sender === "user" 
-                        ? "bg-blue-950/20 border-blue-500/15 text-white" 
-                        : "bg-emerald-950/20 border-emerald-500/15 text-white"
-                    }`}>
-                      <p className="leading-relaxed whitespace-pre-wrap">{m.text}</p>
-                      <span className="text-[8px] text-text-muted mt-1.5 block text-right font-sans font-bold">
+
+                    <div
+                      className={`p-3 rounded-xl border ${
+                        m.sender === "user"
+                          ? "bg-info/5 border-info/10 text-white"
+                          : "bg-accent/5 border-accent/10 text-white"
+                      }`}
+                    >
+                      <p className="leading-relaxed whitespace-pre-wrap font-sans text-xs">{m.text}</p>
+                      <span className="text-[9px] text-text-muted mt-1.5 block text-right font-sans font-medium">
                         {m.timestamp}
                       </span>
                     </div>
@@ -147,31 +163,33 @@ export function AICopilot() {
                     exit={{ opacity: 0 }}
                     className="flex items-center gap-2 text-text-muted"
                   >
-                    <Bot size={14} className="text-emerald-500 animate-pulse" />
-                    <span className="animate-pulse font-sans font-bold uppercase tracking-widest text-[9px]">AI is parsing logs...</span>
+                    <Bot size={12} className="text-accent animate-pulse" />
+                    <span className="animate-pulse font-sans font-semibold uppercase tracking-wider text-[9px]">
+                      Parsing logs...
+                    </span>
                   </motion.div>
                 )}
               </AnimatePresence>
+              <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Bar */}
-            <div className="p-4 border-t border-white/5 bg-black/40 flex gap-2">
+            {/* Input */}
+            <div className="p-3 border-t border-white/5 bg-black/20 flex gap-2">
               <input
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSend(inputVal)}
-                placeholder="Ask Co-pilot: e.g. Analyze my portfolio news risks..."
-                className="flex-1 bg-black/50 border border-white/5 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500/30 transition-all font-mono placeholder:text-white/20"
+                placeholder="Ask about markets, portfolio, trades..."
+                className="flex-1 bg-black/30 border border-white/5 rounded-lg px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-accent/25 transition-all font-sans placeholder:text-white/15"
               />
               <button
                 onClick={() => handleSend(inputVal)}
-                className="p-2.5 bg-emerald-500 hover:bg-emerald-400 text-black rounded-lg transition-colors flex-shrink-0 cursor-pointer active:scale-95"
+                className="p-2.5 bg-accent hover:bg-emerald-400 text-black rounded-lg transition-colors flex-shrink-0 cursor-pointer active:scale-95"
               >
-                <Send size={14} strokeWidth={2.5} />
+                <Send size={13} strokeWidth={2.5} />
               </button>
             </div>
-
           </div>
         </div>
       </div>

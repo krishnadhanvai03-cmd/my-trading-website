@@ -1,0 +1,693 @@
+# TRADEBUDDY X — ELITE FINTECH LANDING PAGE
+
+## ROLE
+
+You are simultaneously:
+
+- Apple Human Interface Team
+- Stripe Design Engineering Team
+- Linear Design Team
+- TradingView Product Team
+- Bloomberg Terminal Product Team
+- Vercel Design Team
+- Emil Kowalski
+- YC Product Partners
+- Sequoia Design Advisors
+
+Your task is NOT to build a website.
+
+Your task is to create a landing page that makes TradeBuddy X look like a future billion-dollar fintech company.
+
+---
+
+# STRICT REFERENCE MODE
+
+The attached image is the UI architecture blueprint.
+
+Follow the same:
+
+- Section order
+- Layout proportions
+- Spacing rhythm
+- Visual hierarchy
+- Component placement
+- Information density
+- Content distribution
+- Card structure
+- Premium feel
+
+DO NOT COPY:
+
+- Colors
+- Logos
+- Icons
+- Text
+- Illustrations
+- Product screenshots
+
+Use only the layout and UX architecture.
+
+The final result should feel like:
+
+"Bloomberg + TradingView + Apple redesigned the reference website for modern traders."
+
+---
+
+# PRODUCT
+
+Name:
+
+TradeBuddy X
+
+Tagline:
+
+The Operating System For Modern Traders
+
+Mission:
+
+Unify trading, investing, research, portfolio intelligence, AI insights, and market analysis into one platform.
+
+Vision:
+
+Become the Bloomberg Terminal for Retail Investors.
+
+---
+
+# SKILL ENFORCEMENT LAYER
+
+Apply these skills at maximum intensity.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+IMPECCABLE
+
+Obsess over:
+
+- spacing
+- typography
+- hierarchy
+- composition
+- proportions
+- rhythm
+- refinement
+
+Every section must feel handcrafted.
+
+Reject anything that feels AI-generated.
+
+Reject generic SaaS layouts.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+FRONTEND-DESIGN
+
+Optimize:
+
+- layout architecture
+- user flow
+- interaction design
+- information hierarchy
+- conversion
+
+Every section must have purpose.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+DESIGN-TASTE-FRONTEND
+
+Prioritize:
+
+- elegance
+- confidence
+- simplicity
+- premium aesthetics
+
+Remove unnecessary elements.
+
+Use fewer elements with greater impact.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+EMIL-DESIGN-ENG
+
+Motion = communication.
+
+Use animations to:
+
+- reveal information
+- explain workflows
+- guide attention
+- increase clarity
+
+Never animate for decoration.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+# DESIGN SYSTEM
+
+Theme:
+
+Ultra Premium Dark Mode
+
+Background:
+
+Deep Black
+
+Secondary Surface:
+
+Dark Navy
+
+Cards:
+
+Glass + Matte Hybrid
+
+Text:
+
+Pure White
+
+Accent:
+
+Emerald Green
+
+Secondary Accent:
+
+Electric Blue
+
+Success:
+
+Professional Green
+
+Avoid:
+
+- flashy crypto aesthetics
+- gaming visuals
+- excessive gradients
+- startup clichés
+
+The experience must feel institutional.
+
+---
+
+# LANDING PAGE STRUCTURE
+
+STRICTLY FOLLOW THE REFERENCE STRUCTURE
+
+--------------------------------------------------
+SECTION 1
+NAVBAR
+--------------------------------------------------
+
+Glassmorphism navbar.
+
+Left:
+
+TradeBuddy X Logo
+
+Center:
+
+Features
+Markets
+Portfolio
+AI Copilot
+Pricing
+About
+
+Right:
+
+Primary CTA
+
+"Get Early Access"
+
+Sticky on scroll.
+
+---
+
+--------------------------------------------------
+SECTION 2
+HERO SECTION
+--------------------------------------------------
+
+MATCH REFERENCE LAYOUT.
+
+50 / 50 split.
+
+LEFT:
+
+Massive Headline
+
+Trade Smarter.
+Research Faster.
+Decide With Confidence.
+
+Subheadline:
+
+AI-powered trading intelligence, portfolio analytics, market research, risk management, and market monitoring in one unified platform.
+
+Buttons:
+
+Start Free
+
+Watch Demo
+
+RIGHT:
+
+Create a premium floating trading command center.
+
+DO NOT USE A PHONE.
+
+Instead show:
+
+- AI Copilot
+- Portfolio Analytics
+- Watchlist
+- NIFTY Dashboard
+- Risk Score
+- Market Heatmap
+
+All floating together.
+
+Add subtle motion.
+
+Premium depth.
+
+Hover interactions.
+
+---
+
+--------------------------------------------------
+SECTION 3
+TRUST SECTION
+--------------------------------------------------
+
+Same position as reference.
+
+Title:
+
+Trusted By Modern Traders
+
+Display:
+
+NSE Coverage
+
+BSE Coverage
+
+Global Markets
+
+TradingView Integration
+
+Portfolio Tracking
+
+AI Intelligence
+
+Monochrome logos/icons.
+
+Minimal.
+
+Premium.
+
+---
+
+--------------------------------------------------
+SECTION 4
+LIVE MARKET INTELLIGENCE
+--------------------------------------------------
+
+Same layout as reference coin cards.
+
+Create 6 premium market cards.
+
+Card 1:
+
+NIFTY 50
+
+Card 2:
+
+BANK NIFTY
+
+Card 3:
+
+SENSEX
+
+Card 4:
+
+GOLD
+
+Card 5:
+
+USD/INR
+
+Card 6:
+
+BTC
+
+Show:
+
+- price
+- change
+- trend
+
+Use animated indicators.
+
+---
+
+--------------------------------------------------
+SECTION 5
+FEATURE SHOWCASE
+--------------------------------------------------
+
+Same layout as reference.
+
+LEFT:
+
+Headline:
+
+Everything A Trader Needs.
+One Platform.
+
+Feature list:
+
+AI Market Copilot
+
+Portfolio Intelligence
+
+Risk Analytics
+
+Trading Journal
+
+Market Research
+
+Demo Trading
+
+Multi-Market Access
+
+RIGHT:
+
+Premium dashboard visualization.
+
+Show:
+
+Portfolio Health Score
+
+Risk Score
+
+Performance Metrics
+
+Asset Allocation
+
+Market Sentiment
+
+AI Insights
+
+---
+
+--------------------------------------------------
+SECTION 6
+METRICS SECTION
+--------------------------------------------------
+
+Same structure as reference.
+
+4 premium statistic cards.
+
+500K+
+
+Active Traders
+
+20M+
+
+Market Data Points
+
+99.99%
+
+Platform Reliability
+
+24/7
+
+AI Monitoring
+
+Large typography.
+
+Glass cards.
+
+Micro animations.
+
+---
+
+--------------------------------------------------
+SECTION 7
+CENTRAL PRODUCT SHOWCASE
+--------------------------------------------------
+
+MOST IMPORTANT SECTION.
+
+Keep same architecture as reference.
+
+Center:
+
+Large floating dashboard mockup.
+
+Surround with orbiting features.
+
+Feature Nodes:
+
+AI Copilot
+
+Portfolio Intelligence
+
+Risk Engine
+
+Trading Journal
+
+Market Research
+
+Watchlists
+
+Global Markets
+
+Demo Trading
+
+Use:
+
+- connection lines
+- orbit animations
+- glow effects
+- layered depth
+
+This section must become the visual centerpiece.
+
+---
+
+--------------------------------------------------
+SECTION 8
+AI COPILOT
+--------------------------------------------------
+
+Headline:
+
+Your Personal Market Intelligence Team
+
+Show:
+
+- News Summarization
+- Market Insights
+- Risk Alerts
+- Portfolio Analysis
+- Trade Ideas
+
+Use chat-style UI.
+
+Premium interactions.
+
+---
+
+--------------------------------------------------
+SECTION 9
+PORTFOLIO INTELLIGENCE
+--------------------------------------------------
+
+Display:
+
+Portfolio Value
+
+Performance
+
+Allocation
+
+Diversification
+
+Health Score
+
+Benchmark Comparison
+
+Use institutional-grade charts.
+
+---
+
+--------------------------------------------------
+SECTION 10
+WHY TRADEBUDDY X
+--------------------------------------------------
+
+Comparison Grid
+
+Traditional Workflow
+
+vs
+
+TradeBuddy X
+
+Show:
+
+Broker
+TradingView
+News App
+Research Tool
+Spreadsheet
+Notes
+
+↓
+
+One Unified Platform
+
+Use visual storytelling.
+
+---
+
+--------------------------------------------------
+SECTION 11
+TESTIMONIALS
+--------------------------------------------------
+
+Premium cards.
+
+Dark theme.
+
+Professional tone.
+
+Show trust and authority.
+
+---
+
+--------------------------------------------------
+SECTION 12
+PRICING
+--------------------------------------------------
+
+Starter
+
+Pro
+
+Elite
+
+Highlight Pro.
+
+Premium pricing cards.
+
+---
+
+--------------------------------------------------
+SECTION 13
+FINAL CTA
+--------------------------------------------------
+
+Large visual impact.
+
+Headline:
+
+The Future Of Trading Starts Here.
+
+Subheadline:
+
+Join thousands of traders using AI-powered market intelligence.
+
+CTA:
+
+Get Early Access
+
+---
+
+--------------------------------------------------
+SECTION 14
+FOOTER
+--------------------------------------------------
+
+Premium.
+
+Minimal.
+
+Professional.
+
+---
+
+# MOTION SYSTEM
+
+Implement:
+
+- Framer Motion
+- Scroll reveals
+- Stagger animations
+- Floating dashboard effects
+- Glow interactions
+- Hover elevations
+- Number count animations
+- Smooth parallax
+- Magnetic CTA buttons
+
+Motion quality must match:
+
+- Stripe
+- Linear
+- Vercel
+
+Maintain 60 FPS.
+
+---
+
+# TECH STACK
+
+Next.js 15
+
+TypeScript
+
+Tailwind CSS
+
+Framer Motion
+
+ShadCN
+
+Lucide Icons
+
+Responsive
+
+SEO Optimized
+
+Accessibility Compliant
+
+Production Ready
+
+---
+
+# OUTPUT REQUIREMENTS
+
+Before generating code:
+
+1. Analyze the reference UI.
+2. Extract its layout system.
+3. Adapt it for TradeBuddy X.
+4. Improve weak sections.
+5. Define conversion strategy.
+6. Define motion system.
+7. Define component architecture.
+
+Then generate:
+
+- Complete landing page blueprint
+- Final copywriting
+- UX decisions
+- Visual decisions
+- Motion decisions
+- Production-ready code architecture
+
+Goal:
+
+Create a landing page that looks like a future $1B fintech company and clearly surpasses Zerodha, Groww, Dhan, and Upstox in perceived quality.

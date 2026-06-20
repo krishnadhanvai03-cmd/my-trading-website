@@ -6,7 +6,6 @@ import { TrustSection } from "@/components/home/TrustSection";
 import { LiveMarkets } from "@/components/home/LiveMarkets";
 import { FeatureShowcase } from "@/components/home/FeatureShowcase";
 import { MetricsSection } from "@/components/home/MetricsSection";
-import { CentralShowcase } from "@/components/home/CentralShowcase";
 import { AICopilot } from "@/components/home/AICopilot";
 import { PortfolioIntelligence } from "@/components/home/PortfolioIntelligence";
 import { WhyTradeBuddy } from "@/components/home/WhyTradeBuddy";
@@ -21,40 +20,37 @@ export default function Home() {
       <Header />
       <main className="flex-1 overflow-hidden">
         
-        {/* Section 2: Hero */}
+        {/* Hero */}
         <Hero />
         
-        {/* Section 3: Trust Logo Wall */}
+        {/* Trust Bar */}
         <TrustSection />
         
-        {/* Section 4: Live Markets */}
+        {/* Live Markets */}
         <LiveMarkets />
         
-        {/* Section 5: Feature Showcase */}
+        {/* Feature Showcase */}
         <FeatureShowcase />
         
-        {/* Section 6: Metrics Section */}
+        {/* Metrics */}
         <MetricsSection />
         
-        {/* Section 7: Central Product Showcase Centerpiece */}
-        <CentralShowcase />
-        
-        {/* Section 8: AI Copilot Chat Interface */}
+        {/* AI Copilot */}
         <AICopilot />
         
-        {/* Section 9: Portfolio Intelligence */}
+        {/* Portfolio Intelligence */}
         <PortfolioIntelligence />
         
-        {/* Section 10: Why TradeBuddy X */}
+        {/* Why TradeBuddy */}
         <WhyTradeBuddy />
         
-        {/* Section 11: Testimonials */}
+        {/* Testimonials */}
         <Testimonials />
         
-        {/* Section 12: Pricing */}
+        {/* Pricing */}
         <PricingSection />
         
-        {/* Section 13: Final CTA */}
+        {/* Final CTA */}
         <FinalCTA />
 
       </main>

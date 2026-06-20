@@ -1,63 +1,67 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Users, Database, ShieldAlert, Cpu } from "lucide-react";
 
 export function MetricsSection() {
+  const reduce = useReducedMotion();
+
   const metrics = [
     {
       value: "500K+",
       label: "Active Traders",
-      description: "Executing strategies globally across Indian and US exchanges.",
-      icon: <Users size={20} className="text-emerald-500" />
+      description: "Executing strategies across Indian and US exchanges.",
+      icon: <Users size={18} />,
     },
     {
       value: "20M+",
-      label: "Market Data Points",
-      description: "Ingested, parsed, and analyzed per second at sub-millisecond rates.",
-      icon: <Database size={20} className="text-blue-500" />
+      label: "Data Points / Sec",
+      description: "Ingested and analyzed at sub-millisecond rates.",
+      icon: <Database size={18} />,
     },
     {
       value: "99.99%",
-      label: "Platform Reliability",
-      description: "Redundant cluster hosting guaranteeing continuous trade capabilities.",
-      icon: <ShieldAlert size={20} className="text-emerald-500" />
+      label: "Uptime",
+      description: "Redundant cluster hosting with zero downtime.",
+      icon: <ShieldAlert size={18} />,
     },
     {
       value: "24/7",
       label: "AI Monitoring",
-      description: "Autonomous models running perpetual diagnostics on order pipelines.",
-      icon: <Cpu size={20} className="text-blue-500" />
-    }
+      description: "Autonomous models running perpetual diagnostics.",
+      icon: <Cpu size={18} />,
+    },
   ];
 
   return (
     <section className="py-24 md:py-32 px-6 max-w-7xl mx-auto relative z-10" id="metrics">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {metrics.map((item, idx) => (
           <motion.div
             key={idx}
-            initial={{ opacity: 0, y: 20 }}
+            initial={reduce ? false : { opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            className="double-bezel p-8 border-white/5 bg-[#080E1A]/40 backdrop-blur-md flex flex-col justify-between group hover:border-emerald-500/20 transition-all duration-300 min-h-[220px]"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{
+              duration: 0.5,
+              delay: idx * 0.06,
+              ease: [0.23, 1, 0.32, 1],
+            }}
+            className="glass-card-sm p-6 flex flex-col justify-between group hover:border-accent/15 transition-all duration-300"
           >
-            <div className="flex justify-between items-start mb-6">
-              <div className="p-2.5 rounded-lg bg-white/5 text-text-muted group-hover:text-white transition-colors duration-300">
-                {item.icon}
-              </div>
+            <div className="p-2 rounded-lg bg-white/5 text-text-muted group-hover:text-accent transition-colors duration-200 w-fit mb-5">
+              {item.icon}
             </div>
-            
+
             <div>
-              <div className="text-4xl md:text-5xl font-black font-mono tracking-tighter text-white mb-2">
+              <div className="text-3xl md:text-4xl font-bold font-mono tracking-tight text-white mb-1.5">
                 {item.value}
               </div>
-              <h3 className="text-xs font-black uppercase text-white tracking-widest mb-1.5">
+              <h3 className="text-xs font-semibold text-white tracking-tight mb-1">
                 {item.label}
               </h3>
-              <p className="text-[10px] text-text-muted leading-tight font-medium">
+              <p className="text-[11px] text-text-muted leading-relaxed font-medium">
                 {item.description}
               </p>
             </div>
