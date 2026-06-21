@@ -2,21 +2,14 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Play, TrendingUp, Activity, PieChart, ShieldAlert } from "lucide-react";
+import { ArrowRight, Play, TrendingUp, TrendingDown, Activity, Wallet } from "lucide-react";
 import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[90vh] pt-32 pb-20 overflow-hidden flex items-center">
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] mix-blend-screen" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[150px] mix-blend-screen" />
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay" />
-      </div>
-
+    <section className="relative min-h-screen pt-32 pb-20 overflow-hidden flex items-center mesh-bg">
       <div className="max-w-[1280px] mx-auto px-5 lg:px-8 relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           
           {/* Left Content */}
           <div className="flex flex-col items-start max-w-2xl">
@@ -25,9 +18,9 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-8">
-                <span className="flex w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-medium text-primary uppercase tracking-wider">TradeBuddy X 2.0 is Live</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 mb-8 backdrop-blur-md">
+                <span className="flex w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--primary)]" />
+                <span className="text-xs font-semibold text-primary uppercase tracking-wider">The Next-Gen Exchange</span>
               </div>
             </motion.div>
 
@@ -35,11 +28,11 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
-              className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold leading-[1.1] tracking-tight mb-6"
+              className="text-6xl md:text-7xl lg:text-8xl font-heading font-bold leading-[1.05] tracking-tight mb-6"
             >
-              <span className="block text-ink">Trade Smarter.</span>
-              <span className="block text-muted">Research Faster.</span>
-              <span className="block text-gradient-primary">Decide With Confidence.</span>
+              <span className="block text-ink">Trade Crypto</span>
+              <span className="block text-muted">Like a Pro.</span>
+              <span className="block text-gradient-primary">Zero Limits.</span>
             </motion.h1>
 
             <motion.p
@@ -48,7 +41,7 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
               className="text-lg md:text-xl text-body mb-10 max-w-xl leading-relaxed"
             >
-              AI-powered trading intelligence, portfolio analytics, market research, risk management, and market monitoring in one unified platform.
+              Experience lightning-fast execution, deep liquidity, and institutional-grade security on the most advanced trading platform.
             </motion.p>
 
             <motion.div
@@ -59,117 +52,115 @@ export function Hero() {
             >
               <Link
                 href="#"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-14 px-8 bg-ink text-canvas-dark text-base font-semibold rounded-full hover:bg-primary transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(16,185,129,0.3)] group"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-14 px-8 bg-primary text-on-primary text-base font-bold rounded-full hover:bg-primary-active transition-all duration-300 shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:shadow-[0_0_30px_rgba(0,240,255,0.5)] group"
               >
-                Start Free
+                Start Trading
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 href="#"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-14 px-8 bg-transparent text-ink border border-hairline-light/10 text-base font-semibold rounded-full hover:bg-surface-elevated-dark transition-all duration-300 group"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 h-14 px-8 bg-transparent text-ink border border-white/10 text-base font-semibold rounded-full hover:bg-white/5 transition-all duration-300 group"
               >
-                <Play size={18} className="text-primary group-hover:scale-110 transition-transform" fill="currentColor" />
-                Watch Demo
+                <Play size={18} className="text-secondary group-hover:scale-110 transition-transform" fill="currentColor" />
+                How it works
               </Link>
             </motion.div>
           </div>
 
-          {/* Right Content - Floating Command Center */}
+          {/* Right Content - Floating Bento Box / Dribbble Style Mockup */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="relative h-[600px] hidden lg:block"
+            className="relative h-[600px] hidden lg:block perspective-1000"
           >
-            {/* Main Dashboard Widget */}
+            {/* Main Portfolio Card */}
+            <motion.div
+              animate={{ y: [0, -15, 0], rotateX: [5, 2, 5], rotateY: [-5, -2, -5] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-10 left-0 right-10 z-20 glass-card p-8 shadow-2xl neon-glow transition-all duration-300"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/30">
+                    <Wallet className="text-secondary" size={24} />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted mb-0.5">Total Balance</p>
+                    <h3 className="text-3xl font-heading font-bold tabular-nums text-ink">$142,390.50</h3>
+                  </div>
+                </div>
+                <div className="px-4 py-2 rounded-full bg-success/10 text-success text-sm font-bold flex items-center gap-1 border border-success/20">
+                  <TrendingUp size={16} />
+                  +18.4%
+                </div>
+              </div>
+              
+              {/* Crypto Balances */}
+              <div className="space-y-4">
+                {[
+                  { name: "Bitcoin", sym: "BTC", val: "2.45 BTC", usd: "$104,820", p: "+5.2%" },
+                  { name: "Ethereum", sym: "ETH", val: "14.2 ETH", usd: "$35,500", p: "+2.1%" },
+                ].map((coin) => (
+                  <div key={coin.sym} className="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center font-bold text-ink text-sm">
+                        {coin.sym[0]}
+                      </div>
+                      <div>
+                        <p className="font-semibold text-ink text-sm">{coin.name}</p>
+                        <p className="text-xs text-muted">{coin.val}</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-ink text-sm tabular-nums">{coin.usd}</p>
+                      <p className="text-xs text-success font-medium">{coin.p}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Floating Market Card 1 */}
+            <motion.div
+              animate={{ y: [0, 10, 0], x: [0, 5, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute -right-4 top-48 z-30 glass-card p-5 w-64 shadow-2xl backdrop-blur-xl border border-primary/20"
+            >
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-bold text-ink">SOL / USDT</span>
+                <span className="text-success text-xs font-bold px-2 py-1 bg-success/10 rounded border border-success/20">+12.4%</span>
+              </div>
+              <div className="text-2xl font-bold font-heading tabular-nums text-ink mb-4">$184.20</div>
+              <div className="h-12 w-full flex items-end gap-1 opacity-80">
+                {[40, 65, 45, 80, 55, 90, 75, 100].map((h, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ height: "10%" }}
+                    animate={{ height: `${h}%` }}
+                    transition={{ duration: 1.5, repeat: Infinity, repeatType: "mirror", delay: i * 0.1 }}
+                    className="flex-1 bg-gradient-to-t from-primary/20 to-primary rounded-t-sm"
+                  />
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Floating Action Card */}
             <motion.div
               animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-10 left-10 right-10 z-20 glass-card p-6 border-t border-l border-white/10 shadow-2xl"
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              className="absolute left-8 -bottom-4 z-30 glass-card p-6 w-72 shadow-2xl border-t border-white/20"
             >
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="text-sm text-muted mb-1">Total Portfolio Value</p>
-                  <h3 className="text-3xl font-heading font-bold tabular-nums text-ink">₹24,50,000.00</h3>
-                </div>
-                <div className="px-3 py-1.5 rounded-lg bg-success/10 text-success text-sm font-medium flex items-center gap-1">
-                  <TrendingUp size={16} />
-                  +12.4%
-                </div>
+              <p className="text-sm text-muted mb-4">Quick Buy</p>
+              <div className="bg-surface-elevated-dark rounded-xl p-3 mb-4 flex justify-between items-center border border-white/5">
+                <span className="text-ink font-semibold tabular-nums">1,000</span>
+                <span className="text-muted text-sm pr-2">USDT</span>
               </div>
-              <div className="h-32 w-full flex items-end gap-2">
-                {[40, 65, 45, 80, 55, 90, 75, 100, 85, 110, 95, 120].map((h, i) => (
-                  <div key={i} className="flex-1 bg-primary/20 rounded-t-sm relative group">
-                    <motion.div 
-                      initial={{ height: 0 }}
-                      animate={{ height: `${h}%` }}
-                      transition={{ duration: 1, delay: i * 0.05 }}
-                      className="absolute bottom-0 w-full bg-gradient-to-t from-primary/50 to-primary rounded-t-sm group-hover:brightness-125 transition-all"
-                    />
-                  </div>
-                ))}
-              </div>
+              <button className="w-full py-3 bg-secondary text-white font-bold rounded-xl shadow-[0_0_15px_rgba(138,43,226,0.4)] hover:shadow-[0_0_25px_rgba(138,43,226,0.6)] transition-all">
+                Buy BTC
+              </button>
             </motion.div>
-
-            {/* AI Copilot Widget */}
-            <motion.div
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -right-8 top-32 z-30 glass-card p-5 w-64 shadow-2xl backdrop-blur-xl bg-surface-card-dark/80"
-            >
-              <div className="flex items-center gap-3 mb-3 border-b border-white/5 pb-3">
-                <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-                  <Activity size={16} className="text-secondary" />
-                </div>
-                <span className="text-sm font-medium text-ink">AI Copilot Alert</span>
-              </div>
-              <p className="text-xs text-body leading-relaxed">
-                <strong className="text-ink">NIFTY 50</strong> breakout detected above resistance 22,500. Volume confirms trend. Consider adjusting stop-loss.
-              </p>
-            </motion.div>
-
-            {/* Risk Score Widget */}
-            <motion.div
-              animate={{ y: [0, -15, 0] }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              className="absolute -left-12 bottom-32 z-30 glass-card p-5 w-48 shadow-2xl"
-            >
-              <div className="flex flex-col items-center justify-center">
-                <ShieldAlert size={24} className="text-success mb-2" />
-                <span className="text-2xl font-bold font-heading text-ink">A+</span>
-                <span className="text-xs text-muted uppercase tracking-wider mt-1">Risk Score</span>
-              </div>
-            </motion.div>
-
-            {/* Asset Allocation Widget */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-              className="absolute right-10 bottom-20 z-10 glass-card p-5 w-56 shadow-2xl bg-surface-card-dark/90"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <PieChart size={16} className="text-primary" />
-                <span className="text-sm font-medium text-ink">Allocation</span>
-              </div>
-              <div className="space-y-3">
-                {[
-                  { label: "Equities", val: "65%", bg: "bg-primary" },
-                  { label: "F&O", val: "20%", bg: "bg-secondary" },
-                  { label: "Cash", val: "15%", bg: "bg-muted" },
-                ].map((item, i) => (
-                  <div key={i}>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-body">{item.label}</span>
-                      <span className="text-ink font-medium tabular-nums">{item.val}</span>
-                    </div>
-                    <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
-                      <div className={`h-full ${item.bg}`} style={{ width: item.val }} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
           </motion.div>
         </div>
       </div>

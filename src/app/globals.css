@@ -2,49 +2,40 @@
 
 @layer theme {
   :root {
-    /* Brand & Accent */
-    --primary: #10b981; /* Emerald Green */
-    --primary-active: #059669;
-    --primary-disabled: #064e3b;
-    --secondary: #3b82f6; /* Electric Blue */
-    --success: #22c55e; /* Professional Green */
-    --danger: #ef4444;
+    /* Crypto Dribbble Shot Aesthetic */
+    --primary: #00f0ff; /* Neon Cyan */
+    --primary-active: #00c3cc;
+    --primary-disabled: #004d52;
+    --secondary: #8a2be2; /* Neon Purple */
+    --success: #00e676; /* Neon Green */
+    --danger: #ff3366; /* Neon Pink/Red */
 
     /* Canvas */
-    --canvas-dark: #000000; /* Deep Black */
+    --canvas-dark: #060913; /* Deep Blue/Black */
     --canvas-light: #ffffff;
     
     /* Surface */
-    --surface-card-dark: #0f172a; /* Dark Navy */
-    --surface-elevated-dark: #1e293b;
-    --surface-glass: rgba(15, 23, 42, 0.6);
+    --surface-card-dark: #0f1423; /* Slightly lighter blue-black for cards */
+    --surface-elevated-dark: #181e32;
+    --surface-glass: rgba(15, 20, 35, 0.4);
     
     /* Text */
-    --ink: #ffffff; /* Pure White */
-    --body: #94a3b8; /* Slate 400 */
-    --body-on-light: #0f172a;
-    --muted: #64748b; /* Slate 500 */
-    --muted-strong: #475569;
-    --on-primary: #ffffff;
+    --ink: #ffffff;
+    --body: #9facba; /* Cool gray */
+    --body-on-light: #0f1423;
+    --muted: #5e6d82;
+    --muted-strong: #3d4a5c;
+    --on-primary: #060913; /* Dark text on Cyan button */
     --on-dark: #ffffff;
 
     /* Hairlines & Borders */
     --hairline-on-light: #e2e8f0;
-    --hairline-on-dark: #1e293b; /* Slate 800 */
-    --border-strong: #334155;
-
-    /* Trading */
-    --trading-up: #10b981;
-    --trading-down: #ef4444;
-
-    /* Info */
-    --info: #3b82f6;
-    --info-ring: #3b82f6;
+    --hairline-on-dark: rgba(255, 255, 255, 0.05); /* Very subtle borders */
+    --border-strong: rgba(255, 255, 255, 0.15);
   }
 }
 
 @theme inline {
-  /* Brand */
   --color-primary: var(--primary);
   --color-primary-active: var(--primary-active);
   --color-primary-disabled: var(--primary-disabled);
@@ -52,136 +43,83 @@
   --color-success: var(--success);
   --color-danger: var(--danger);
 
-  /* Canvas */
   --color-canvas-dark: var(--canvas-dark);
-  --color-canvas-light: var(--canvas-light);
-
-  /* Surface */
   --color-surface-card-dark: var(--surface-card-dark);
   --color-surface-elevated-dark: var(--surface-elevated-dark);
   --color-surface-glass: var(--surface-glass);
 
-  /* Text */
   --color-ink: var(--ink);
   --color-body: var(--body);
-  --color-body-on-light: var(--body-on-light);
   --color-muted: var(--muted);
-  --color-muted-strong: var(--muted-strong);
   --color-on-primary: var(--on-primary);
-  --color-on-dark: var(--on-dark);
 
-  /* Hairlines */
-  --color-hairline-light: var(--hairline-on-light);
   --color-hairline-dark: var(--hairline-on-dark);
-  --color-border-strong: var(--border-strong);
 
-  /* Trading */
-  --color-trading-up: var(--trading-up);
-  --color-trading-down: var(--trading-down);
-
-  /* Info */
-  --color-info: var(--info);
-  --color-info-ring: var(--info-ring);
-
-  /* Fonts */
-  --font-sans: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: "Space Grotesk", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
-
-  /* Easing */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --font-sans: "Outfit", "Inter", -apple-system, sans-serif;
+  --font-heading: "Space Grotesk", "Inter", -apple-system, sans-serif;
 }
 
 @layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     background-color: var(--canvas-dark);
     color: var(--body);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
-
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    letter-spacing: -0.025em;
-    text-wrap: balance;
+    letter-spacing: -0.03em;
     color: var(--ink);
   }
-
   ::selection {
-    background: rgba(16, 185, 129, 0.25);
+    background: rgba(0, 240, 255, 0.3);
     color: #fff;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
   }
 }
 
 @layer utilities {
   .glass-card {
     background: var(--surface-glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--hairline-on-dark);
+    border-radius: 24px; /* More rounded for dribbble style */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
   }
 
   .glass-nav {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  /* Focus ring */
-  .focus-ring:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--canvas-dark), 0 0 0 4px rgba(16, 185, 129, 0.5);
-  }
-
-  /* Hairline dividers */
-  .hairline-bottom {
+    background: rgba(6, 9, 19, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--hairline-on-dark);
   }
 
-  .hairline-top {
-    border-top: 1px solid var(--hairline-on-dark);
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
-  /* Tabular numbers for financial data */
+  .mesh-bg {
+    background-color: var(--canvas-dark);
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(138, 43, 226, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(0, 240, 255, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(138, 43, 226, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(0, 240, 255, 0.1) 0px, transparent 50%);
+  }
+
+  /* Dribbble-style neon glow around cards */
+  .neon-glow:hover {
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.2);
+    border-color: rgba(0, 240, 255, 0.3);
+  }
+  
   .tabular-nums {
     font-variant-numeric: tabular-nums;
-  }
-  
-  .text-gradient {
-    background: linear-gradient(to right, #ffffff, #94a3b8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .text-gradient-primary {
-    background: linear-gradient(to right, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 }
