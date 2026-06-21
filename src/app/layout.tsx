@@ -1,21 +1,25 @@
 import type { Metadata } from "next";
-import { Outfit, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { NextAuthProvider } from "@/components/providers/NextAuthProvider";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "TradeBuddy - AI Powered Trading Terminal",
-  description: "Institutional-grade AI analytics and real-time execution for modern traders.",
+  title: "Binance-Inspired Trading Platform",
+  description:
+    "Buy, trade, and earn crypto with low fees. The world's leading cryptocurrency exchange.",
 };
 
 export default function RootLayout({
@@ -26,9 +30,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${spaceGrotesk.variable} h-full antialiased dark`}
+      className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col relative selection:bg-accent selection:text-black bg-background text-foreground dark:bg-[#050505] dark:text-white">
+      <body className="min-h-full flex flex-col relative bg-canvas-dark text-body">
         <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>
