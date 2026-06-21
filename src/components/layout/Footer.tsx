@@ -1,85 +1,68 @@
+"use client";
+
 import Link from "next/link";
+import { Twitter, Linkedin, Github } from "lucide-react";
 
 const footerColumns = [
   {
-    title: "Community",
-    links: ["Twitter", "Telegram", "Discord", "Reddit", "Instagram", "YouTube"],
+    title: "Product",
+    links: ["Features", "Pricing", "AI Copilot", "Portfolio Insights", "Changelog"],
   },
   {
-    title: "About Us",
-    links: [
-      "About Binance",
-      "Careers",
-      "Leadership",
-      "Blog",
-      "Community Rules",
-      "Press",
-    ],
+    title: "Company",
+    links: ["About", "Blog", "Careers", "Contact", "Partners"],
   },
   {
-    title: "Products",
-    links: [
-      "Buy Crypto",
-      "Markets",
-      "Trade",
-      "Futures",
-      "Earn",
-      "BNB Chain",
-      "Launchpad",
-    ],
-  },
-  {
-    title: "Business",
-    links: [
-      "Binance for Business",
-      "OTC Trading",
-      "Institutional",
-      "Market Maker",
-      "Referral",
-      "Affiliate",
-    ],
-  },
-  {
-    title: "Service",
-    links: [
-      "Help Center",
-      "Submit a Request",
-      "API Documentation",
-      "Fees",
-      "Trading Rules",
-      "Binance Verify",
-    ],
-  },
-  {
-    title: "Learn",
-    links: [
-      "Binance Academy",
-      "Research",
-      "Square",
-      "Earn Learn",
-      "Crypto Basics",
-      "BNB",
-    ],
+    title: "Legal",
+    links: ["Privacy Policy", "Terms of Service", "Cookie Policy", "Data Processing", "Security"],
   },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-surface-soft-light text-body-on-light mt-12">
-      <div className="max-w-[1280px] mx-auto px-5 lg:px-8 py-16">
-        {/* 6-Column Link Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 mb-16">
+    <footer className="bg-canvas-dark pt-20 pb-10 border-t border-white/5 text-muted">
+      <div className="max-w-[1280px] mx-auto px-5 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
+          
+          {/* Brand Col */}
+          <div className="lg:col-span-2">
+            <Link href="/" className="flex items-center gap-2 shrink-0 group mb-6">
+              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:border-primary/40 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 3V21H21" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M18 9L12 15L9 12L3 18" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <span className="font-heading font-bold text-xl tracking-tight text-ink">
+                TradeBuddy <span className="text-primary">X</span>
+              </span>
+            </Link>
+            <p className="text-sm max-w-xs leading-relaxed mb-6">
+              The operating system for modern traders. Unify your intelligence, optimize your portfolio, and trade with confidence.
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
+                <Twitter size={18} />
+              </a>
+              <a href="#" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
+                <Linkedin size={18} />
+              </a>
+              <a href="#" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
+                <Github size={18} />
+              </a>
+            </div>
+          </div>
+
+          {/* Links Cols */}
           {footerColumns.map((col) => (
             <div key={col.title}>
-              <h4 className="text-sm font-semibold text-ink mb-4">
-                {col.title}
-              </h4>
-              <ul className="space-y-2.5">
+              <h4 className="font-semibold text-ink mb-6">{col.title}</h4>
+              <ul className="space-y-3">
                 {col.links.map((link) => (
                   <li key={link}>
                     <Link
                       href="#"
-                      className="text-sm text-muted hover:text-ink transition-colors"
+                      className="text-sm hover:text-ink transition-colors"
                     >
                       {link}
                     </Link>
@@ -90,19 +73,15 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-6 border-t border-hairline-light flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted">
-          <p>&copy; {new Date().getFullYear()} Binance. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link href="#" className="hover:text-ink transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="hover:text-ink transition-colors">
-              Terms of Service
-            </Link>
-            <Link href="#" className="hover:text-ink transition-colors">
-              Cookie Policy
-            </Link>
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+          <p>&copy; {new Date().getFullYear()} TradeBuddy X. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-success relative flex items-center justify-center">
+                <span className="absolute w-full h-full rounded-full bg-success animate-ping opacity-50" />
+              </span>
+              All systems operational
+            </span>
           </div>
         </div>
       </div>

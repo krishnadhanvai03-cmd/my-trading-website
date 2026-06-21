@@ -2,36 +2,23 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
 import { TrustBadges } from "@/components/home/TrustBadges";
-import { MarketsTable } from "@/components/home/MarketsTable";
-import { FundsSafu } from "@/components/home/FundsSafu";
-import { FeatureCards } from "@/components/home/FeatureCards";
-import { FAQ } from "@/components/home/FAQ";
+import { LiveMarketIntelligence } from "@/components/home/LiveMarketIntelligence";
+import { FeatureShowcase } from "@/components/home/FeatureShowcase";
+import { MetricsSection } from "@/components/home/MetricsSection";
+import { CentralShowcase } from "@/components/home/CentralShowcase";
 import { CTABand } from "@/components/home/CTABand";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main className="flex-1">
-        {/* Hero */}
+      <main className="flex-1 bg-canvas-dark text-body selection:bg-primary/30 selection:text-ink">
         <Hero />
-
-        {/* Trust Badges */}
         <TrustBadges />
-
-        {/* Markets Table */}
-        <MarketsTable />
-
-        {/* Funds Are SAFU */}
-        <FundsSafu />
-
-        {/* Feature Cards */}
-        <FeatureCards />
-
-        {/* FAQ */}
-        <FAQ />
-
-        {/* CTA Band */}
+        <LiveMarketIntelligence />
+        <FeatureShowcase />
+        <MetricsSection />
+        <CentralShowcase />
         <CTABand />
       </main>
       <Footer />
