@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, ChevronRight, BarChart3, ShieldAlert, Brain, Target, BookOpen, Globe2, Activity } from "lucide-react";
+import { ChevronRight, BarChart3, ShieldAlert, Brain, Target, BookOpen, Globe2, Activity } from "lucide-react";
 
 const features = [
   { id: "ai", label: "AI Market Copilot", icon: Brain },

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Play, TrendingUp, TrendingDown, Activity, Wallet } from "lucide-react";
+import { ArrowRight, Play, TrendingUp, Wallet } from "lucide-react";
 import Link from "next/link";
 
 export function Hero() {

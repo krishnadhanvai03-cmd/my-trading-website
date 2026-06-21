@@ -41,15 +41,15 @@ export function Footer() {
               The operating system for modern traders. Unify your intelligence, optimize your portfolio, and trade with confidence.
             </p>
             <div className="flex items-center gap-4">
-              <a href="#" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
+              <Link href="/" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
                 <Twitter size={18} />
-              </a>
-              <a href="#" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
+              </Link>
+              <Link href="/" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
                 <Linkedin size={18} />
-              </a>
-              <a href="#" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
+              </Link>
+              <Link href="/" className="p-2 bg-white/5 rounded-md hover:bg-primary/20 hover:text-primary transition-colors">
                 <Github size={18} />
-              </a>
+              </Link>
             </div>
           </div>
 
