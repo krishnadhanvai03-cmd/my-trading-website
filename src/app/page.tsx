@@ -72,7 +72,7 @@ export default function Page() {
                 <a
                   href="#early-access"
                   className="px-4 py-2 text-[13.5px] font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-all duration-200 shadow-blue-glow-sm"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   Get Early Access
                 </a>
@@ -146,7 +146,7 @@ export default function Page() {
                   <a
                     href="#early-access"
                     className="inline-flex items-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-[15px] rounded-xl transition-all duration-200 shadow-blue-glow-sm"
-                    tabIndex="0"
+                    tabIndex={0}
                   >
                     Get Early Access
                     <svg
@@ -167,7 +167,7 @@ export default function Page() {
                   </a>
                   <button
                     className="inline-flex items-center gap-2.5 px-6 py-3.5 glass rounded-xl text-white font-semibold text-[15px] hover:bg-white/5 transition-all duration-200"
-                    tabIndex="0"
+                    tabIndex={0}
                   >
                     <span className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
                       <svg
@@ -4132,7 +4132,7 @@ export default function Page() {
                 </div>
                 <button
                   className="w-full py-3.5 rounded-xl text-[14px] font-semibold transition-all duration-200 border border-white/10 text-zinc-300 hover:bg-white/5"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   Start Free
                 </button>
@@ -4348,7 +4348,7 @@ export default function Page() {
                 </div>
                 <button
                   className="w-full py-3.5 rounded-xl text-[14px] font-semibold transition-all duration-200 bg-blue-600 hover:bg-blue-500 text-white shadow-blue-glow-sm"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   Get Early Access
                 </button>
@@ -4543,7 +4543,7 @@ export default function Page() {
                 </div>
                 <button
                   className="w-full py-3.5 rounded-xl text-[14px] font-semibold transition-all duration-200 border border-white/10 text-zinc-300 hover:bg-white/5"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   Contact Sales
                 </button>
@@ -4585,7 +4585,7 @@ export default function Page() {
                 <a
                   href="#"
                   className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-[16px] rounded-xl transition-all duration-200 shadow-blue-glow-sm"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   Get Early Access
                   <svg
@@ -4607,7 +4607,7 @@ export default function Page() {
                 <a
                   href="#"
                   className="inline-flex items-center gap-2 px-8 py-4 glass rounded-xl text-zinc-300 font-semibold text-[16px] hover:bg-white/6 transition-all duration-200"
-                  tabIndex="0"
+                  tabIndex={0}
                 >
                   Schedule a Demo
                 </a>
